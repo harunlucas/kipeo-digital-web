@@ -1,5 +1,16 @@
 # Homepage visual assets
 
+## /services and /work full redesign (this session — see docs/image-assets.md)
+
+Both pages were rebuilt around original SVG/CSS interface compositions
+instead of photography, and the personal-website screenshots and most
+AI-concept renders were removed from both pages (they remain on the
+homepage only, unchanged). The six Pexels photos added in the
+"/services photography pass" below are no longer used anywhere and were
+deleted from `public/images/services/`. See `docs/image-assets.md` for the
+current, authoritative record of what each page actually shows now — the
+sections below are kept as history only.
+
 ## /services photography pass (this session, /services only)
 
 The initial /services build reused homepage/work imagery (the two related-website

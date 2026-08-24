@@ -4,21 +4,20 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
 import { WorkHeroVisual } from "@/components/motion/work-hero-visual";
-import { AttributionLegend } from "@/components/sections/work/attribution-legend";
 import { WorkExplorer } from "@/components/sections/work/work-explorer";
-import { featuredWork, capabilityPaths } from "@/content/selected-work";
-import { relatedWebsites, attributionLegend, heroCollageImages } from "@/content/work";
+import { RelatedExpertiseStrip } from "@/components/sections/work/related-expertise-strip";
+import { featuredWork } from "@/content/selected-work";
+import { heroCollageImages, internalProduct, workCapabilityAreas, specialistExpertiseLinks, type WorkFilterId } from "@/content/work";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
   title: "Work",
   description:
-    "Selected work from Kipeo Digital, clearly attributed: live projects, collaborative work, internal products and capability areas.",
+    "Genuine software work from Kipeo Digital: a verified live project, internal products in development, and the capability areas we build from.",
   alternates: { canonical: "/work" },
 });
 
-const hseSpotlightPath = capabilityPaths.find((path) => path.id === "systems")!;
-const capabilityPanels = capabilityPaths.filter((path) => path.id === "engineering" || path.id === "commerce");
+const internalProductCategories: WorkFilterId[] = ["internal-products", "operational-and-technical-systems"];
 
 export default function WorkPage() {
   return (
@@ -35,12 +34,12 @@ export default function WorkPage() {
                 <Eyebrow>Work</Eyebrow>
               </Reveal>
               <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-6 text-paper-foreground">Selected work, clearly attributed.</h1>
+                <h1 className="text-display-1 mt-6 text-paper-foreground">Software work, built for real operations.</h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
                 <p className="mt-6 max-w-md text-lg leading-relaxed text-slate">
-                  Explore live projects, collaborative work, internal products and capability areas connected to
-                  the team behind Kipeo Digital.
+                  A verified live project, internal products in active development, and the capability areas
+                  Kipeo builds from.
                 </p>
               </Reveal>
             </div>
@@ -53,18 +52,14 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <Section tone="paper" className="py-6 sm:py-8">
-        <Reveal>
-          <AttributionLegend items={attributionLegend} />
-        </Reveal>
-      </Section>
-
       <WorkExplorer
         featured={featuredWork}
-        relatedWebsites={relatedWebsites}
-        hseSpotlightPath={hseSpotlightPath}
-        capabilityPanels={capabilityPanels}
+        internalProduct={internalProduct}
+        internalProductCategories={internalProductCategories}
+        capabilityAreas={workCapabilityAreas}
       />
+
+      <RelatedExpertiseStrip links={specialistExpertiseLinks} />
 
       <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
         <div

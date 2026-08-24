@@ -4,20 +4,20 @@ import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { ServicesHeroVisual } from "@/components/motion/services-hero-visual";
+import { EcosystemVisual } from "@/components/motion/ecosystem-visual";
 import { ServiceNav } from "@/components/sections/services/service-nav";
 import { ServiceSection } from "@/components/sections/services/service-section";
 import { InvestmentSection } from "@/components/sections/services/investment-section";
 import { ServicesProcess } from "@/components/sections/services/services-process";
 import { ServicesFaq } from "@/components/sections/services/services-faq";
-import { serviceSections, servicesFaq } from "@/content/services-page";
+import { serviceGroups, servicesFaq } from "@/content/services-page";
 import { organizationSchema, professionalServiceSchema, faqSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
   title: "Services",
   description:
-    "Websites and commerce, software and systems, HSE and operational systems, engineering and technical software, growth and visibility, integrations and automation, and hosting, maintenance and support — scoped individually, with a free initial proposal.",
+    "Software and business systems, HSE and technical operational software, websites and commerce, and integration, deployment and support — a team-led software agency, scoped individually with a free initial proposal.",
   alternates: { canonical: "/services" },
 });
 
@@ -50,13 +50,13 @@ export default function ServicesPage() {
               </Reveal>
               <Reveal immediate delay={0.06}>
                 <h1 className="text-display-1 mt-6 text-paper-foreground">
-                  Digital services shaped around what needs to work.
+                  Software and digital systems built around real operations.
                 </h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
-                  Start with a website, operational system or specific business problem. We&apos;ll define the right
-                  combination of design, development, integrations and ongoing support.
+                  From customer-facing platforms to internal workflows, we design, build, integrate and support
+                  the systems businesses rely on.
                 </p>
               </Reveal>
               <Reveal immediate delay={0.18}>
@@ -71,24 +71,22 @@ export default function ServicesPage() {
               </Reveal>
             </div>
             <Reveal immediate delay={0.1}>
-              <ServicesHeroVisual />
+              <EcosystemVisual />
             </Reveal>
           </div>
         </Container>
       </section>
 
       <ServiceNav
-        sections={serviceSections.map((section) => ({
-          id: section.id,
-          navLabel: section.navLabel,
-          icon: <section.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />,
+        sections={serviceGroups.map((group) => ({
+          id: group.id,
+          navLabel: group.navLabel,
+          icon: <group.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />,
         }))}
       />
 
-      {serviceSections.map((section, index) => (
-        <div key={section.id} id={index === 5 ? "infrastructure-and-support" : undefined}>
-          <ServiceSection section={section} />
-        </div>
+      {serviceGroups.map((group) => (
+        <ServiceSection key={group.id} group={group} />
       ))}
 
       <InvestmentSection />

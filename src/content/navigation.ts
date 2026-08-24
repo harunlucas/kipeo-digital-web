@@ -12,10 +12,10 @@ export const mainNav: NavItem[] = [
 ];
 
 export const footerServiceLinks: NavItem[] = [
+  { label: "Software and Business Systems", href: "/services#software-and-business-systems" },
+  { label: "Operational and Technical Software", href: "/services#operational-and-technical-software" },
   { label: "Websites and Commerce", href: "/services#websites-and-commerce" },
-  { label: "Software and Systems", href: "/services#software-and-systems" },
-  { label: "Growth and Visibility", href: "/services#growth-and-visibility" },
-  { label: "Infrastructure and Support", href: "/services#infrastructure-and-support" },
+  { label: "Integration, Deployment and Support", href: "/services#integration-deployment-and-support" },
 ];
 
 export const footerCompanyLinks: NavItem[] = [

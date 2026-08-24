@@ -2,17 +2,15 @@ import Image from "next/image";
 import type { HeroCollageImage } from "@/content/work";
 
 const layout: Record<string, string> = {
-  bushlite: "left-0 top-[6%] w-[60%] z-10",
-  cynthiamueni: "left-[44%] top-0 w-[46%] z-20",
-  harunlucas: "left-[50%] top-[46%] w-[46%] z-30",
-  "hse-concept": "left-[2%] top-[54%] w-[38%] z-40",
+  "bushlite-dashboard": "left-0 top-[8%] w-[64%] z-10",
+  "bushlite-login": "left-[38%] top-[38%] w-[58%] z-20",
 };
 
 /**
- * Layered hero collage: three genuine screenshots plus one clearly-tagged
- * concept render, overlapping with restrained depth. No pointer tilt here
- * (kept for the studio pages) — just a gentle per-tile hover lift, which
- * the site's global reduced-motion CSS already neutralises.
+ * Two-tile hero collage of genuine BushLite WiFi screenshots — no personal
+ * websites, no AI-concept imagery, no stock photography. Gentle per-tile
+ * hover lift only (no pointer tilt, kept for the studio pages), neutralised
+ * under reduced motion by the site's global CSS.
  */
 export function WorkHeroVisual({ images }: { images: HeroCollageImage[] }) {
   return (
@@ -27,19 +25,12 @@ export function WorkHeroVisual({ images }: { images: HeroCollageImage[] }) {
               src={image.src}
               alt={image.alt}
               fill
-              sizes="(min-width: 1024px) 22vw, 45vw"
+              sizes="(min-width: 1024px) 28vw, 55vw"
               className="object-cover object-top"
             />
             <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-2.5 pb-1.5 pt-5">
-              <p className="flex items-center gap-1.5 text-[10px] font-medium text-ink-foreground">
-                {image.label}
-                {image.isConcept && (
-                  <span className="rounded-full border border-dashed border-white/40 px-1.5 py-0.5 text-[8px] uppercase tracking-wide text-ink-muted">
-                    Concept
-                  </span>
-                )}
-              </p>
+              <p className="text-[10px] font-medium text-ink-foreground">{image.label}</p>
             </div>
           </div>
         </div>

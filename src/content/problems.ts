@@ -21,7 +21,7 @@ export const problemPairs: ProblemPair[] = [
     response: "Capture, assign and follow up every enquiry from one structured workflow.",
     visual: "enquiry",
     linkLabel: "Explore workflow automation",
-    linkHref: "/services#software-and-systems",
+    linkHref: "/services#software-and-business-systems",
   },
   {
     problem: "Operations spread across spreadsheets",
@@ -29,7 +29,7 @@ export const problemPairs: ProblemPair[] = [
     response: "Bring records, tasks and reporting into one system built around the way your team works.",
     visual: "operations",
     linkLabel: "Explore custom software",
-    linkHref: "/services#software-and-systems",
+    linkHref: "/services#software-and-business-systems",
   },
   {
     problem: "A website that does not generate qualified leads",
@@ -45,7 +45,7 @@ export const problemPairs: ProblemPair[] = [
     response: "Connect repeated steps so routine work moves forward with less manual handling.",
     visual: "automation",
     linkLabel: "Explore automation",
-    linkHref: "/services#software-and-systems",
+    linkHref: "/services#software-and-business-systems",
   },
   {
     problem: "An online store that is difficult to manage",

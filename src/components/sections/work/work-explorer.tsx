@@ -7,45 +7,37 @@ import { Section } from "@/components/layout/section";
 import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { WorkFeaturedSpotlight } from "@/components/motion/work-featured-spotlight";
-import { RelatedWebsiteCard } from "@/components/motion/related-website-card";
-import { ProductSpotlight } from "@/components/motion/product-spotlight";
+import { InternalProductSpotlight } from "@/components/motion/internal-product-spotlight";
 import { CapabilityPanel } from "@/components/motion/capability-panel";
-import type { FeaturedWork, CapabilityPath } from "@/content/selected-work";
+import type { FeaturedWork } from "@/content/selected-work";
 import {
   workFilters,
   featuredWorkCategories,
-  capabilityCategoryMap,
-  capabilityCtaHref,
-  capabilitySectionNote,
   type WorkFilterId,
-  type RelatedWebsite,
+  type InternalProduct,
+  type WorkCapabilityArea,
 } from "@/content/work";
 
 type WorkExplorerProps = {
   featured: FeaturedWork;
-  relatedWebsites: RelatedWebsite[];
-  hseSpotlightPath: CapabilityPath;
-  capabilityPanels: CapabilityPath[];
+  internalProduct: InternalProduct;
+  internalProductCategories: WorkFilterId[];
+  capabilityAreas: WorkCapabilityArea[];
 };
 
 function matches(filter: WorkFilterId, categories: WorkFilterId[]) {
   return filter === "all" || categories.includes(filter);
 }
 
-export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capabilityPanels }: WorkExplorerProps) {
+export function WorkExplorer({ featured, internalProduct, internalProductCategories, capabilityAreas }: WorkExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
   // Deliberately plain `useState`, not `useSearchParams` — reading the URL
-  // reactively (or syncing from it in an effect) would either opt this
-  // component out of static prerendering (so the real content, including
-  // the default "All" view, would be a loading skeleton in the static HTML
-  // for crawlers and no-JS visitors) or read `window.location` during the
-  // client's first render and mismatch the server-rendered "All" HTML.
-  // Writing the filter to the URL via `router.replace` on click has neither
-  // cost, so the URL still updates; a deep link like `/work?filter=live`
-  // just lands on the unfiltered view until the visitor picks a filter,
-  // and back/forward navigation moves through those URL states without
-  // changing what's currently on screen.
+  // reactively would opt this component out of static prerendering, so the
+  // real content (including the default "All" view) would be a loading
+  // skeleton in the static HTML for crawlers and no-JS visitors. Writing the
+  // filter to the URL via `router.replace` on click keeps the URL in sync
+  // without that cost.
   const [activeFilter, setActiveFilter] = useState<WorkFilterId>("all");
 
   function selectFilter(id: WorkFilterId) {
@@ -54,12 +46,9 @@ export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capa
   }
 
   const showFeatured = matches(activeFilter, featuredWorkCategories);
-  const visibleWebsites = relatedWebsites.filter((site) => site.published && matches(activeFilter, site.categories));
-  const showHse = matches(activeFilter, capabilityCategoryMap[hseSpotlightPath.id] ?? []);
-  const visibleCapabilities = capabilityPanels.filter((path) =>
-    matches(activeFilter, capabilityCategoryMap[path.id] ?? []),
-  );
-  const hasResults = showFeatured || visibleWebsites.length > 0 || showHse || visibleCapabilities.length > 0;
+  const showInternalProduct = matches(activeFilter, internalProductCategories);
+  const visibleCapabilities = capabilityAreas.filter((area) => matches(activeFilter, area.categories));
+  const hasResults = showFeatured || showInternalProduct || visibleCapabilities.length > 0;
 
   return (
     <>
@@ -97,14 +86,14 @@ export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capa
           <div className="mx-auto max-w-md rounded-2xl border border-dashed border-neutral-300 bg-paper-elevated p-8 text-center sm:p-10">
             <p className="text-base leading-relaxed text-slate">
               We&apos;re preparing verified work for this category.{" "}
-              <Link href="/studio" className="font-medium text-teal-strong hover:text-ink">
-                Explore the capability
+              <Link href="/services" className="font-medium text-teal-strong hover:text-ink">
+                Explore services
               </Link>{" "}
               or{" "}
               <Link href="/contact" className="font-medium text-teal-strong hover:text-ink">
-                discuss a similar project
-              </Link>{" "}
-              with us.
+                start a project
+              </Link>
+              .
             </p>
           </div>
         </Section>
@@ -112,50 +101,34 @@ export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capa
 
       {showFeatured && (
         <Section tone="paper">
-          <Eyebrow>Featured work</Eyebrow>
-          <h2 className="text-display-3 mt-2 text-paper-foreground">A genuine, verifiable project.</h2>
+          <Eyebrow>Featured project</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-paper-foreground">A verified, live project.</h2>
           <div className="mt-8">
             <WorkFeaturedSpotlight work={featured} />
           </div>
         </Section>
       )}
 
-      {visibleWebsites.length > 0 && (
+      {showInternalProduct && (
         <Section tone="elevated">
-          <Eyebrow>Related website work</Eyebrow>
-          <h2 className="text-display-3 mt-2 text-paper-foreground">Genuine sites connected to the team.</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {visibleWebsites.map((site, index) => (
-              <RelatedWebsiteCard key={site.id} site={site} index={index} />
-            ))}
-          </div>
-        </Section>
-      )}
-
-      {showHse && (
-        <Section tone="paper">
-          <Eyebrow>Internal product</Eyebrow>
-          <h2 className="text-display-3 mt-2 text-paper-foreground">HSE Management System.</h2>
+          <Eyebrow>Internal products</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-paper-foreground">Built for our own portfolio.</h2>
           <div className="mt-8">
-            <ProductSpotlight path={hseSpotlightPath} screensLabel="Current authentication screens" />
+            <InternalProductSpotlight product={internalProduct} />
           </div>
         </Section>
       )}
 
       {visibleCapabilities.length > 0 && (
         <Section tone="ink" className="bg-grid-ink">
-          <Eyebrow tone="ink">Capability areas</Eyebrow>
+          <Eyebrow tone="ink">Selected capability areas</Eyebrow>
           <h2 className="text-display-3 mt-2 text-ink-foreground">Where we can start building.</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">{capabilitySectionNote}</p>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2">
-            {visibleCapabilities.map((path, index) => (
-              <CapabilityPanel
-                key={path.id}
-                path={path}
-                index={index}
-                ctaHref={capabilityCtaHref[path.id] ?? "/services"}
-                ctaLabel={path.primaryAgencyCta}
-              />
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
+            Illustrative capability areas Kipeo can design and develop — not completed client projects.
+          </p>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleCapabilities.map((area, index) => (
+              <CapabilityPanel key={area.id} area={area} index={index} />
             ))}
           </div>
         </Section>

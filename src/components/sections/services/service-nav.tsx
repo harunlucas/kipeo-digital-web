@@ -57,7 +57,7 @@ export function ServiceNav({ sections }: { sections: ServiceNavItem[] }) {
                   href={`#${section.id}`}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "flex min-h-9 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-200",
+                    "flex min-h-11 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-200",
                     isActive ? "bg-teal-tint text-teal-strong" : "text-slate hover:bg-mist hover:text-paper-foreground",
                   )}
                 >
