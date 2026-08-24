@@ -31,6 +31,27 @@ export type FeaturedWork = {
   externalCaseStudyOwner?: string;
 };
 
+export type ProjectScreenshot = {
+  src: string;
+  alt: string;
+};
+
+/**
+ * A real, verified in-development or related project shown inside a
+ * capability card (e.g. the HSE Management System inside "Business and
+ * HSE systems"). Distinct from `featuredWork` because it's presented at
+ * card scale, not as the homepage's single large featured project.
+ */
+export type EmbeddedProject = {
+  title: string;
+  category: string;
+  engagementType: EngagementType;
+  status: WorkStatus;
+  description: string;
+  attribution: string;
+  screenshots: ProjectScreenshot[];
+};
+
 export type CapabilityPath = {
   id: string;
   title: string;
@@ -44,6 +65,13 @@ export type CapabilityPath = {
   domainExpertise?: string;
   relatedExpertise?: RelatedExpertise;
   secondaryExpertiseLink?: string;
+  /** Real screenshots shown in place of the generic SVG artwork. */
+  screenshots?: ProjectScreenshot[];
+  screenshotAttribution?: string;
+  /** A confirmed, embedded real project (e.g. HSE Management System). */
+  embeddedProject?: EmbeddedProject;
+  /** Shown when the visual is an admitted fictional illustration, never real work. */
+  illustrationLabel?: string;
 };
 
 /**
@@ -80,6 +108,17 @@ export const capabilityPaths: CapabilityPath[] = [
     href: "/work",
     visual: "websites",
     engagementType: "client",
+    screenshots: [
+      {
+        src: "/images/projects/related-websites/cynthiamueni-home.webp",
+        alt: "CynthiaMueni.com homepage, an occupational safety and EHS-systems professional site",
+      },
+      {
+        src: "/images/projects/related-websites/harunlucas-home.webp",
+        alt: "HarunLucas.com homepage, an engineering and systems-development portfolio site",
+      },
+    ],
+    screenshotAttribution: "Related website work associated with the Kipeo Digital team.",
   },
   {
     id: "systems",
@@ -100,6 +139,22 @@ export const capabilityPaths: CapabilityPath[] = [
       isExternal: true,
     },
     secondaryExpertiseLink: "Explore related HSE expertise",
+    embeddedProject: {
+      title: "HSE Management System",
+      category: "HSE and compliance system",
+      engagementType: "internal-product",
+      status: "in-development",
+      description:
+        "A developing digital system for managing workplace inspections, hazard reports, corrective actions, documentation and safety records.",
+      attribution:
+        "Digital product development associated with Kipeo Digital, informed by related HSE practice documented at CynthiaMueni.com.",
+      screenshots: [
+        {
+          src: "/images/projects/hse-management-system/hse-login.webp",
+          alt: "HSE Management System sign-in screen for SafetyOS, showing role-based demo accounts for Admin, EHS Officer, Supervisor and Worker",
+        },
+      ],
+    },
   },
   {
     id: "engineering",
@@ -131,5 +186,6 @@ export const capabilityPaths: CapabilityPath[] = [
     href: "/work",
     visual: "commerce",
     engagementType: "client",
+    illustrationLabel: "Commerce capability illustration",
   },
 ];

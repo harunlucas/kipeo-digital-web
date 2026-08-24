@@ -44,7 +44,7 @@ export const capabilities: Capability[] = [
     id: "backend",
     title: "Backend and data",
     description:
-      "We build the application logic, data structures and permissions that allow systems to store information and support real workflows.",
+      "The part behind the interface: application logic, data structures and permissions that let a system remember information, recognise users and support real day-to-day workflows.",
     capabilities: [
       "Server-side application logic",
       "Databases and data modelling",
@@ -60,7 +60,8 @@ export const capabilities: Capability[] = [
   {
     id: "applications",
     title: "Applications, APIs and automation",
-    description: "We connect systems, automate repeatable work and integrate the services required by the operation.",
+    description:
+      "Where tools that used to work separately start working together: connected systems, automated repeatable work and the integrations an operation depends on.",
     capabilities: [
       "Web applications",
       "REST APIs",
@@ -85,7 +86,8 @@ export const capabilities: Capability[] = [
   {
     id: "deployment",
     title: "Deployment and ongoing operation",
-    description: "We prepare systems for production and support their continued operation after launch.",
+    description:
+      "What keeps a launched product working: production deployment, hosting, monitoring, updates and the maintenance that stops it quietly breaking.",
     capabilities: [
       "Hosting configuration",
       "Domains and DNS",

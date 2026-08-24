@@ -104,10 +104,9 @@ export function HeroVisual() {
                   stroke="url(#hero-path)"
                   strokeWidth="0.4"
                   fill="none"
-                  initial={shouldReduceMotion ? undefined : { pathLength: 0, opacity: 0 }}
-                  whileInView={shouldReduceMotion ? undefined : { pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 + index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  initial={shouldReduceMotion ? false : { pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.8, delay: 0.15 + index * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 />
                 {!shouldReduceMotion && (
                   <circle r="1" fill="var(--color-teal)">
@@ -127,9 +126,9 @@ export function HeroVisual() {
 
         {/* Central core */}
         <motion.div
-          initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial={shouldReduceMotion ? false : { scale: 0.7 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="absolute flex items-center justify-center"
           style={{
             left: `${core.x}%`,
@@ -157,10 +156,9 @@ export function HeroVisual() {
         {surfaces.map((surface, index) => (
           <motion.div
             key={index}
-            initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.85 }}
-            whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: surface.delay, ease: [0.16, 1, 0.3, 1] }}
+            initial={shouldReduceMotion ? false : { scale: 0.85 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: Math.min(surface.delay, 0.25), ease: [0.16, 1, 0.3, 1] }}
             className="absolute"
             style={{
               left: `${surface.x}%`,

@@ -5,6 +5,7 @@ import { SelectedWork } from "@/components/sections/home/selected-work";
 import { ProblemsWeSolve } from "@/components/sections/home/problems-we-solve";
 import { Process } from "@/components/sections/home/process";
 import { Capabilities } from "@/components/sections/home/capabilities";
+import { InteractiveStudioSection } from "@/components/sections/home/interactive-studio-section";
 import { GlobalCollaboration } from "@/components/sections/home/global-collaboration";
 import { FinalCta } from "@/components/sections/home/final-cta";
 import { organizationSchema, professionalServiceSchema } from "@/lib/schema";
@@ -28,6 +29,7 @@ export default function Home() {
       <ProblemsWeSolve />
       <Process />
       <Capabilities />
+      <InteractiveStudioSection />
       <GlobalCollaboration />
       <FinalCta />
     </>

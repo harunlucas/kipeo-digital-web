@@ -27,7 +27,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`scroll-mt-24 py-12 sm:py-16 ${toneClasses[tone]} ${className}`}
+      className={`scroll-mt-24 py-10 sm:py-14 ${toneClasses[tone]} ${className}`}
     >
       <Container className={containerClassName}>{children}</Container>
     </section>

@@ -35,17 +35,17 @@ function ResponsibilityList({
 
 function StageDetails({ stage, reduceMotion }: { stage: ProcessStage; reduceMotion: boolean }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div className="flex flex-col gap-5">
+    <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="flex flex-col gap-4">
         <p className="text-base leading-relaxed text-paper-foreground">{stage.summary}</p>
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-3">
           <ResponsibilityList label="What Kipeo does" items={stage.kipeoResponsibilities} />
           <ResponsibilityList label="What you contribute" items={stage.clientResponsibilities} />
           <ResponsibilityList label="What's produced" items={stage.outputs} accent />
         </div>
       </div>
 
-      <div className="min-h-[200px] rounded-xl border border-ink-elevated bg-ink p-4 sm:min-h-[220px] sm:p-5">
+      <div className="min-h-[190px] rounded-xl border border-ink-elevated bg-ink p-4 sm:min-h-[210px] sm:p-5">
         <ProcessStageVisual visual={stage.visualType} reduceMotion={reduceMotion} />
       </div>
     </div>
@@ -130,15 +130,17 @@ export function ProcessRoute({ stages }: { stages: ProcessStage[] }) {
                     className="flex w-full flex-col items-center gap-2 text-center"
                   >
                     <span
-                      className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 bg-paper font-display text-base transition-colors duration-200 ${
-                        isActive ? "border-teal-strong text-teal-strong" : "border-neutral-300 text-slate"
+                      className={`relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 font-display text-base transition-colors duration-200 ${
+                        isActive
+                          ? "border-teal-strong bg-teal-tint text-teal-strong"
+                          : "border-neutral-300 bg-paper text-slate"
                       }`}
                     >
                       {stage.number}
                     </span>
                     <span
-                      className={`text-xs font-medium transition-colors duration-200 sm:text-sm ${
-                        isActive ? "text-paper-foreground" : "text-slate"
+                      className={`text-xs transition-colors duration-200 sm:text-sm ${
+                        isActive ? "font-semibold text-paper-foreground" : "font-medium text-slate"
                       }`}
                     >
                       {stage.title}
@@ -150,12 +152,14 @@ export function ProcessRoute({ stages }: { stages: ProcessStage[] }) {
           </ol>
         </div>
 
-        <div
+        <motion.div
           id={panelId}
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${active}`}
           tabIndex={0}
-          className="mt-8 rounded-2xl border border-neutral-200 bg-paper p-6 shadow-card sm:p-7"
+          layout
+          transition={{ layout: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+          className="mt-6 overflow-hidden rounded-2xl border border-neutral-200 bg-paper p-5 shadow-card sm:p-6"
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -193,13 +197,13 @@ export function ProcessRoute({ stages }: { stages: ProcessStage[] }) {
                   </button>
                 </div>
               </div>
-              <h3 className="mt-3 text-2xl font-semibold text-paper-foreground">{activeStage.title}</h3>
-              <div className="mt-5">
+              <h3 className="mt-2.5 text-2xl font-semibold text-paper-foreground">{activeStage.title}</h3>
+              <div className="mt-4">
                 <StageDetails stage={activeStage} reduceMotion={!!shouldReduceMotion} />
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
       </div>
 
       {/* Mobile: accessible accordion */}

@@ -1,4 +1,4 @@
-import type { ElementType, ComponentPropsWithoutRef, ReactNode } from "react";
+import { createElement, type ElementType, type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 type ContainerProps<T extends ElementType> = {
   as?: T;
@@ -14,12 +14,9 @@ export function Container<T extends ElementType = "div">({
 }: ContainerProps<T>) {
   const Tag = as ?? "div";
 
-  return (
-    <Tag
-      className={`mx-auto w-full max-w-[1280px] px-6 sm:px-8 lg:px-12 ${className}`}
-      {...rest}
-    >
-      {children}
-    </Tag>
+  return createElement(
+    Tag,
+    { className: `mx-auto w-full max-w-[1280px] px-6 sm:px-8 lg:px-12 ${className}`, ...rest },
+    children,
   );
 }

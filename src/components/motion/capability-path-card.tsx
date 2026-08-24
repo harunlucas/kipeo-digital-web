@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ExternalLink, Globe2, ShieldCheck, Cpu, ShoppingBag } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import type { CapabilityPath } from "@/content/selected-work";
+import type { CapabilityPath, EngagementType, WorkStatus } from "@/content/selected-work";
 
 const icons: Record<CapabilityPath["visual"], typeof Globe2> = {
   websites: Globe2,
@@ -12,9 +13,34 @@ const icons: Record<CapabilityPath["visual"], typeof Globe2> = {
   commerce: ShoppingBag,
 };
 
+const engagementLabels: Record<EngagementType, string> = {
+  client: "Client project",
+  collaboration: "Collaboration",
+  "internal-product": "Internal or collaborative product",
+  "team-contribution": "Team contribution",
+  "managed-platform": "Managed platform",
+  "related-work": "Related work",
+};
+
+const statusLabels: Record<WorkStatus, string> = {
+  live: "Live",
+  "in-development": "Active development",
+  maintained: "Maintained",
+  completed: "Completed",
+};
+
+function Badge({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-[10px] font-medium text-slate-muted">
+      {children}
+    </span>
+  );
+}
+
 export function CapabilityPathCard({ path, index }: { path: CapabilityPath; index: number }) {
   const shouldReduceMotion = useReducedMotion();
   const Icon = icons[path.visual];
+  const badgeLabel = path.illustrationLabel ?? "What we build";
 
   return (
     <motion.div
@@ -24,22 +50,42 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
       transition={{ duration: 0.55, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-paper shadow-card">
-        <div className="group relative aspect-[2/1] overflow-hidden bg-ink">
-          <div className="absolute inset-0 opacity-90 transition-transform duration-500 group-hover:scale-105">
-            <PathArtwork visual={path.visual} />
-          </div>
+        <div className="group relative aspect-[2.35/1] overflow-hidden bg-ink">
+          {path.screenshots ? (
+            <div className="absolute inset-0 grid grid-cols-2 gap-px bg-ink-elevated">
+              {path.screenshots.slice(0, 2).map((shot) => (
+                <div key={shot.src} className="relative overflow-hidden">
+                  <Image
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, 40vw"
+                    className="object-cover object-top grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="absolute inset-0 opacity-90 transition-transform duration-500 group-hover:scale-105">
+              <PathArtwork visual={path.visual} />
+            </div>
+          )}
           <div aria-hidden className="bg-grain absolute inset-0 opacity-[0.06] mix-blend-overlay" />
           <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-ink-elevated bg-ink/80 px-3 py-1 text-[11px] uppercase tracking-wide text-ink-foreground backdrop-blur">
             <Icon className="h-3 w-3" aria-hidden />
-            What we build
+            {badgeLabel}
           </span>
         </div>
 
-        <div className="flex flex-1 flex-col p-6">
+        <div className="flex flex-1 flex-col p-5">
           <h3 className="text-lg font-semibold text-paper-foreground">{path.title}</h3>
           <p className="mt-2 text-sm leading-relaxed text-slate">{path.description}</p>
 
-          <ul className="mt-4 flex flex-wrap gap-1.5">
+          {path.screenshotAttribution && (
+            <p className="mt-1.5 text-xs text-slate-muted">{path.screenshotAttribution}</p>
+          )}
+
+          <ul className="mt-3 flex flex-wrap gap-1.5">
             {path.examples.map((example) => (
               <li key={example} className="rounded-full bg-mist px-2.5 py-1 text-[11px] text-slate">
                 {example}
@@ -49,7 +95,7 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
 
           <Link
             href={path.href}
-            className="group/cta mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
+            className="group/cta mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
           >
             {path.primaryAgencyCta}
             <ArrowUpRight
@@ -58,8 +104,34 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
             />
           </Link>
 
+          {path.embeddedProject && (
+            <div className="mt-4 border-t border-neutral-200 pt-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-semibold text-paper-foreground">{path.embeddedProject.title}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  <Badge>{engagementLabels[path.embeddedProject.engagementType]}</Badge>
+                  <Badge>{statusLabels[path.embeddedProject.status]}</Badge>
+                </div>
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate">{path.embeddedProject.description}</p>
+
+              <div className="mt-2.5 grid grid-cols-[1fr_1.4fr] items-start gap-3">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-neutral-200 bg-ink">
+                  <Image
+                    src={path.embeddedProject.screenshots[0].src}
+                    alt={path.embeddedProject.screenshots[0].alt}
+                    fill
+                    sizes="(min-width: 1024px) 12vw, 30vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <p className="text-[11px] leading-relaxed text-slate-muted">{path.embeddedProject.attribution}</p>
+              </div>
+            </div>
+          )}
+
           {path.relatedExpertise && (
-            <div className="mt-5 border-t border-neutral-200 pt-4">
+            <div className="mt-4 border-t border-neutral-200 pt-3">
               <p className="font-mono text-[10px] uppercase tracking-wide text-slate-muted">
                 {path.relatedExpertise.label}
               </p>
@@ -68,7 +140,7 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
                 href={path.relatedExpertise.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-teal-strong hover:text-ink"
+                className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-teal-strong hover:text-ink"
               >
                 {path.secondaryExpertiseLink}
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />

@@ -18,7 +18,7 @@ const icons: Record<CapabilityVisual, typeof Compass> = {
 function Connector() {
   return (
     <div aria-hidden className="flex justify-center py-1">
-      <ChevronDown className="h-4 w-4 text-white/20" />
+      <ChevronDown className="h-4 w-4 text-teal/50" />
     </div>
   );
 }
@@ -54,18 +54,20 @@ function NodeButton({
       onKeyDown={onKeyDown}
       className={`flex w-full items-center gap-2.5 rounded-xl border px-3.5 py-3 text-left transition-colors duration-300 ${
         isActive
-          ? "border-teal/50 bg-teal/10"
-          : "border-white/10 bg-ink-elevated/60 hover:border-white/20 hover:bg-ink-elevated"
+          ? "border-teal/60 bg-teal/10 ring-1 ring-teal/25"
+          : "border-white/10 bg-ink-elevated/60 hover:border-white/25 hover:bg-ink-elevated"
       } ${compact ? "justify-center text-center" : ""}`}
     >
       <span
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-          isActive ? "bg-teal text-teal-foreground" : "bg-white/5 text-ink-muted"
+          isActive ? "bg-teal text-teal-foreground" : "bg-white/10 text-ink-foreground/75"
         }`}
       >
         <Icon className="h-4 w-4" aria-hidden />
       </span>
-      <span className={`text-sm font-medium ${isActive ? "text-ink-foreground" : "text-ink-muted"} ${compact ? "hidden sm:inline" : ""}`}>
+      <span
+        className={`text-sm ${isActive ? "font-semibold text-ink-foreground" : "font-medium text-ink-foreground/70"} ${compact ? "hidden sm:inline" : ""}`}
+      >
         {capability.title}
       </span>
     </button>
@@ -149,7 +151,7 @@ export function CapabilityArchitecture({ items }: { items: Capability[] }) {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <div className="grid gap-7 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-9">
       <div role="tablist" aria-label="Full-service capability areas" className="flex flex-col">
         {node(strategy)}
         <Connector />
@@ -159,7 +161,7 @@ export function CapabilityArchitecture({ items }: { items: Capability[] }) {
             <Connector />
             {node(backend)}
           </div>
-          <div className="flex w-20 flex-col justify-center border-l border-dashed border-white/15 pl-3 sm:w-32">
+          <div className="flex w-20 flex-col justify-center border-l border-dashed border-white/25 pl-3 sm:w-32">
             {node(commerce, true)}
           </div>
         </div>

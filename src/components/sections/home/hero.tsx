@@ -25,11 +25,11 @@ export function Hero() {
       <Container className="relative">
         <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
           <div>
-            <Reveal>
+            <Reveal immediate>
               <Eyebrow>Software &amp; digital studio</Eyebrow>
             </Reveal>
 
-            <Reveal delay={0.08}>
+            <Reveal immediate delay={0.04}>
               <h1 className="text-display-1 text-sheen mt-6">
                 Websites and software
                 <br />
@@ -37,14 +37,14 @@ export function Hero() {
               </h1>
             </Reveal>
 
-            <Reveal delay={0.16}>
+            <Reveal immediate delay={0.08}>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
                 {siteConfig.name} designs websites, applications and digital systems that help
                 organisations operate, sell and grow more effectively.
               </p>
             </Reveal>
 
-            <Reveal delay={0.24}>
+            <Reveal immediate delay={0.12}>
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                 <Button href="/contact" variant="primary" size="lg">
                   Start a project
@@ -55,7 +55,7 @@ export function Hero() {
               </div>
             </Reveal>
 
-            <Reveal delay={0.32}>
+            <Reveal immediate delay={0.15}>
               <ul className="mt-10 flex flex-col gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:gap-8">
                 {trustPoints.map((point) => (
                   <li key={point} className="flex items-center gap-2 text-sm text-slate">

@@ -25,11 +25,11 @@ export function SelectedWork() {
         </Reveal>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-6">
         <FeaturedProjectCard work={featuredWork} />
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      <div className="mt-6 grid gap-5 sm:grid-cols-2">
         {capabilityPaths.map((path, index) => (
           <CapabilityPathCard key={path.id} path={path} index={index} />
         ))}

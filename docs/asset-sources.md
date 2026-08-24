@@ -27,6 +27,59 @@ The featured card links out to the case study with a visible external-link
 indicator (`<ExternalLink>` icon + `target="_blank"`, `rel="noopener
 noreferrer"`).
 
+## HSE Management System screenshots (added this session)
+
+A second real, in-development product — an HSE/EHS management system
+("SafetyOS") associated with the Kipeo team — is shown inside the
+"Business and HSE systems" capability card.
+
+| Local file | Original source | Used |
+|---|---|---|
+| `public/images/projects/hse-management-system/hse-login.webp` | `https://safety-management-system-seven.vercel.app/login` | Embedded-project screenshot 1 |
+| `public/images/projects/hse-management-system/hse-create-account.webp` | `https://safety-management-system-seven.vercel.app/register` | Embedded-project screenshot 2 |
+
+**What was and wasn't captured:** the app is fully auth-gated — no public
+demo/dashboard route exists (`/demo`, `/dashboard`, `/features` etc. all
+redirect to `/login`). Only the sign-in and registration screens were
+safely reachable without authenticating. The login screen does publish its
+own "Demo accounts" panel (fictional `@safetyos.local` emails, a shared
+placeholder password) inviting exploration, but logging in — even with
+those self-published demo credentials — was blocked by this session's
+safety controls as a login action, so no dashboard, inspection,
+hazard-reporting or corrective-action screens were captured. **If
+richer product screens are wanted** (the dashboard/inspection/
+corrective-action views originally requested), someone with authorization
+should log in manually and supply screenshots, or explicitly grant
+permission for an assisted login in a future session.
+
+**Licence/ownership:** screenshots of the team's own product, downloaded
+locally (not hotlinked) and converted to WebP (~15KB each). No personal
+names, workplace data, incidents or credentials are visible — both
+screens show only branding and empty/placeholder form fields.
+
+**Attribution:** presented as "Digital product development associated
+with Kipeo Digital, informed by related HSE practice documented at
+CynthiaMueni.com," status "Active development" — explicitly not
+described as a completed client project, per instruction.
+
+## Related website screenshots (added this session)
+
+Restrained homepage screenshots of the two personal/professional sites
+associated with the Kipeo team, used in the "Websites and digital
+presence" capability card as related-work evidence (not claimed as Kipeo
+client projects).
+
+| Local file | Original source | Used |
+|---|---|---|
+| `public/images/projects/related-websites/cynthiamueni-home.webp` | `https://cynthiamueni.com/` | Websites capability card, image 1 of 2 |
+| `public/images/projects/related-websites/harunlucas-home.webp` | `https://harunlucas.com/` | Websites capability card, image 2 of 2 |
+
+**Licence/ownership:** public marketing homepages belonging to the same
+individuals already credited elsewhere on this site (BushLite WiFi
+attribution, HSE-expertise link). Downloaded locally, converted to WebP.
+Attribution on-page: "Related website work associated with the Kipeo
+Digital team."
+
 ## Everything else: original SVG/CSS artwork, no stock photography
 
 Every other visual on the homepage remains hand-built SVG/CSS/HTML,
@@ -36,7 +89,7 @@ authored directly in the component files below — no binary assets:
 |---|---|---|
 | Dimensional hero core + orbiting surfaces | `src/components/motion/hero-visual.tsx` | Pointer-responsive 3D composition (real `perspective`/`translateZ`, animated SVG data-paths via native `<animateMotion>`) representing connected digital capability |
 | Per-pillar service artwork | `src/components/motion/service-tabs.tsx` | Distinct abstract SVG motif per service pillar |
-| Capability path artwork | `src/components/motion/capability-path-card.tsx` | Abstract dashboard/commerce device-frame illustrations for the two "What we build" cards adjacent to the BushLite feature |
+| Capability path artwork | `src/components/motion/capability-path-card.tsx` | Abstract SVG illustrations for the "Engineering and technical systems" and "E-commerce and managed platforms" cards (the latter explicitly labelled "Commerce capability illustration," never styled as completed client work); the "Websites" and "Business and HSE systems" cards use real screenshots instead — see below |
 | Problem→solution artwork | `src/components/motion/problems-showcase.tsx` | Five distinct interface illustrations (enquiry pipeline, operations dashboard, lead-gen website, automated workflow, commerce catalogue) matched to each selected problem |
 | Layered architecture visual | `src/components/sections/home/capabilities.tsx` | Three offset "layer" cards (infrastructure / applications / frontend) suggesting system depth |
 | Scheduling/collaboration panel | `src/components/ui/schedule-panel.tsx` | Premium-style meeting-availability interface (Nairobi/EAT row, generic "your time" row, overlap window, milestone checklist) |

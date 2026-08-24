@@ -8,10 +8,10 @@ export function TrustStrip() {
   return (
     <Section tone="ink" className="py-10 sm:py-14">
       <div className="max-w-xl">
-        <Reveal>
+        <Reveal immediate>
           <Eyebrow tone="ink">How we deliver</Eyebrow>
         </Reveal>
-        <Reveal delay={0.08}>
+        <Reveal immediate delay={0.06}>
           <h2 className="text-display-3 mt-3 text-ink-foreground">
             One connected path from scope to support.
           </h2>

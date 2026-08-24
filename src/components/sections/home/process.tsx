@@ -24,7 +24,7 @@ export function Process() {
         </Reveal>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-8">
         <ProcessRoute stages={processStages} />
       </div>
     </Section>
