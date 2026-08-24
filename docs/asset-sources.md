@@ -1,5 +1,27 @@
 # Homepage visual assets
 
+## /work premium redesign, round two (this session, /work only)
+
+Rebuilt /work's presentation without touching any component the homepage
+or /studio depend on — three new components (`WorkFeaturedSpotlight`,
+`CapabilityPanel`, `WorkHeroVisual`) were built fresh rather than extended
+from `FeaturedProjectCard`/`CapabilityPathCard`, specifically because this
+pass needed larger media, a dark capability-panel treatment, a
+non-self-referencing CTA, and a shortened per-card disclaimer — all things
+that would have changed those shared components' behaviour on the
+homepage if edited in place instead.
+
+Related-website attribution copy was rewritten to the exact wording
+requested, dropping "same person behind Kipeo"/"same builder"/repeated
+"not built by Kipeo" phrasing — Kipeo stays team-attributed, not
+personalised to one name. New `AttributionLegend` explains the five
+classification terms once, up front, instead of each card re-explaining
+itself.
+
+Verified: no `harunlucasdev.site` references exist anywhere in `src/`; no
+personal name is used as Kipeo's public-facing identity anywhere in
+content.
+
 ## /work redesign (this session, /work only — homepage and /studio untouched)
 
 Rebuilt `/work` as a filterable portfolio page. New `src/content/work.ts`

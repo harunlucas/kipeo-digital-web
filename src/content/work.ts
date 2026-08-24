@@ -36,6 +36,92 @@ export const capabilityCategoryMap: Record<string, WorkFilterId[]> = {
   commerce: ["commerce-platforms"],
 };
 
+/**
+ * Where each capability panel's CTA should go — deliberately not
+ * `path.href` (which is "/work", correct for the homepage's own cards but
+ * self-referencing here) and deliberately not written back onto the shared
+ * `capabilityPaths` entries, since that would change the homepage CTA too.
+ */
+export const capabilityCtaHref: Record<string, string> = {
+  engineering: "/services#software-and-systems",
+  commerce: "/services#websites-and-commerce",
+};
+
+export const capabilitySectionNote =
+  "Capability visuals illustrate the kinds of systems Kipeo can design and develop. They are not presented as completed client projects.";
+
+export type AttributionLegendEntry = {
+  id: string;
+  label: string;
+  description: string;
+  tone: "teal" | "violet" | "amber" | "neutral" | "dashed";
+};
+
+export const attributionLegend: AttributionLegendEntry[] = [
+  { id: "live", label: "Live project", description: "A system that's built and in real use.", tone: "teal" },
+  {
+    id: "related",
+    label: "Related work",
+    description: "Independent work referenced for its relevant expertise.",
+    tone: "neutral",
+  },
+  {
+    id: "team",
+    label: "Team contribution",
+    description: "Built and maintained by people on the Kipeo team.",
+    tone: "violet",
+  },
+  {
+    id: "internal",
+    label: "Internal product",
+    description: "A product Kipeo is developing for its own portfolio.",
+    tone: "amber",
+  },
+  {
+    id: "concept",
+    label: "Capability concept",
+    description: "An illustrative concept, not a delivered project.",
+    tone: "dashed",
+  },
+];
+
+export type HeroCollageImage = {
+  id: string;
+  src: string;
+  alt: string;
+  label: string;
+  isConcept?: boolean;
+};
+
+/** The layered hero collage — three genuine screenshots plus one clearly-labelled concept render. */
+export const heroCollageImages: HeroCollageImage[] = [
+  {
+    id: "bushlite",
+    src: "/images/projects/bushlite-wifi-dashboard.webp",
+    alt: "BushLite WiFi hotspot management dashboard",
+    label: "BushLite WiFi",
+  },
+  {
+    id: "cynthiamueni",
+    src: "/images/projects/related-websites/cynthiamueni-home.webp",
+    alt: "CynthiaMueni.com homepage",
+    label: "CynthiaMueni.com",
+  },
+  {
+    id: "harunlucas",
+    src: "/images/projects/related-websites/harunlucas-home.webp",
+    alt: "HarunLucas.com homepage",
+    label: "HarunLucas.com",
+  },
+  {
+    id: "hse-concept",
+    src: "/images/projects/capability-photos/hse-systems-concept.webp",
+    alt: "Concept render of an HSE management dashboard",
+    label: "HSE Management System",
+    isConcept: true,
+  },
+];
+
 export type RelatedWebsite = {
   id: string;
   name: string;
@@ -46,7 +132,6 @@ export type RelatedWebsite = {
   isExternal: true;
   description: string;
   attribution: string;
-  collaboration?: string;
   categories: WorkFilterId[];
   published: boolean;
 };
@@ -65,7 +150,7 @@ export const relatedWebsites: RelatedWebsite[] = [
     isExternal: true,
     description: "Professional site for an occupational safety and EHS-systems specialist.",
     attribution:
-      "Independent professional site, not built or managed by Kipeo Digital — referenced here as the source of the HSE domain expertise informing Kipeo's HSE-related work.",
+      "Independent specialist platform providing HSE domain context connected to Kipeo's operational-systems work.",
     categories: ["live", "websites"],
     published: true,
   },
@@ -81,8 +166,7 @@ export const relatedWebsites: RelatedWebsite[] = [
     status: "live",
     isExternal: true,
     description: "Engineering and systems-development portfolio, including the BushLite WiFi case study.",
-    attribution: "Website built and maintained by the same person behind Kipeo Digital — a team contribution, not a Kipeo Digital client project.",
-    collaboration: "Same team, same builder as Kipeo Digital.",
+    attribution: "Related engineering and systems portfolio contributed by members of the team behind Kipeo Digital.",
     categories: ["live", "websites"],
     published: true,
   },

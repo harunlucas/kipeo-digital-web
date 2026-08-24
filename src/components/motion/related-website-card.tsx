@@ -46,7 +46,6 @@ export function RelatedWebsiteCard({ site, index }: { site: RelatedWebsite; inde
         </div>
         <p className="mt-3 text-sm leading-relaxed text-slate">{site.description}</p>
         <p className="mt-2 text-xs leading-relaxed text-slate-muted">{site.attribution}</p>
-        {site.collaboration && <p className="mt-1 text-xs leading-relaxed text-slate-muted">{site.collaboration}</p>}
         <span className="sr-only">(opens {site.name} in a new tab)</span>
       </div>
     </motion.a>

@@ -3,16 +3,20 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { Section } from "@/components/layout/section";
+import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import { FeaturedProjectCard } from "@/components/motion/featured-project-card";
+import { WorkFeaturedSpotlight } from "@/components/motion/work-featured-spotlight";
 import { RelatedWebsiteCard } from "@/components/motion/related-website-card";
 import { ProductSpotlight } from "@/components/motion/product-spotlight";
-import { CapabilityPathCard } from "@/components/motion/capability-path-card";
+import { CapabilityPanel } from "@/components/motion/capability-panel";
 import type { FeaturedWork, CapabilityPath } from "@/content/selected-work";
 import {
   workFilters,
   featuredWorkCategories,
   capabilityCategoryMap,
+  capabilityCtaHref,
+  capabilitySectionNote,
   type WorkFilterId,
   type RelatedWebsite,
 } from "@/content/work";
@@ -31,15 +35,17 @@ function matches(filter: WorkFilterId, categories: WorkFilterId[]) {
 export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capabilityPanels }: WorkExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
-  // Deliberately plain `useState`, not `useSearchParams` — reading the
-  // query string would opt this component out of static prerendering (Next
-  // renders a Suspense fallback into the static HTML instead of real
-  // content), so every filter's content — including "All" — would be
-  // invisible to crawlers and no-JS visitors on first load. Writing the
-  // filter to the URL via `router.replace` on click doesn't have that cost,
-  // so the URL still updates; only reading it back on initial load is
-  // skipped, meaning a deep link like `/work?filter=websites` lands on the
-  // unfiltered view until the visitor picks a filter themselves.
+  // Deliberately plain `useState`, not `useSearchParams` — reading the URL
+  // reactively (or syncing from it in an effect) would either opt this
+  // component out of static prerendering (so the real content, including
+  // the default "All" view, would be a loading skeleton in the static HTML
+  // for crawlers and no-JS visitors) or read `window.location` during the
+  // client's first render and mismatch the server-rendered "All" HTML.
+  // Writing the filter to the URL via `router.replace` on click has neither
+  // cost, so the URL still updates; a deep link like `/work?filter=live`
+  // just lands on the unfiltered view until the visitor picks a filter,
+  // and back/forward navigation moves through those URL states without
+  // changing what's currently on screen.
   const [activeFilter, setActiveFilter] = useState<WorkFilterId>("all");
 
   function selectFilter(id: WorkFilterId) {
@@ -57,31 +63,39 @@ export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capa
 
   return (
     <>
-      <div role="group" aria-label="Filter work by category" className="flex flex-wrap gap-2">
-        {workFilters.map((filter) => {
-          const isActive = filter.id === activeFilter;
-          return (
-            <button
-              key={filter.id}
-              type="button"
-              aria-pressed={isActive}
-              onClick={() => selectFilter(filter.id)}
-              className={`min-h-11 rounded-full border px-4 text-sm font-medium transition-colors duration-150 ${
-                isActive
-                  ? "border-teal-strong bg-teal-strong text-white"
-                  : "border-neutral-300 text-slate hover:bg-mist"
-              }`}
-            >
-              {filter.label}
-            </button>
-          );
-        })}
+      <div className="sticky top-[72px] z-40 border-b border-neutral-200 bg-paper/95 backdrop-blur-md">
+        <Container className="py-3">
+          <div
+            role="group"
+            aria-label="Filter work by category"
+            className="flex gap-2 overflow-x-auto px-1 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {workFilters.map((filter) => {
+              const isActive = filter.id === activeFilter;
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => selectFilter(filter.id)}
+                  className={`min-h-11 shrink-0 rounded-full border px-4 text-sm font-medium transition-colors duration-150 ${
+                    isActive
+                      ? "border-teal-strong bg-teal-strong text-white"
+                      : "border-neutral-300 text-slate hover:bg-mist"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
+        </Container>
       </div>
 
-      <div className="mt-10 flex flex-col gap-14">
-        {!hasResults && (
-          <div className="rounded-2xl border border-dashed border-neutral-300 bg-paper-elevated p-8 text-center sm:p-10">
-            <p className="mx-auto max-w-md text-base leading-relaxed text-slate">
+      {!hasResults && (
+        <Section tone="paper">
+          <div className="mx-auto max-w-md rounded-2xl border border-dashed border-neutral-300 bg-paper-elevated p-8 text-center sm:p-10">
+            <p className="text-base leading-relaxed text-slate">
               We&apos;re preparing verified work for this category.{" "}
               <Link href="/studio" className="font-medium text-teal-strong hover:text-ink">
                 Explore the capability
@@ -93,52 +107,59 @@ export function WorkExplorer({ featured, relatedWebsites, hseSpotlightPath, capa
               with us.
             </p>
           </div>
-        )}
+        </Section>
+      )}
 
-        {showFeatured && (
-          <section>
-            <Eyebrow>Featured work</Eyebrow>
-            <h2 className="text-display-3 mt-2 text-paper-foreground">A genuine, verifiable project.</h2>
-            <div className="mt-6">
-              <FeaturedProjectCard work={featured} />
-            </div>
-          </section>
-        )}
+      {showFeatured && (
+        <Section tone="paper">
+          <Eyebrow>Featured work</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-paper-foreground">A genuine, verifiable project.</h2>
+          <div className="mt-8">
+            <WorkFeaturedSpotlight work={featured} />
+          </div>
+        </Section>
+      )}
 
-        {visibleWebsites.length > 0 && (
-          <section>
-            <Eyebrow>Related website work</Eyebrow>
-            <h2 className="text-display-3 mt-2 text-paper-foreground">Genuine sites connected to the team.</h2>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              {visibleWebsites.map((site, index) => (
-                <RelatedWebsiteCard key={site.id} site={site} index={index} />
-              ))}
-            </div>
-          </section>
-        )}
+      {visibleWebsites.length > 0 && (
+        <Section tone="elevated">
+          <Eyebrow>Related website work</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-paper-foreground">Genuine sites connected to the team.</h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {visibleWebsites.map((site, index) => (
+              <RelatedWebsiteCard key={site.id} site={site} index={index} />
+            ))}
+          </div>
+        </Section>
+      )}
 
-        {showHse && (
-          <section>
-            <Eyebrow>Internal product</Eyebrow>
-            <h2 className="text-display-3 mt-2 text-paper-foreground">HSE Management System.</h2>
-            <div className="mt-6">
-              <ProductSpotlight path={hseSpotlightPath} screensLabel="Current authentication screens" />
-            </div>
-          </section>
-        )}
+      {showHse && (
+        <Section tone="paper">
+          <Eyebrow>Internal product</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-paper-foreground">HSE Management System.</h2>
+          <div className="mt-8">
+            <ProductSpotlight path={hseSpotlightPath} screensLabel="Current authentication screens" />
+          </div>
+        </Section>
+      )}
 
-        {visibleCapabilities.length > 0 && (
-          <section>
-            <Eyebrow>Capability areas</Eyebrow>
-            <h2 className="text-display-3 mt-2 text-paper-foreground">Where we can start building.</h2>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              {visibleCapabilities.map((path, index) => (
-                <CapabilityPathCard key={path.id} path={path} index={index} />
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
+      {visibleCapabilities.length > 0 && (
+        <Section tone="ink" className="bg-grid-ink">
+          <Eyebrow tone="ink">Capability areas</Eyebrow>
+          <h2 className="text-display-3 mt-2 text-ink-foreground">Where we can start building.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">{capabilitySectionNote}</p>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2">
+            {visibleCapabilities.map((path, index) => (
+              <CapabilityPanel
+                key={path.id}
+                path={path}
+                index={index}
+                ctaHref={capabilityCtaHref[path.id] ?? "/services"}
+                ctaLabel={path.primaryAgencyCta}
+              />
+            ))}
+          </div>
+        </Section>
+      )}
     </>
   );
 }
