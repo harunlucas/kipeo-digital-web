@@ -1,4 +1,5 @@
 import { siteConfig } from "@/content/site-config";
+import type { ServicesFaqItem } from "@/content/services-page";
 
 export function organizationSchema() {
   return {
@@ -32,5 +33,20 @@ export function professionalServiceSchema() {
       addressCountry: "KE",
     },
     areaServed: "Worldwide",
+  };
+}
+
+export function faqSchema(items: ServicesFaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }

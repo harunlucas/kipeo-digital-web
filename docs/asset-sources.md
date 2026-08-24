@@ -1,5 +1,46 @@
 # Homepage visual assets
 
+## /services photography pass (this session, /services only)
+
+The initial /services build reused homepage/work imagery (the two related-website
+screenshots, the HSE and engineering AI concept renders, the BushLite dashboard) and
+plain SVG artwork for four sections. The user asked for the page to stop repeating the
+same images and to source better, different ones instead.
+
+Six new, freely-licensed Pexels photographs were sourced, downloaded locally (not
+hotlinked), converted to WebP via the `sharp` package already in `node_modules`
+(quality 74, capped at 1440px wide) and saved under `public/images/services/`. Each is
+a genuine photo of real (non-Kipeo) equipment/technology — none depict Kipeo client
+work, so each is captioned on-page as a representative/credited photo, never as a
+Kipeo project or client screenshot. All are Pexels License ("free to use," no
+attribution legally required, credited anyway as good practice) and were chosen to
+avoid the staged-office/handshake style of stock photography the design brief warns
+against — close-up equipment, screens and objects, no posed people.
+
+| Local file | Source | Photographer | Used on |
+|---|---|---|---|
+| `public/images/services/software-systems-code.webp` | pexels.com/photo/coding-script-965345 | Markus Spiske | "Software and systems" section (replaces the SVG illustration) |
+| `public/images/services/hse-safety-helmets.webp` | pexels.com/photo/collection-of-construction-safety-helmet-38070 | ClickerHappy | "HSE and operational systems" section (replaces the reused `hse-systems-concept.webp` AI render as the lead visual; the real `hse-login`/`hse-create-account` product screenshots stay as the secondary "real in-development screens" row) |
+| `public/images/services/engineering-equipment-gauge.webp` | pexels.com/photo/steel-pipes-with-pressure-gauge-7937300 | Pavel Danilyuk | "Engineering and technical software" section (replaces the reused `engineering-systems-concept.webp` AI render) |
+| `public/images/services/growth-market-chart.webp` | pexels.com/photo/close-up-photo-of-monitor-159888 | energepic.com | "Growth and visibility" section (replaces the SVG illustration) |
+| `public/images/services/integrations-connected-cables.webp` | pexels.com/photo/ethernet-cables-plugged-on-a-server-rack-1054397 | Josh Sorenson | "Integrations and automation" section (replaces the SVG illustration) |
+| `public/images/services/hosting-data-center.webp` | pexels.com/photo/black-hardwares-on-data-server-room-4597280 | Brett Sayles | "Hosting, maintenance and support" section (replaces the SVG illustration) |
+
+`ServiceSectionVisual`'s `"illustration"` and `"concept"` kinds (in
+`src/content/services-page.ts`) were collapsed into one credited `"photo"` kind now
+that every section has a real photo; the now-fully-unused
+`src/components/motion/service-illustration.tsx` (four hand-drawn SVG variants, no
+longer referenced anywhere) was deleted rather than kept as dead code.
+
+The hero visual (`ServicesHeroVisual`) also swapped two of its three layered panels to
+reduce duplication with /work and the homepage, both while staying evidence-based: the
+"operations" layer now shows `hse-safety-helmets.webp` (tagged "Representative photo"
+instead of "Concept") in place of the reused HSE concept render, and the "systems"
+layer now shows `bushlite-wifi-login-portal.webp` — a genuine BushLite WiFi screenshot
+downloaded in an earlier session but never used anywhere — in place of
+`bushlite-wifi-dashboard.webp`, which is already the prominent BushLite image on both
+the homepage and /work.
+
 ## /work premium redesign, round two (this session, /work only)
 
 Rebuilt /work's presentation without touching any component the homepage
