@@ -3,21 +3,38 @@ import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { WorkHeroVisual } from "@/components/motion/work-hero-visual";
+import { WorkIndexVisual } from "@/components/motion/work-index-visual";
 import { WorkExplorer } from "@/components/sections/work/work-explorer";
-import { RelatedExpertiseStrip } from "@/components/sections/work/related-expertise-strip";
 import { featuredWork } from "@/content/selected-work";
-import { heroCollageImages, internalProduct, workCapabilityAreas, specialistExpertiseLinks, type WorkFilterId } from "@/content/work";
+import { featuredSecondaryScreenshot, internalProduct, workCapabilityAreas, workSectionAnchors } from "@/content/work";
 import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Work",
-  description:
-    "Genuine software work from Kipeo Digital: a verified live project, internal products in development, and the capability areas we build from.",
-  alternates: { canonical: "/work" },
-});
+const title = "Software Projects and Capabilities | Kipeo Digital";
+const description =
+  "Explore verified systems work, internal software products and the digital capabilities Kipeo Digital uses to build practical business platforms.";
 
-const internalProductCategories: WorkFilterId[] = ["internal-products", "operational-and-technical-systems"];
+export const metadata: Metadata = buildMetadata({
+  title: { absolute: title },
+  description,
+  keywords: [
+    "software development portfolio",
+    "business systems",
+    "HSE software",
+    "engineering software",
+    "web application development",
+    "systems integration",
+  ],
+  alternates: { canonical: "/work" },
+  openGraph: {
+    url: "/work",
+    title,
+    description,
+  },
+  twitter: {
+    title,
+    description,
+  },
+});
 
 export default function WorkPage() {
   return (
@@ -38,14 +55,14 @@ export default function WorkPage() {
               </Reveal>
               <Reveal immediate delay={0.12}>
                 <p className="mt-6 max-w-md text-lg leading-relaxed text-slate">
-                  A verified live project, internal products in active development, and the capability areas
+                  A verified live project, an internal product in active development, and the capability areas
                   Kipeo builds from.
                 </p>
               </Reveal>
             </div>
             <Reveal immediate delay={0.1}>
               <div className="mx-auto lg:ml-auto lg:mr-0">
-                <WorkHeroVisual images={heroCollageImages} />
+                <WorkIndexVisual />
               </div>
             </Reveal>
           </div>
@@ -54,12 +71,11 @@ export default function WorkPage() {
 
       <WorkExplorer
         featured={featuredWork}
+        featuredSecondaryScreenshot={featuredSecondaryScreenshot}
         internalProduct={internalProduct}
-        internalProductCategories={internalProductCategories}
         capabilityAreas={workCapabilityAreas}
+        sectionAnchors={workSectionAnchors}
       />
-
-      <RelatedExpertiseStrip links={specialistExpertiseLinks} />
 
       <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
         <div
@@ -68,12 +84,11 @@ export default function WorkPage() {
         />
         <div className="relative mx-auto max-w-2xl text-center">
           <Reveal>
-            <h2 className="text-display-1 text-ink-foreground">Have a project that belongs here?</h2>
+            <h2 className="text-display-1 text-ink-foreground">Have a system that needs building?</h2>
           </Reveal>
           <Reveal delay={0.08}>
             <p className="mt-4 text-lg text-ink-muted">
-              Tell us what needs to be built, improved or connected. We&apos;ll review the problem and propose a
-              practical next step.
+              Tell us what needs to work, connect or improve. We&apos;ll help define a practical way forward.
             </p>
           </Reveal>
           <Reveal delay={0.16}>

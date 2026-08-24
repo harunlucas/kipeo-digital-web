@@ -26,9 +26,6 @@ export function CapabilityPanel({ area, index }: { area: WorkCapabilityArea; ind
       <div className="relative aspect-[2.35/1] overflow-hidden bg-ink">
         <div aria-hidden className="bg-grid-ink pointer-events-none absolute inset-0 opacity-40" />
         <CapabilityVisual variant={area.visual} />
-        <span className="absolute left-4 top-4 rounded-full border border-ink-elevated bg-ink/80 px-3 py-1 text-[11px] uppercase tracking-wide text-ink-foreground backdrop-blur">
-          Capability
-        </span>
       </div>
 
       <div className="flex flex-1 flex-col p-6">

@@ -14,11 +14,33 @@ import { serviceGroups, servicesFaq } from "@/content/services-page";
 import { organizationSchema, professionalServiceSchema, faqSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/metadata";
 
+const title = "Software Development Services | Kipeo Digital";
+const description =
+  "Kipeo Digital designs and builds custom software, business systems, operational platforms, websites, integrations and supported digital products for clients worldwide.";
+
 export const metadata: Metadata = buildMetadata({
-  title: "Services",
-  description:
-    "Software and business systems, HSE and technical operational software, websites and commerce, and integration, deployment and support — a team-led software agency, scoped individually with a free initial proposal.",
+  title: { absolute: title },
+  description,
+  keywords: [
+    "software development agency",
+    "business systems",
+    "workflow automation",
+    "HSE software",
+    "engineering software",
+    "web application development",
+    "e-commerce development",
+    "API integrations",
+  ],
   alternates: { canonical: "/services" },
+  openGraph: {
+    url: "/services",
+    title,
+    description,
+  },
+  twitter: {
+    title,
+    description,
+  },
 });
 
 export default function ServicesPage() {

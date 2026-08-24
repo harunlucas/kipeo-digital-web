@@ -1,9 +1,28 @@
-# Image assets — /services and /work redesign
+# Image assets — /services and /work
 
 Internal record only. Nothing in this file is shown in the page UI — the
 Services and Work pages carry no visible "Photo by…", source URL, licence
 name or "representative photo" badges. See `docs/asset-sources.md` for the
-fuller project history; this file covers only this redesign pass.
+fuller project history; this file covers the redesign and the subsequent
+refinement pass (both /services and /work only).
+
+## Refinement pass (this session)
+
+- BushLite screenshots are no longer used in the /work hero — the hero now
+  uses `WorkIndexVisual`, an original bento-grid composition (software
+  systems / operational products / websites / integrations / managed
+  platforms), so genuine BushLite screenshots are reserved for the
+  Featured Project section only, per instruction.
+- The previously-unused `bushlite-wifi-login-portal.webp` now appears as a
+  secondary screenshot inside that same Featured Project section (still
+  never in the hero, still never duplicated elsewhere).
+- Added page-specific Open Graph / Twitter share images, generated at
+  request time via `next/og` (`src/lib/og-image.tsx` + one
+  `opengraph-image.tsx`/`twitter-image.tsx` pair per page). These are
+  rendered code, not stored binaries — nothing to license or store
+  locally.
+- All four /services group visuals and one /work capability visual were
+  revised for clarity/distinctness; no new binary assets were introduced.
 
 ## Raster images in active use on /services
 
@@ -16,8 +35,8 @@ licensing to track.
 
 | File | Role | Provenance / licence |
 |---|---|---|
-| `public/images/projects/bushlite-wifi-dashboard.webp` | Hero collage tile + Featured Project spotlight | Genuine BushLite WiFi product screenshot, downloaded locally in an earlier session from the project owner's own case-study site (`harunlucas.com/projects/bushlite-wifi`), which the user explicitly authorized referencing. Also shown on the homepage by explicit instruction ("Keep BushLite WiFi as featured project… use the verified project screenshot") — the one deliberate cross-page exception to the no-duplicate-imagery rule. |
-| `public/images/projects/bushlite-wifi-login-portal.webp` | Hero collage tile | Same provenance/licence as above; downloaded in an earlier session but previously unused. Not shown on the homepage or /services. |
+| `public/images/projects/bushlite-wifi-dashboard.webp` | Featured Project spotlight (primary image) | Genuine BushLite WiFi product screenshot, downloaded locally in an earlier session from the project owner's own case-study site (`harunlucas.com/projects/bushlite-wifi`), which the user explicitly authorized referencing. Also shown on the homepage by explicit instruction ("Keep BushLite WiFi as featured project… use the verified project screenshot") — the one deliberate cross-page exception to the no-duplicate-imagery rule. |
+| `public/images/projects/bushlite-wifi-login-portal.webp` | Featured Project spotlight (secondary image) | Same provenance/licence as above. Not shown on the homepage, /services, or the /work hero — reserved exclusively for the Featured Project section. |
 
 No screenshot of the HSE Management System (`hse-login.webp`,
 `hse-create-account.webp` — both already shown on the homepage) is used on
@@ -59,6 +78,8 @@ same file.
 | Component | Used on | Depicts |
 |---|---|---|
 | `src/components/motion/ecosystem-visual.tsx` | /services hero | Six labelled nodes (interface, app logic, database, automation, deployment, monitoring) around a central core |
-| `src/components/motion/service-group-visual.tsx` | /services, 4 group sections | `systems` / `operational` / `commerce` / `integration` variants |
-| `src/components/motion/capability-visual.tsx` | /work, 6 capability panels | `workflow` / `inspection` / `maintenance` / `website-device` / `commerce-interface` / `automation-map` variants |
-| `src/components/motion/hse-product-visual.tsx` | /work, Internal Products spotlight | A stats/roles mockup for the HSE Management System, distinct from every other HSE visual on the site |
+| `src/components/motion/service-group-visual.tsx` | /services, 4 group sections | `systems` (fanned layered-architecture card stack) / `operational` (inspection record + equipment state) / `commerce` (device + catalogue + enquiry path + trend line) / `integration` (APIs → pipeline → cloud health) |
+| `src/components/motion/work-index-visual.tsx` | /work hero | A 5-tile bento grid — software systems, operational products, websites, integrations, managed platforms |
+| `src/components/motion/capability-visual.tsx` | /work, 6 capability panels | `workflow` (process canvas) / `inspection` (hazard → corrective action) / `maintenance` (equipment-state list) / `website-device` (browser + device + enquiry path) / `commerce-interface` (catalogue + orders + status) / `automation-map` (connected-tools + trigger) |
+| `src/components/motion/hse-product-visual.tsx` | /work, Internal Products spotlight | An icon/roles mockup for the HSE Management System, with no numeric statistics — distinct from every other HSE visual on the site |
+| `src/lib/og-image.tsx` | /services and /work Open Graph + Twitter images | Branded share-image template, parameterised per page |

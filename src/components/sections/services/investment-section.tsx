@@ -22,7 +22,7 @@ export function InvestmentSection() {
         </Reveal>
       </div>
 
-      <div className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+      <div className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
         {investmentPoints.map((point, index) => (
           <Reveal key={point.title} delay={0.06 + index * 0.04}>
             <div className="flex items-start gap-3">

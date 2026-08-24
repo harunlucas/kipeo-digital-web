@@ -4,7 +4,7 @@ import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
 import { ServiceProcessRail } from "@/components/motion/service-process-rail";
-import { studioJourneyStages } from "@/content/studio";
+import { processPhases } from "@/content/services-page";
 
 export function ServicesProcess() {
   return (
@@ -19,7 +19,7 @@ export function ServicesProcess() {
       </div>
 
       <div className="mt-10">
-        <ServiceProcessRail stages={studioJourneyStages} />
+        <ServiceProcessRail phases={processPhases} />
       </div>
 
       <Reveal delay={0.1}>

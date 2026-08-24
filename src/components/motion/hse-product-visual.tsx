@@ -4,8 +4,9 @@ import { AlertTriangle, ClipboardCheck, FileStack } from "lucide-react";
  * A single, purpose-built concept mockup for the HSE Management System
  * spotlight on /work — distinct from the AI-generated photographic concept
  * renders shown on the homepage and from the small "inspection" capability
- * icon in `capability-visual.tsx`, so this section shows no image already
- * used elsewhere.
+ * composition in `capability-visual.tsx`, so this section shows no image
+ * already used elsewhere. Deliberately abstract, with no numeric counters
+ * or statistics that could read as real product data.
  */
 export function HseProductVisual() {
   return (
@@ -19,19 +20,16 @@ export function HseProductVisual() {
       </div>
 
       <div className="grid flex-1 grid-cols-3 gap-2.5">
-        <div className="flex flex-col items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
+        <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
           <ClipboardCheck className="h-5 w-5 text-teal" aria-hidden />
-          <span className="text-lg font-semibold text-ink-foreground">12</span>
           <span className="text-[9px] text-ink-muted">Inspections</span>
         </div>
-        <div className="flex flex-col items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
+        <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
           <AlertTriangle className="h-5 w-5 text-highlight" aria-hidden />
-          <span className="text-lg font-semibold text-ink-foreground">3</span>
-          <span className="text-[9px] text-ink-muted">Open actions</span>
+          <span className="text-[9px] text-ink-muted">Corrective actions</span>
         </div>
-        <div className="flex flex-col items-center justify-center gap-1.5 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
+        <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-white/10 bg-ink-elevated/60 p-3">
           <FileStack className="h-5 w-5 text-teal" aria-hidden />
-          <span className="text-lg font-semibold text-ink-foreground">48</span>
           <span className="text-[9px] text-ink-muted">Documents</span>
         </div>
       </div>

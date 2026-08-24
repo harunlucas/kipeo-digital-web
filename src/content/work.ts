@@ -3,55 +3,31 @@ import type { CapabilityVisualVariant } from "@/components/motion/capability-vis
 
 /**
  * /work-only content. Deliberately does not touch `selected-work.ts` (used
- * by the homepage, which this redesign must not change) beyond reusing its
+ * by the homepage, which this pass must not change) beyond reusing its
  * exported `featuredWork` (BushLite WiFi) by explicit instruction. The
  * internal product (HSE) and the six capability areas below are defined
  * fresh here with their own visuals so nothing on this page repeats an
  * image already shown on the homepage, Services or Studio.
+ *
+ * No filter state any more — there's too little verified work yet to
+ * justify it, so the page always shows all three views (Verified work,
+ * Internal products, Capabilities) in a fixed order with plain anchor
+ * navigation between them.
  */
 
-export type WorkFilterId =
-  | "all"
-  | "live-and-related"
-  | "internal-products"
-  | "software-systems"
-  | "websites-and-commerce"
-  | "operational-and-technical-systems";
+export type WorkSectionAnchor = { id: string; label: string };
 
-export const workFilters: { id: WorkFilterId; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "live-and-related", label: "Live and related work" },
+export const workSectionAnchors: WorkSectionAnchor[] = [
+  { id: "verified-work", label: "Verified work" },
   { id: "internal-products", label: "Internal products" },
-  { id: "software-systems", label: "Software systems" },
-  { id: "websites-and-commerce", label: "Websites and commerce" },
-  { id: "operational-and-technical-systems", label: "Operational and technical systems" },
+  { id: "capabilities", label: "Capabilities" },
 ];
 
-/** Category tags for `featuredWork` (BushLite WiFi), pulled from `selected-work.ts` by reference. */
-export const featuredWorkCategories: WorkFilterId[] = ["live-and-related", "software-systems"];
-
-export type HeroCollageImage = {
-  id: string;
-  src: string;
-  alt: string;
-  label: string;
+/** A second genuine BushLite screenshot, reserved for the Featured Project section only (never the hero). */
+export const featuredSecondaryScreenshot = {
+  src: "/images/projects/bushlite-wifi-login-portal.webp",
+  alt: "BushLite WiFi hotspot login portal",
 };
-
-/** Two genuine BushLite WiFi screenshots — no personal-website or AI-concept imagery in the hero. */
-export const heroCollageImages: HeroCollageImage[] = [
-  {
-    id: "bushlite-dashboard",
-    src: "/images/projects/bushlite-wifi-dashboard.webp",
-    alt: "BushLite WiFi hotspot management dashboard",
-    label: "BushLite WiFi — dashboard",
-  },
-  {
-    id: "bushlite-login",
-    src: "/images/projects/bushlite-wifi-login-portal.webp",
-    alt: "BushLite WiFi hotspot login portal",
-    label: "BushLite WiFi — login portal",
-  },
-];
 
 export type InternalProduct = {
   title: string;
@@ -61,7 +37,6 @@ export type InternalProduct = {
   description: string;
   attribution: string;
   disclosure: string;
-  screenshots: { src: string; alt: string }[];
 };
 
 /**
@@ -76,10 +51,9 @@ export const internalProduct: InternalProduct = {
   engagementType: "internal-product",
   status: "in-development",
   description:
-    "An operational system for managing workplace inspections, hazard reports, corrective actions, documentation and safety records — built by the Kipeo team as an internal and collaborative product.",
+    "A developing operational platform shaped around inspections, hazard reporting, corrective actions, documentation and safety records.",
   attribution: "Internal product development associated with Kipeo Digital, informed by related HSE practice.",
   disclosure: "Concept visuals explore the intended product direction.",
-  screenshots: [],
 };
 
 export type WorkCapabilityArea = {
@@ -90,7 +64,6 @@ export type WorkCapabilityArea = {
   ctaLabel: string;
   ctaHref: string;
   visual: CapabilityVisualVariant;
-  categories: WorkFilterId[];
 };
 
 export const workCapabilityAreas: WorkCapabilityArea[] = [
@@ -102,7 +75,6 @@ export const workCapabilityAreas: WorkCapabilityArea[] = [
     ctaLabel: "Explore software and systems",
     ctaHref: "/services#software-and-business-systems",
     visual: "workflow",
-    categories: ["software-systems"],
   },
   {
     id: "hse-compliance-software",
@@ -112,17 +84,15 @@ export const workCapabilityAreas: WorkCapabilityArea[] = [
     ctaLabel: "Explore operational software",
     ctaHref: "/services#operational-and-technical-software",
     visual: "inspection",
-    categories: ["operational-and-technical-systems"],
   },
   {
     id: "engineering-maintenance-systems",
     title: "Engineering and maintenance systems",
     description: "Maintenance-management and equipment-data systems for technical operations.",
-    examples: ["Maintenance schedules", "Equipment-data workflows", "Monitoring dashboards"],
+    examples: ["Maintenance planning", "Equipment-data workflows", "Monitoring dashboards"],
     ctaLabel: "Explore technical software",
     ctaHref: "/services#operational-and-technical-software",
     visual: "maintenance",
-    categories: ["operational-and-technical-systems"],
   },
   {
     id: "websites-digital-platforms",
@@ -132,7 +102,6 @@ export const workCapabilityAreas: WorkCapabilityArea[] = [
     ctaLabel: "Explore website work",
     ctaHref: "/services#websites-and-commerce",
     visual: "website-device",
-    categories: ["websites-and-commerce"],
   },
   {
     id: "ecommerce-managed-platforms",
@@ -142,7 +111,6 @@ export const workCapabilityAreas: WorkCapabilityArea[] = [
     ctaLabel: "Explore commerce work",
     ctaHref: "/services#websites-and-commerce",
     visual: "commerce-interface",
-    categories: ["websites-and-commerce"],
   },
   {
     id: "integrations-automation",
@@ -152,16 +120,5 @@ export const workCapabilityAreas: WorkCapabilityArea[] = [
     ctaLabel: "Explore integrations",
     ctaHref: "/services#integration-deployment-and-support",
     visual: "automation-map",
-    categories: ["software-systems"],
   },
-];
-
-export type SpecialistExpertiseLink = {
-  label: string;
-  href: string;
-};
-
-export const specialistExpertiseLinks: SpecialistExpertiseLink[] = [
-  { label: "HSE and workplace-safety expertise — CynthiaMueni.com", href: "https://cynthiamueni.com/" },
-  { label: "Engineering and applied technical systems — HarunLucas.com", href: "https://harunlucas.com/projects" },
 ];

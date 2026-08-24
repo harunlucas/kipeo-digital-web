@@ -5,30 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
 import { ServiceGroupVisual } from "@/components/motion/service-group-visual";
-import type { ExpertiseLink as ExpertiseLinkData, ServiceGroup } from "@/content/services-page";
+import type { ServiceGroup } from "@/content/services-page";
 
 const toneClasses = {
   paper: "bg-paper text-paper-foreground",
   ink: "bg-ink text-ink-foreground",
   elevated: "bg-paper-elevated text-paper-foreground",
 } as const;
-
-function ExpertiseLink({ expertise, isInk }: { expertise: ExpertiseLinkData; isInk: boolean }) {
-  return (
-    <a
-      href={expertise.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`group/link inline-flex min-h-11 items-center gap-1.5 text-xs font-medium ${
-        isInk ? "text-ink-muted hover:text-ink-foreground" : "text-slate hover:text-paper-foreground"
-      }`}
-    >
-      {expertise.linkLabel}
-      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-      <span className="sr-only">(opens {expertise.sourceName} in a new tab)</span>
-    </a>
-  );
-}
 
 export function ServiceSection({ group }: { group: ServiceGroup }) {
   const isInk = group.tone === "ink";
@@ -56,45 +39,20 @@ export function ServiceSection({ group }: { group: ServiceGroup }) {
               </p>
             </Reveal>
 
-            {group.servicesIncluded.length > 0 && (
-              <Reveal delay={0.14}>
-                <ul className="mt-6 flex flex-wrap gap-1.5">
-                  {group.servicesIncluded.map((item) => (
-                    <li
-                      key={item}
-                      className={`rounded-full px-2.5 py-1 text-[11px] ${
-                        isInk ? "border border-white/10 bg-white/5 text-ink-foreground/85" : "bg-mist text-slate"
-                      }`}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            )}
-
-            {group.subsections && (
-              <Reveal delay={0.14}>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  {group.subsections.map((sub) => (
-                    <div
-                      key={sub.label}
-                      className={`rounded-xl border p-4 ${isInk ? "border-white/10 bg-white/5" : "border-neutral-200 bg-paper"}`}
-                    >
-                      <p className={`text-sm font-semibold ${isInk ? "text-ink-foreground" : "text-paper-foreground"}`}>
-                        {sub.label}
-                      </p>
-                      <p className={`mt-1.5 text-xs leading-relaxed ${isInk ? "text-ink-muted" : "text-slate"}`}>
-                        {sub.description}
-                      </p>
-                      <div className="mt-3">
-                        <ExpertiseLink expertise={sub.relatedExpertise} isInk={isInk} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            )}
+            <Reveal delay={0.14}>
+              <ul className="mt-6 flex flex-wrap gap-1.5">
+                {group.capabilities.map((item) => (
+                  <li
+                    key={item}
+                    className={`rounded-full px-2.5 py-1 text-[11px] ${
+                      isInk ? "border border-white/10 bg-white/5 text-ink-foreground/85" : "bg-mist text-slate"
+                    }`}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
 
             <Reveal delay={0.18}>
               <ul className="mt-6 flex flex-col gap-2">
@@ -144,6 +102,36 @@ export function ServiceSection({ group }: { group: ServiceGroup }) {
                 </Link>
               </div>
             </Reveal>
+
+            {group.expertiseStrip && (
+              <Reveal delay={0.3}>
+                <div className={`mt-6 border-t pt-4 ${isInk ? "border-white/10" : "border-neutral-200"}`}>
+                  <p
+                    className={`font-mono text-[10px] uppercase tracking-wide ${isInk ? "text-ink-muted" : "text-slate-muted"}`}
+                  >
+                    {group.expertiseStrip.label}
+                  </p>
+                  <ul className="mt-2 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                    {group.expertiseStrip.links.map((link) => (
+                      <li key={link.href}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`inline-flex min-h-11 items-center gap-1.5 text-xs font-medium ${
+                            isInk ? "text-ink-muted hover:text-ink-foreground" : "text-slate hover:text-paper-foreground"
+                          }`}
+                        >
+                          {link.label}
+                          <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                          <span className="sr-only">(opens {link.sourceName} in a new tab)</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            )}
           </div>
 
           <div className={imageFirst ? "lg:order-1" : undefined}>

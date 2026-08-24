@@ -12,18 +12,11 @@ import type { ServiceGroupVisualVariant } from "@/components/motion/service-grou
  * anchors into this page keep resolving.
  */
 
-export type ExpertiseLink = {
-  label: string;
-  copy: string;
-  linkLabel: string;
-  href: string;
-  sourceName: string;
-};
+export type ExpertiseStripLink = { label: string; href: string; sourceName: string };
 
-export type ServiceGroupSubsection = {
+export type ExpertiseStrip = {
   label: string;
-  description: string;
-  relatedExpertise: ExpertiseLink;
+  links: ExpertiseStripLink[];
 };
 
 export type ServiceGroup = {
@@ -34,9 +27,9 @@ export type ServiceGroup = {
   eyebrow: string;
   heading: string;
   intro: string;
-  servicesIncluded: string[];
+  capabilities: string[];
   typicalOutcomes: string[];
-  subsections?: ServiceGroupSubsection[];
+  expertiseStrip?: ExpertiseStrip;
   expandableDetails: string;
   workLink: { label: string; href: string };
   visual: ServiceGroupVisualVariant;
@@ -54,10 +47,11 @@ export const serviceGroups: ServiceGroup[] = [
     heading: "For manual processes and disconnected tools that slow the business down.",
     intro:
       "Custom web applications, internal systems and workflow automation — frontend, backend and data handled as one connected build, not the interface alone.",
-    servicesIncluded: [
+    capabilities: [
       "Custom web applications",
       "Internal business systems",
       "Workflow automation",
+      "Databases and data management",
       "APIs and integrations",
       "Operational dashboards",
     ],
@@ -67,7 +61,7 @@ export const serviceGroups: ServiceGroup[] = [
       "A platform your team can extend as the business grows",
     ],
     expandableDetails:
-      "This group also covers databases and data management, and AI-assisted automation where it genuinely removes manual work. Every build includes the authentication, permissions and reporting a real operation needs — not just a working prototype.",
+      "This group also covers AI-assisted automation where it genuinely removes manual work. Where required, systems include authentication, role-based permissions, structured data and operational reporting.",
     workLink: { label: "See related software work", href: "/work" },
     visual: "systems",
     tone: "paper",
@@ -81,39 +75,35 @@ export const serviceGroups: ServiceGroup[] = [
     eyebrow: "Operational and technical software",
     heading: "For safety, compliance and technical operations still tracked on paper or spreadsheets.",
     intro:
-      "Software for two specialist operational workflows. Both are software-development capabilities, not consultancy, education or certification.",
-    servicesIncluded: [],
+      "Software for two specialist operational workflows — HSE and compliance, and engineering and technical operations. Both are software-development capabilities, not consultancy, education or certification.",
+    capabilities: [
+      "Inspection workflows",
+      "Hazard and incident reporting",
+      "Corrective-action tracking",
+      "Document control",
+      "Maintenance-management systems",
+      "Equipment-data and monitoring dashboards",
+    ],
     typicalOutcomes: [
       "A structured, auditable record instead of scattered paperwork",
       "Role-based access for officers, supervisors and technical staff",
       "Reporting built around your existing workflow, not a generic template",
     ],
-    subsections: [
-      {
-        label: "HSE and compliance software",
-        description:
-          "Inspection workflows, hazard and incident reporting, corrective-action tracking, document control and safety records.",
-        relatedExpertise: {
-          label: "Related specialist expertise",
-          copy: "Supported by workplace-safety and HSE workflow experience associated with the Kipeo team.",
-          linkLabel: "Explore related HSE expertise",
+    expertiseStrip: {
+      label: "Related specialist expertise",
+      links: [
+        {
+          label: "Workplace-safety and HSE workflow expertise",
           href: "https://cynthiamueni.com/",
           sourceName: "CynthiaMueni.com",
         },
-      },
-      {
-        label: "Engineering, maintenance and technical systems",
-        description:
-          "Maintenance-management systems, monitoring dashboards, technical calculations and equipment-data workflows.",
-        relatedExpertise: {
-          label: "Related specialist expertise",
-          copy: "Supported by applied engineering and technical-systems experience associated with the Kipeo team.",
-          linkLabel: "Explore related technical work",
+        {
+          label: "Applied engineering and technical-systems expertise",
           href: "https://harunlucas.com/projects",
           sourceName: "HarunLucas.com",
         },
-      },
-    ],
+      ],
+    },
     expandableDetails:
       "These are software-development capabilities for specialist workflows. Kipeo does not offer HSE consultancy, engineering consultancy, engineering education, academic research or regulatory certification.",
     workLink: { label: "See the HSE system in development", href: "/work" },
@@ -130,12 +120,13 @@ export const serviceGroups: ServiceGroup[] = [
     heading: "For a site or store that undersells the business, or is hard to find and manage.",
     intro:
       "Business websites, content platforms and online stores, built on a clear structure with the SEO foundations and analytics to support them.",
-    servicesIncluded: [
+    capabilities: [
       "Business and agency websites",
       "Landing pages",
       "WooCommerce and Shopify",
       "Content platforms",
-      "SEO foundations and analytics",
+      "SEO foundations",
+      "Analytics and conversion support",
     ],
     typicalOutcomes: [
       "A site people trust and can navigate to a decision",
@@ -158,11 +149,12 @@ export const serviceGroups: ServiceGroup[] = [
     heading: "For everything that has to connect, deploy and keep working after launch.",
     intro:
       "API integrations and automation, plus the production hosting, monitoring and support that keeps a launched system secure and current.",
-    servicesIncluded: [
+    capabilities: [
       "API integrations",
       "Payment and communication integrations",
       "Hosting and deployment",
       "Monitoring and backups",
+      "Platform updates",
       "Maintenance and technical support",
     ],
     typicalOutcomes: [
@@ -171,11 +163,40 @@ export const serviceGroups: ServiceGroup[] = [
       "An agreed maintenance arrangement, not a site left to go stale",
     ],
     expandableDetails:
-      "Deployment is Vercel-compatible, with domains, DNS and SSL configured as part of launch. Platform updates and technical support continue under a maintenance agreement.",
+      "Production deployment across suitable cloud, hosting and platform environments, including Vercel where appropriate, with domains, DNS and SSL configured as part of launch. Platform updates and technical support continue under a maintenance agreement.",
     workLink: { label: "See our deployment approach", href: "/studio" },
     visual: "integration",
     tone: "ink",
     imageSide: "left",
+  },
+];
+
+export type ProcessPhase = { id: string; number: string; label: string; description: string };
+
+export const processPhases: ProcessPhase[] = [
+  {
+    id: "discover-define",
+    number: "01",
+    label: "Discover and define",
+    description: "Understand the problem, users, requirements, constraints and measures of success.",
+  },
+  {
+    id: "design-plan",
+    number: "02",
+    label: "Design and plan",
+    description: "Shape the experience, architecture, scope, delivery stages and responsibilities.",
+  },
+  {
+    id: "build-integrate",
+    number: "03",
+    label: "Build and integrate",
+    description: "Develop frontend, backend, data, integrations and automation through visible milestones.",
+  },
+  {
+    id: "launch-support",
+    number: "04",
+    label: "Launch and support",
+    description: "Test, deploy, document, hand over and provide agreed maintenance or support.",
   },
 ];
 
@@ -222,14 +243,9 @@ export const servicesFaq: ServicesFaqItem[] = [
       "Yes. We regularly review, extend and rebuild existing websites and systems rather than starting from zero. Discovery covers what already exists before we recommend a direction.",
   },
   {
-    question: "Do you handle frontend and backend development?",
-    answer:
-      "Yes. Kipeo is a team-led software agency covering strategy, interface design, frontend, backend, data, integrations, deployment and support — not frontend alone.",
-  },
-  {
     question: "Do you provide hosting and maintenance?",
     answer:
-      "Yes. We offer Vercel-compatible deployment, managed hosting, monitoring, backups and maintenance agreements, either as part of a build or for an existing site or system.",
+      "Yes. We offer production deployment across suitable cloud, hosting and platform environments, managed hosting, monitoring, backups and maintenance agreements, either as part of a build or for an existing site or system.",
   },
   {
     question: "Who owns the finished work?",
@@ -239,6 +255,6 @@ export const servicesFaq: ServicesFaqItem[] = [
   {
     question: "Can you work with clients outside Kenya, or alongside our internal team?",
     answer:
-      "Yes to both. Kipeo is based in Nairobi and works remotely with clients worldwide, and regularly works alongside internal teams and other contractors — the proposal sets out where responsibilities sit on each side.",
+      "Yes. Kipeo is based in Nairobi and works remotely with clients worldwide. Kipeo can work alongside internal teams and other contractors, with responsibilities defined clearly in the proposal.",
   },
 ];
