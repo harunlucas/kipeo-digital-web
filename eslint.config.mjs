@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Reference-only static site, not part of the Next.js app:
+    "reference-old-site/**",
   ]),
 ]);
 
