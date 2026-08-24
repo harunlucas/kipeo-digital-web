@@ -3,21 +3,20 @@ import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { FeaturedProjectCard } from "@/components/motion/featured-project-card";
-import { CapabilityPathCard } from "@/components/motion/capability-path-card";
-import { ProductSpotlight } from "@/components/motion/product-spotlight";
-import { InDevelopmentSystems } from "@/components/sections/work/in-development-systems";
+import { WorkExplorer } from "@/components/sections/work/work-explorer";
 import { featuredWork, capabilityPaths } from "@/content/selected-work";
+import { relatedWebsites } from "@/content/work";
 import { buildMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildMetadata({
   title: "Work",
   description:
-    "Selected digital work and capability from Kipeo Digital: websites, business and HSE systems, engineering tools, and commerce platforms.",
+    "Selected work from Kipeo Digital, clearly attributed: live projects, collaborative work, internal products and capability areas.",
   alternates: { canonical: "/work" },
 });
 
-const spanClasses = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
+const hseSpotlightPath = capabilityPaths.find((path) => path.id === "systems")!;
+const capabilityPanels = capabilityPaths.filter((path) => path.id === "engineering" || path.id === "commerce");
 
 export default function WorkPage() {
   return (
@@ -33,13 +32,12 @@ export default function WorkPage() {
               <Eyebrow>Work</Eyebrow>
             </Reveal>
             <Reveal immediate delay={0.06}>
-              <h1 className="text-display-1 mt-6 text-paper-foreground">Digital work built for real operations.</h1>
+              <h1 className="text-display-1 mt-6 text-paper-foreground">Selected work, clearly attributed.</h1>
             </Reveal>
             <Reveal immediate delay={0.12}>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
-                From public-facing websites to internal operational systems, our work is shaped around what
-                people need to manage, deliver and improve. Below is a genuine featured project, our core
-                capability areas, and what&apos;s currently in development.
+                Explore live projects, collaborative work, internal products and capability areas connected to
+                the team behind Kipeo Digital.
               </p>
             </Reveal>
           </div>
@@ -47,38 +45,27 @@ export default function WorkPage() {
       </section>
 
       <Section tone="paper">
-        <FeaturedProjectCard work={featuredWork} />
-
-        <div className="mt-10 grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-12">
-          {capabilityPaths.map((path, index) => (
-            <div key={path.id} className={spanClasses[index % spanClasses.length]}>
-              <CapabilityPathCard path={path} index={index} />
-            </div>
-          ))}
-        </div>
-
-        {capabilityPaths
-          .filter((path) => path.embeddedProject)
-          .map((path) => (
-            <div key={path.id} className="mt-6">
-              <ProductSpotlight path={path} />
-            </div>
-          ))}
+        <WorkExplorer
+          featured={featuredWork}
+          relatedWebsites={relatedWebsites}
+          hseSpotlightPath={hseSpotlightPath}
+          capabilityPanels={capabilityPanels}
+        />
       </Section>
-
-      <InDevelopmentSystems />
 
       <Section tone="ink" className="bg-grid-ink">
         <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-lg">
-            <h2 className="text-display-3 text-ink-foreground">Have a project in mind?</h2>
-            <p className="mt-2 text-sm text-ink-muted sm:text-base">
-              Tell us what you&apos;re building and we&apos;ll reply with a free initial proposal.
-            </p>
+            <h2 className="text-display-3 text-ink-foreground">Have a project that belongs here?</h2>
           </div>
-          <Button href="/contact" variant="accent" size="lg" tone="ink">
-            Start a project
-          </Button>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <Button href="/contact" variant="accent" size="lg" tone="ink">
+              Start a project
+            </Button>
+            <Button href="/services" variant="outline" size="lg" tone="ink">
+              Explore services
+            </Button>
+          </div>
         </div>
       </Section>
     </>

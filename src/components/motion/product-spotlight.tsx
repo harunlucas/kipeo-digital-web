@@ -12,7 +12,14 @@ import { Badge, BrowserFrame, engagementLabels, statusLabels } from "./capabilit
  * rather than inside one card — keeps category cards equal-height and
  * gives the product room the small embedded panel couldn't.
  */
-export function ProductSpotlight({ path }: { path: CapabilityPath }) {
+export function ProductSpotlight({
+  path,
+  screensLabel = "Current development screens",
+}: {
+  path: CapabilityPath;
+  /** Label above the real-screenshots row — e.g. "Current authentication screens" when only login/register are shown. */
+  screensLabel?: string;
+}) {
   const shouldReduceMotion = useReducedMotion();
   const project = path.embeddedProject;
   if (!project) return null;
@@ -101,9 +108,7 @@ export function ProductSpotlight({ path }: { path: CapabilityPath }) {
 
       {project.screenshots.length > 0 && (
         <div className="border-t border-neutral-200 bg-paper-elevated px-6 py-5 sm:px-8">
-          <p className="font-mono text-[10px] uppercase tracking-wide text-slate-muted">
-            Current development screens
-          </p>
+          <p className="font-mono text-[10px] uppercase tracking-wide text-slate-muted">{screensLabel}</p>
           <div className="mt-3 flex flex-wrap gap-3">
             {project.screenshots.slice(0, 2).map((shot, shotIndex) => (
               <div

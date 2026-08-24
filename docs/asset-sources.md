@@ -1,5 +1,47 @@
 # Homepage visual assets
 
+## /work redesign (this session, /work only — homepage and /studio untouched)
+
+Rebuilt `/work` as a filterable portfolio page. New `src/content/work.ts`
+defines the filter categories and a fresh `relatedWebsites` array
+(CynthiaMueni.com, HarunLucas.com) with **per-site** classification —
+CynthiaMueni.com as `related-work` (an independent professional site, not
+built or managed by Kipeo), HarunLucas.com as `team-contribution` (built
+and maintained by the same person behind Kipeo Digital). Deliberately
+built fresh rather than reusing the homepage's merged "websites"
+`CapabilityPath` entry, which shows both screenshots in one generic card
+with no per-site distinction — not fine-grained enough for what this page
+asks for, and changing that shared entry would have changed the homepage.
+
+`selected-work.ts` was not modified — `/work` reuses `featuredWork` and
+the `engineering`/`commerce`/`systems` (HSE) `capabilityPaths` entries by
+id, purely by reading their existing fields.
+
+`ProductSpotlight` gained an optional `screensLabel` prop (default
+`"Current development screens"`, unchanged for the homepage's existing
+call site) so `/work` alone can pass `"Current authentication screens"` —
+more accurate, since the only real screenshots shown are the login and
+registration screens.
+
+Removed as no longer used anywhere: the three fake "Selected system — in
+development" placeholders (`InDevelopmentSystems` component and
+`content/projects.ts`, which had no other content once those were gone).
+
+Filtering (`WorkExplorer`, a client component) is category-tag driven
+across `all` / `live` / `websites` / `software-systems` /
+`hse-operations` / `technical-systems` / `commerce-platforms`. First
+attempt read the active filter via `useSearchParams()`, which forces Next
+to skip static prerendering for that subtree — verified by curling the
+built output and finding an `animate-pulse` skeleton in place of the real
+content, meaning crawlers and no-JS visitors would have seen an empty
+loading state on every filter, including the default "All" view. Fixed by
+switching to plain `useState("all")` for reading the active filter (so
+the full, real portfolio content is always in the static HTML) while
+still writing to the URL via `router.replace` on each click — the
+one-directional tradeoff being that a deep link like `/work?filter=live`
+lands on the unfiltered view rather than pre-selecting that filter, since
+reading it back would reintroduce the same prerendering problem.
+
 ## Real project imagery (added this session)
 
 One genuine, verifiable software project — BushLite WiFi — is presented in
