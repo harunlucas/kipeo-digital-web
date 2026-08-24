@@ -30,13 +30,13 @@ export function FeaturedProjectCard({ work }: { work: FeaturedWork }) {
           <span className="h-2.5 w-2.5 rounded-full bg-ink-muted/50" />
           <span className="h-2.5 w-2.5 rounded-full bg-teal" />
         </div>
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="group relative aspect-[16/10] overflow-hidden">
           <Image
             src={work.image}
             alt={work.imageAlt}
             fill
             sizes="(min-width: 1024px) 60vw, 100vw"
-            className="object-cover object-top grayscale"
+            className="object-cover object-top grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
           />
         </div>
       </div>
@@ -74,7 +74,7 @@ export function FeaturedProjectCard({ work }: { work: FeaturedWork }) {
           href={work.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group/cta mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
+          className="group/cta mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
         >
           View case study
           <ExternalLink

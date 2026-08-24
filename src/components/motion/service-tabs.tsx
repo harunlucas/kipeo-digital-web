@@ -5,10 +5,10 @@ import { useId, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import type { ServicePillarId } from "@/content/service-pillars";
 
 type TabItem = {
-  id: ServicePillarId;
+  /** Also used as the `/services#id` anchor, so keep it a valid fragment id. */
+  id: string;
   title: string;
   problem: string;
   subservices: string[];
@@ -162,7 +162,7 @@ export function ServiceTabs({ items }: { items: TabItem[] }) {
   );
 }
 
-function PillarArtwork({ id }: { id: ServicePillarId }) {
+function PillarArtwork({ id }: { id: string }) {
   switch (id) {
     case "websites-and-commerce":
       return (
@@ -219,5 +219,26 @@ function PillarArtwork({ id }: { id: ServicePillarId }) {
           <circle cx="260" cy="160" r="10" fill="var(--color-teal)" />
         </svg>
       );
+    case "hse-and-technical-workflows":
+      return (
+        <svg viewBox="0 0 400 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
+          <path
+            d="M200,50 L300,85 L300,175 Q300,240 200,270 Q100,240 100,175 L100,85 Z"
+            fill="none"
+            stroke="var(--color-teal)"
+            strokeOpacity="0.45"
+            strokeWidth="3"
+          />
+          <path d="M170,160 L192,182 L235,132" fill="none" stroke="var(--color-teal)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+          {[0, 1, 2].map((row) => (
+            <g key={row}>
+              <rect x="130" y={205 + row * 20} width="10" height="10" rx="2" fill="var(--color-highlight)" fillOpacity="0.6" />
+              <rect x="150" y={207 + row * 20} width="90" height="6" rx="3" fill="var(--color-ink-elevated)" />
+            </g>
+          ))}
+        </svg>
+      );
+    default:
+      return null;
   }
 }

@@ -7,8 +7,8 @@ type ButtonTone = "paper" | "ink";
 type ButtonSize = "md" | "lg";
 
 const sizeClasses: Record<ButtonSize, string> = {
-  md: "px-5 py-2.5 text-sm",
-  lg: "px-7 py-3.5 text-base",
+  md: "min-h-11 px-5 py-2.5 text-sm",
+  lg: "min-h-11 px-7 py-3.5 text-base",
 };
 
 const baseClasses =

@@ -13,7 +13,7 @@ const icons: Record<CapabilityPath["visual"], typeof Globe2> = {
   commerce: ShoppingBag,
 };
 
-const engagementLabels: Record<EngagementType, string> = {
+export const engagementLabels: Record<EngagementType, string> = {
   client: "Client project",
   collaboration: "Collaboration",
   "internal-product": "Internal or collaborative product",
@@ -22,25 +22,59 @@ const engagementLabels: Record<EngagementType, string> = {
   "related-work": "Related work",
 };
 
-const statusLabels: Record<WorkStatus, string> = {
+export const statusLabels: Record<WorkStatus, string> = {
   live: "Live",
   "in-development": "Active development",
   maintained: "Maintained",
   completed: "Completed",
 };
 
-function Badge({ children }: { children: React.ReactNode }) {
+export function Badge({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "amber" }) {
   return (
-    <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-[10px] font-medium text-slate-muted">
+    <span
+      className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+        tone === "amber"
+          ? "border-highlight/30 bg-highlight/10 text-highlight-strong"
+          : "border-neutral-200 text-slate-muted"
+      }`}
+    >
       {children}
     </span>
+  );
+}
+
+/** Minimal browser-chrome frame, matching the featured-project-card treatment,
+ * so real screenshots read as "device framed" evidence rather than bare crops. */
+export function BrowserFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="absolute inset-0 flex flex-col">
+      <div className="flex items-center gap-1.5 bg-ink px-3 py-1.5" aria-hidden>
+        <span className="h-1.5 w-1.5 rounded-full bg-ink-muted/50" />
+        <span className="h-1.5 w-1.5 rounded-full bg-ink-muted/50" />
+        <span className="h-1.5 w-1.5 rounded-full bg-teal" />
+      </div>
+      <div className="relative flex-1">{children}</div>
+    </div>
   );
 }
 
 export function CapabilityPathCard({ path, index }: { path: CapabilityPath; index: number }) {
   const shouldReduceMotion = useReducedMotion();
   const Icon = icons[path.visual];
-  const badgeLabel = path.illustrationLabel ?? "What we build";
+  // Tied to what's actually rendered below, not to whether content
+  // remembered to set a label — a card can never end up badged "Real
+  // screenshots" while rendering a stock photo, an AI concept render or the
+  // abstract SVG artwork.
+  const visualKind = path.screenshots ? "screenshots" : (path.capabilityVisual?.kind ?? "illustration");
+  const isIllustration = visualKind !== "screenshots";
+  const badgeLabel =
+    visualKind === "screenshots"
+      ? "Real screenshots"
+      : visualKind === "photo"
+        ? "Representative photo"
+        : visualKind === "concept"
+          ? "Concept visual"
+          : (path.illustrationLabel ?? "What we build");
 
   return (
     <motion.div
@@ -49,21 +83,51 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.55, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-paper shadow-card">
+      <div className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-paper shadow-card">
         <div className="group relative aspect-[2.35/1] overflow-hidden bg-ink">
           {path.screenshots ? (
-            <div className="absolute inset-0 grid grid-cols-2 gap-px bg-ink-elevated">
-              {path.screenshots.slice(0, 2).map((shot) => (
-                <div key={shot.src} className="relative overflow-hidden">
-                  <Image
-                    src={shot.src}
-                    alt={shot.alt}
-                    fill
-                    sizes="(min-width: 1024px) 20vw, 40vw"
-                    className="object-cover object-top grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
-                  />
+            <BrowserFrame>
+              <div className="absolute inset-0 grid grid-cols-2 gap-px bg-ink-elevated">
+                {path.screenshots.slice(0, 2).map((shot) => (
+                  <div key={shot.src} className="relative overflow-hidden">
+                    <Image
+                      src={shot.src}
+                      alt={shot.alt}
+                      fill
+                      sizes="(min-width: 1024px) 20vw, 40vw"
+                      className="object-cover object-top grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                    />
+                  </div>
+                ))}
+              </div>
+            </BrowserFrame>
+          ) : path.capabilityVisual ? (
+            <div className="absolute inset-0">
+              <Image
+                src={path.capabilityVisual.src}
+                alt={path.capabilityVisual.alt}
+                fill
+                sizes="(min-width: 1024px) 20vw, 40vw"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+              {path.capabilityVisual.credit && (
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent pb-2 pt-8">
+                  {path.capabilityVisual.creditHref ? (
+                    <a
+                      href={path.capabilityVisual.creditHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ml-3 inline-block text-[10px] text-ink-muted/90 hover:text-ink-foreground"
+                    >
+                      {path.capabilityVisual.credit}
+                    </a>
+                  ) : (
+                    <span className="ml-3 inline-block text-[10px] text-ink-muted/90">
+                      {path.capabilityVisual.credit}
+                    </span>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
           ) : (
             <div className="absolute inset-0 opacity-90 transition-transform duration-500 group-hover:scale-105">
@@ -71,7 +135,13 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
             </div>
           )}
           <div aria-hidden className="bg-grain absolute inset-0 opacity-[0.06] mix-blend-overlay" />
-          <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-ink-elevated bg-ink/80 px-3 py-1 text-[11px] uppercase tracking-wide text-ink-foreground backdrop-blur">
+          <span
+            className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] uppercase tracking-wide backdrop-blur ${
+              isIllustration
+                ? "border border-dashed border-white/30 bg-ink/50 text-ink-muted"
+                : "border border-ink-elevated bg-ink/80 text-ink-foreground"
+            }`}
+          >
             <Icon className="h-3 w-3" aria-hidden />
             {badgeLabel}
           </span>
@@ -84,6 +154,13 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
           {path.screenshotAttribution && (
             <p className="mt-1.5 text-xs text-slate-muted">{path.screenshotAttribution}</p>
           )}
+          {path.capabilityVisual && (
+            <p className="mt-1.5 text-xs text-slate-muted">
+              {path.capabilityVisual.kind === "photo"
+                ? "Representative photography — not a Kipeo Digital project or client."
+                : "AI-generated concept visual — not a real product screenshot or client."}
+            </p>
+          )}
 
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {path.examples.map((example) => (
@@ -95,7 +172,7 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
 
           <Link
             href={path.href}
-            className="group/cta mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
+            className="group/cta mt-4 inline-flex min-h-11 w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
           >
             {path.primaryAgencyCta}
             <ArrowUpRight
@@ -103,32 +180,6 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
               aria-hidden
             />
           </Link>
-
-          {path.embeddedProject && (
-            <div className="mt-4 border-t border-neutral-200 pt-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-paper-foreground">{path.embeddedProject.title}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  <Badge>{engagementLabels[path.embeddedProject.engagementType]}</Badge>
-                  <Badge>{statusLabels[path.embeddedProject.status]}</Badge>
-                </div>
-              </div>
-              <p className="mt-1 text-xs leading-relaxed text-slate">{path.embeddedProject.description}</p>
-
-              <div className="mt-2.5 grid grid-cols-[1fr_1.4fr] items-start gap-3">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-neutral-200 bg-ink">
-                  <Image
-                    src={path.embeddedProject.screenshots[0].src}
-                    alt={path.embeddedProject.screenshots[0].alt}
-                    fill
-                    sizes="(min-width: 1024px) 12vw, 30vw"
-                    className="object-cover object-top"
-                  />
-                </div>
-                <p className="text-[11px] leading-relaxed text-slate-muted">{path.embeddedProject.attribution}</p>
-              </div>
-            </div>
-          )}
 
           {path.relatedExpertise && (
             <div className="mt-4 border-t border-neutral-200 pt-3">
@@ -140,7 +191,7 @@ export function CapabilityPathCard({ path, index }: { path: CapabilityPath; inde
                 href={path.relatedExpertise.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-teal-strong hover:text-ink"
+                className="inline-flex min-h-11 items-center gap-1.5 text-xs font-medium text-teal-strong hover:text-ink"
               >
                 {path.secondaryExpertiseLink}
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
@@ -184,51 +235,129 @@ function PathArtwork({ visual }: { visual: CapabilityPath["visual"] }) {
         </svg>
       );
 
-    case "engineering":
+    case "engineering": {
+      const sparklines = [
+        [8, 14, 10, 18, 13, 20],
+        [16, 12, 17, 11, 19, 14],
+        [10, 15, 9, 16, 12, 17],
+      ];
       return (
         <svg viewBox="0 0 400 225" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-          <g stroke="var(--color-teal)" strokeOpacity="0.4" fill="none">
-            <path d="M40,175 L120,120 L200,150 L280,85 L360,115" />
+          <defs>
+            <linearGradient id="eng-panel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--color-ink-elevated)" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="var(--color-ink-elevated)" stopOpacity="0.5" />
+            </linearGradient>
+          </defs>
+          <rect x="20" y="16" width="360" height="193" rx="10" fill="url(#eng-panel)" />
+
+          {/* live status */}
+          <circle cx="336" cy="34" r="4" fill="var(--color-teal)" />
+          <text x="346" y="38" fontSize="10" fill="var(--color-ink-muted)" fontFamily="var(--font-mono, monospace)">
+            LIVE
+          </text>
+
+          {/* three sensor-reading tiles with mini sparklines */}
+          {sparklines.map((points, tileIndex) => {
+            const tx = 40 + tileIndex * 100;
+            const max = Math.max(...points);
+            return (
+              <g key={tileIndex}>
+                <rect x={tx} y="28" width="84" height="52" rx="6" fill="var(--color-ink)" fillOpacity="0.5" />
+                <text
+                  x={tx + 10}
+                  y="44"
+                  fontSize="9"
+                  fill="var(--color-ink-muted)"
+                  fontFamily="var(--font-mono, monospace)"
+                >
+                  {["TEMP", "VIBR", "LOAD"][tileIndex]}
+                </text>
+                {points.map((p, i) => (
+                  <rect
+                    key={i}
+                    x={tx + 10 + i * 11}
+                    y={70 - (p / max) * 24}
+                    width="6"
+                    height={(p / max) * 24}
+                    rx="1.5"
+                    fill="var(--color-teal)"
+                    fillOpacity={0.55 + (i / points.length) * 0.4}
+                  />
+                ))}
+              </g>
+            );
+          })}
+
+          {/* equipment health trend + gauge */}
+          <g stroke="var(--color-teal)" strokeOpacity="0.6" fill="none" strokeWidth="1.5">
+            <path d="M40,175 L120,138 L200,160 L280,105 L350,128" />
           </g>
           {[
             [40, 175],
-            [120, 120],
-            [200, 150],
-            [280, 85],
-            [360, 115],
+            [120, 138],
+            [200, 160],
+            [280, 105],
+            [350, 128],
           ].map(([cx, cy], i) => (
-            <circle key={i} cx={cx} cy={cy} r={i === 3 ? 8 : 5} fill="var(--color-teal)" />
+            <circle key={i} cx={cx} cy={cy} r={i === 3 ? 7 : 4.5} fill="var(--color-teal)" fillOpacity="0.9" />
           ))}
           <path
-            d="M280,175 A40,40 0 1 1 340,175"
+            d="M255,192 A32,32 0 1 1 305,192"
             stroke="var(--color-highlight)"
             strokeWidth="6"
             fill="none"
             strokeLinecap="round"
-            opacity="0.7"
+            opacity="0.75"
           />
+          <text x="264" y="196" fontSize="10" fill="var(--color-highlight-foreground)" fontFamily="var(--font-mono, monospace)">
+            92%
+          </text>
         </svg>
       );
+    }
 
-    case "commerce":
+    case "commerce": {
+      const tiles = [
+        { fill: "url(#commerce-card)" },
+        { fill: "var(--color-highlight)", opacity: 0.75 },
+        { fill: "var(--color-teal-strong)", opacity: 0.6 },
+        { fill: "var(--color-highlight-strong)", opacity: 0.5 },
+      ];
       return (
         <svg viewBox="0 0 400 225" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-          {[0, 1, 2, 3].map((col) => (
-            <rect
-              key={col}
-              x={20 + col * 92}
-              y="24"
-              width="76"
-              height="86"
-              rx="8"
-              fill="var(--color-ink-elevated)"
-            />
+          <defs>
+            <linearGradient id="commerce-card" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--color-teal)" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="var(--color-teal-strong)" stopOpacity="0.9" />
+            </linearGradient>
+          </defs>
+          {tiles.map((tile, col) => (
+            <g key={col}>
+              <rect x={20 + col * 92} y="20" width="76" height="86" rx="8" fill="var(--color-ink-elevated)" />
+              <rect
+                x={36 + col * 92}
+                y="36"
+                width="44"
+                height="44"
+                rx="6"
+                fill={tile.fill}
+                fillOpacity={tile.opacity ?? 1}
+              />
+              <rect x={36 + col * 92} y="88" width="44" height="6" rx="3" fill="var(--color-ink-elevated)" opacity="0.9" />
+            </g>
           ))}
-          <rect x="20" y="128" width="360" height="16" rx="8" fill="var(--color-ink-elevated)" />
-          <rect x="20" y="156" width="240" height="16" rx="8" fill="var(--color-ink-elevated)" />
-          <rect x="36" y="40" width="44" height="44" rx="6" fill="var(--color-teal)" fillOpacity="0.75" />
-          <rect x="220" y="40" width="44" height="44" rx="6" fill="var(--color-highlight)" fillOpacity="0.7" />
+
+          <rect x="20" y="126" width="360" height="14" rx="7" fill="var(--color-ink-elevated)" />
+          <rect x="20" y="150" width="230" height="14" rx="7" fill="var(--color-ink-elevated)" opacity="0.8" />
+
+          {/* cart / checkout bar */}
+          <rect x="20" y="178" width="360" height="32" rx="16" fill="var(--color-ink-elevated)" opacity="0.7" />
+          <circle cx="40" cy="194" r="7" fill="var(--color-teal)" />
+          <rect x="56" y="188" width="120" height="12" rx="6" fill="var(--color-ink)" opacity="0.5" />
+          <rect x="290" y="184" width="76" height="20" rx="10" fill="var(--color-teal)" fillOpacity="0.9" />
         </svg>
       );
+    }
   }
 }

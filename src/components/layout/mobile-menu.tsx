@@ -61,7 +61,7 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
         aria-expanded={open}
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="flex h-10 w-10 items-center justify-center rounded-full text-paper-foreground"
+        className="flex h-11 w-11 items-center justify-center rounded-full text-paper-foreground"
       >
         {open ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
       </button>

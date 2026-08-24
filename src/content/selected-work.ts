@@ -50,6 +50,13 @@ export type EmbeddedProject = {
   description: string;
   attribution: string;
   screenshots: ProjectScreenshot[];
+  /**
+   * AI-generated concept renders shown alongside the real screenshots
+   * above — never mixed into `screenshots`, always rendered in their own
+   * clearly-labeled "Concept visual" row, since `screenshots` here are a
+   * real, disclosed, in-development product.
+   */
+  conceptVisuals?: ProjectScreenshot[];
 };
 
 export type CapabilityPath = {
@@ -72,6 +79,21 @@ export type CapabilityPath = {
   embeddedProject?: EmbeddedProject;
   /** Shown when the visual is an admitted fictional illustration, never real work. */
   illustrationLabel?: string;
+  /**
+   * Generic capability context imagery — never a Kipeo project, client or
+   * screenshot. Takes priority over `screenshots`/the SVG artwork when
+   * present. "photo" is a real, freely-licensed stock photo (credited);
+   * "concept" is an AI-generated illustrative render (no real photographer
+   * to credit, disclosed as generated). Source recorded in
+   * docs/asset-sources.md.
+   */
+  capabilityVisual?: {
+    src: string;
+    alt: string;
+    kind: "photo" | "concept";
+    credit?: string;
+    creditHref?: string;
+  };
 };
 
 /**
@@ -130,6 +152,11 @@ export const capabilityPaths: CapabilityPath[] = [
     href: "/work",
     visual: "systems",
     engagementType: "client",
+    capabilityVisual: {
+      src: "/images/projects/capability-photos/hse-systems-concept.webp",
+      alt: "Concept render of an HSE management dashboard on a laptop beside a hard hat and safety clipboard, showing inspection checklists, an incident-status chart and a document library",
+      kind: "concept",
+    },
     domainExpertise: "HSE domain expertise associated with the Kipeo Digital team.",
     relatedExpertise: {
       label: "Related specialist expertise",
@@ -153,6 +180,20 @@ export const capabilityPaths: CapabilityPath[] = [
           src: "/images/projects/hse-management-system/hse-login.webp",
           alt: "HSE Management System sign-in screen for SafetyOS, showing role-based demo accounts for Admin, EHS Officer, Supervisor and Worker",
         },
+        {
+          src: "/images/projects/hse-management-system/hse-create-account.webp",
+          alt: "HSE Management System account-creation screen for SafetyOS",
+        },
+      ],
+      conceptVisuals: [
+        {
+          src: "/images/projects/capability-photos/hse-app-multidevice-concept.webp",
+          alt: "AI-generated concept render of an HSE management app shown across desktop and tablet, with inspection, alert and document panels",
+        },
+        {
+          src: "/images/projects/capability-photos/hse-mobile-capture-concept.webp",
+          alt: "AI-generated concept render of a mobile hazard-reporting flow, showing photo evidence capture and a review checklist",
+        },
       ],
     },
   },
@@ -166,6 +207,11 @@ export const capabilityPaths: CapabilityPath[] = [
     href: "/work",
     visual: "engineering",
     engagementType: "client",
+    capabilityVisual: {
+      src: "/images/projects/capability-photos/engineering-systems-concept.webp",
+      alt: "Concept render of an equipment-monitoring interface on a laptop showing a 3D pump/motor assembly with diagnostic overlays, sensor graphs and status readouts",
+      kind: "concept",
+    },
     domainExpertise: "Related engineering and systems expertise associated with the Kipeo Digital team.",
     relatedExpertise: {
       label: "Related specialist expertise",
@@ -186,6 +232,10 @@ export const capabilityPaths: CapabilityPath[] = [
     href: "/work",
     visual: "commerce",
     engagementType: "client",
-    illustrationLabel: "Commerce capability illustration",
+    capabilityVisual: {
+      src: "/images/projects/capability-photos/commerce-platform-concept.webp",
+      alt: "Concept render of an online store's multi-monitor commerce dashboard showing a product catalogue, inventory, orders, hosting and deployment, uptime monitoring, and security panels",
+      kind: "concept",
+    },
   },
 ];

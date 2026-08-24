@@ -135,6 +135,183 @@ supplied:
 4. Expand "Selected digital work" from one featured project to up to
    three, per the brief's cap.
 
+## Homepage restructure and /work, /studio (added this session)
+
+The Interactive Studio 3D canvas moved off the homepage entirely — it now
+mounts only on the new `/studio` page (`src/app/studio/page.tsx`), reached
+from a compact static teaser on the homepage
+(`src/components/sections/home/interactive-studio-section.tsx`) that reuses
+the existing `StudioFallback` SVG (no new art asset) plus a CTA. This
+removes the large, unreliable inline WebGL section the user flagged, without
+discarding the original low-poly scene — it's kept, refined (the previously
+decorative commerce/CMS panel mesh is now wired to the same hotspot as
+"deployment", matching the brief's "commerce, deployment and support"
+grouping), and given a full page.
+
+`hse-create-account.webp` (downloaded previously, unused until now) is now
+shown as the second screenshot in the HSE Management System embedded
+project, alongside `hse-login.webp`.
+
+The "engineering" capability card intentionally remains a labelled
+illustration (`illustrationLabel`, dashed-border badge), not a screenshot.
+Per the verification already recorded above, HarunLucas.com's own listed
+projects beyond BushLite are personal engineering research explicitly
+excluded by the brief, so no genuine, on-topic engineering screenshot exists
+to use — forcing an unrelated one would misrepresent it. This is the one
+open item still awaiting real project material (see the session's final
+report for the same note).
+
+`/work` (`src/app/work/page.tsx`) fixes the previous 404 by reusing the
+same `featuredWork` / `capabilityPaths` content and card components as the
+homepage — no new or fabricated case studies — plus an honest "in
+development" section built from the existing `content/projects.ts`
+placeholders, unchanged in substance.
+
+## Engineering-capability image search, re-checked (this session)
+
+Re-verified whether a genuine, on-topic image exists for the "Engineering
+and technical systems" capability card, since the brief names
+HarunLucas.com as a source for it. Fetched `harunlucas.com/projects`
+directly and downloaded the two most relevant candidate images
+(`predictive-featured.webp`, "AI-Based Predictive Maintenance", and
+`cnc-python-automation.webp`, "Python CNC Automation") to inspect them
+directly rather than assume.
+
+**Both are generic stock photography** — a staged studio photo of a person
+at a laptop next to automotive wiring-harness rigging, and a staged
+macro shot of a CNC drill bit — not real screenshots or photos of
+HarunLucas's own project work. Using either would be exactly the kind of
+"generic stock photography" the brief prohibits and would misrepresent
+stock imagery as related engineering work. **Not used** on HarunLucas.com
+grounds specifically — the card's image was later replaced anyway, see
+"Capability-card imagery, final state" below. The existing text link to
+`harunlucas.com/projects` stays as the honest "related expertise" pointer.
+
+## Badge-logic fix (this session)
+
+`CapabilityPathCard` computed its "Real screenshots" vs. illustration
+badge from whether `illustrationLabel` was set in content, rather than
+from whether the card actually had `screenshots`. The "Engineering and
+technical systems" card had neither field set, so it fell through to the
+"Real screenshots" default while rendering the SVG illustration —
+mislabeling an illustration as a real screenshot. Fixed in two places:
+`illustrationLabel` is now set on the engineering entry in
+`selected-work.ts`, and the badge logic itself now derives `isIllustration`
+from `!path.screenshots` so this class of bug can't recur regardless of
+what content authors remember to set.
+
+## Studio homepage preview, superseded CSS-3D pass (history only)
+
+The homepage teaser's static preview was first upgraded from a reused copy
+of `StudioFallback` (the WebGL loading-fallback SVG) to a purpose-built
+`StudioPreviewStatic` component using genuine CSS-3D depth (`perspective`/
+`translateZ`, the same technique as `hero-visual.tsx`). **Superseded** by
+the section below once the user supplied real studio images — kept here
+only as a record.
+
+## Kipeo Studio redesign: WebGL scene retired, image-based studio built (this session)
+
+The user supplied two AI-generated concept renders directly into
+`public/images/projects/studio/` (ChatGPT-generated, converted to WebP via
+the same local `sharp` conversion used for the capability-card images —
+`kipeo-studio-isometric.webp`, a full round-platform view of a "Kipeo
+Studio" workspace with distinct zones for design, application dev,
+integrations/servers, HSE and deployment; `kipeo-studio-workstation.webp`,
+a closer single-desk crop of the same illustrated workspace) and asked for
+the whole Kipeo Studio experience to be redesigned around them.
+
+This **replaces** the earlier React Three Fiber / Drei low-poly 3D scene
+entirely — the brief's original request for an orbit/drag WebGL scene is
+superseded by this explicit, detailed, image-based redesign instruction.
+Removed as dead code once nothing else referenced it:
+`src/components/three/` (all six files — `kipeo-studio.tsx`,
+`kipeo-studio-scene.tsx`, `studio-hotspots.tsx`, `studio-fallback.tsx`,
+`studio-error-boundary.tsx`, `studio-preview-static.tsx`) and the
+`three`, `@react-three/fiber`, `@react-three/drei`, `@types/three`
+dependencies (`npm uninstall`, confirmed nothing else imported them via
+`grep` first).
+
+New structure:
+- **Homepage teaser** (`interactive-studio-section.tsx`): the isometric
+  image via `StudioTeaserVisual` — a restrained (max 2°), mouse-only
+  pointer tilt plus CSS hover-scale and a soft glow, disabled for
+  touch/pen input and under `prefers-reduced-motion` (same guard pattern
+  as `hero-visual.tsx`'s `pointerType !== "mouse"` check).
+- **`/studio` hero**: the workstation image, same `StudioTeaserVisual`
+  component reused for visual consistency.
+- **`/studio` interactive workspace** (`StudioWorkspace`): the isometric
+  image again, full-width, with six real `<button>` pins positioned by
+  percentage — native keyboard/mouse/touch support (no custom key
+  handling needed), 44px minimum touch target, `aria-live` description
+  panel below. Pin coordinates are estimated against the image's visible
+  zones (top-left device/wireframe shelf → interface; top-right
+  servers/robotics → integrations; center desk → applications; bottom-left
+  lounge → strategy; bottom-center clipboard/shield → operations;
+  bottom-right monitor/cloud → deployment) — worth a visual check against
+  the actual rendered positions since they weren't pixel-measured.
+- **Project journey, Behind the interface, Capability selector,
+  Collaboration model**: new `src/content/studio.ts` content, reusing
+  existing components/content wherever the shape matched instead of
+  duplicating — `ServiceTabs` (widened from a `ServicePillarId`-only prop
+  to plain `string` so it can carry a new studio-only pillar) for the
+  capability selector, `TrustPath` + the existing `trustCommitments` verbatim
+  for the collaboration model, a new lightweight non-animated
+  `StudioJourney` for the 8-stage path.
+
+## Capability-card imagery, superseded stock-photo pass (this session, history only)
+
+Per the user's request for better images sourced from the open web (not
+restricted to HarunLucas.com/CynthiaMueni.com), free Pexels photos were
+initially sourced and used for the "Business and HSE systems,"
+"Engineering and technical systems" and "E-commerce and managed platforms"
+cards (Mikael Blomkvist's hard-hat/clipboard photo, Bulat843's control-panel
+photo, Tiger Lily's warehouse-scanning photo — all Pexels License, verified
+"Free to use," and checked to confirm they weren't the paid `plus.unsplash.com`
+tier two earlier Unsplash candidates turned out to be). **These files were
+removed later the same session** and replaced by the user's own images —
+see "Capability-card imagery, final state" directly below. Kept here only
+as a record of what was tried; there is nothing left in the repo from this
+pass.
+
+## Capability-card imagery, final state (this session)
+
+The user then supplied five AI-generated concept renders directly (saved
+into `public/images/projects/capability-photos/` from outside this
+session, ChatGPT-generated), asking that they replace the Pexels photos.
+Three map one-to-one onto the three capability cards and are in use. The
+other two (`hse-app-multidevice-concept.webp`, a general multi-device app
+UI, and `hse-mobile-capture-concept.webp`, a phone-based hazard-photo
+capture flow) are both HSE-themed — asked the user where they should go
+rather than guess, since the one place they'd obviously fit (the "HSE
+Management System" embedded panel) shows a real, disclosed, in-development
+product, and mixing in an AI mockup there needed to stay unambiguous. User
+chose to add them alongside the real screenshots. They're rendered in
+their own separate, visually distinct row (`EmbeddedProject.conceptVisuals`
+in `selected-work.ts`) below the real `hse-login`/`hse-create-account`
+screenshots — dashed borders, a small per-thumbnail "Concept" tag, and the
+row header "Concept previews — not the real product" — never merged into
+the `screenshots` array itself, so the real/generated distinction stays
+visible at the component level, not just in a caption.
+
+| Local file | Used on | Nature |
+|---|---|---|
+| `public/images/projects/capability-photos/hse-systems-concept.webp` | "Business and HSE systems" card (top visual) | AI-generated concept render |
+| `public/images/projects/capability-photos/engineering-systems-concept.webp` | "Engineering and technical systems" card (top visual) | AI-generated concept render |
+| `public/images/projects/capability-photos/commerce-platform-concept.webp` | "E-commerce and managed platforms" card (top visual) | AI-generated concept render |
+| `public/images/projects/capability-photos/hse-app-multidevice-concept.webp` | HSE Management System embedded panel, concept-previews row | AI-generated concept render |
+| `public/images/projects/capability-photos/hse-mobile-capture-concept.webp` | HSE Management System embedded panel, concept-previews row | AI-generated concept render |
+
+Converted from the user's original JPGs to WebP locally via the `sharp`
+package already in `node_modules` (quality 82, no external upload needed).
+Each card badge reads **"Concept visual"** (not "Real screenshots" or
+"Representative photo") and shows an explicit text disclosure: **"AI-
+generated concept visual — not a real product screenshot or client."**
+This is the third category on `CapabilityPath.capabilityVisual.kind` in
+`src/content/selected-work.ts` (`"photo"` for a credited real stock photo,
+`"concept"` for a generated render) — `CapabilityPathCard` derives its
+badge and disclosure from `kind`, never from a label content forgot to
+set, the same fix applied earlier to the screenshots-vs-illustration case.
+
 ## Verification performed
 
 - Checked `@reference-old-site`: only "PlagAiReport" is named (About

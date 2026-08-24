@@ -6,7 +6,7 @@ import { processStages } from "@/content/process";
 
 export function Process() {
   return (
-    <Section tone="paper">
+    <Section id="process" tone="paper">
       <div className="max-w-2xl">
         <Reveal>
           <Eyebrow>How we work</Eyebrow>
