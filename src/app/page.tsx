@@ -1,7 +1,7 @@
 import { Hero } from "@/components/sections/home/hero";
 import { TrustStrip } from "@/components/sections/home/trust-strip";
 import { ServicesIntro } from "@/components/sections/home/services-intro";
-import { SystemsShowcase } from "@/components/sections/home/systems-showcase";
+import { SelectedWork } from "@/components/sections/home/selected-work";
 import { ProblemsWeSolve } from "@/components/sections/home/problems-we-solve";
 import { Process } from "@/components/sections/home/process";
 import { Capabilities } from "@/components/sections/home/capabilities";
@@ -24,7 +24,7 @@ export default function Home() {
       <Hero />
       <TrustStrip />
       <ServicesIntro />
-      <SystemsShowcase />
+      <SelectedWork />
       <ProblemsWeSolve />
       <Process />
       <Capabilities />

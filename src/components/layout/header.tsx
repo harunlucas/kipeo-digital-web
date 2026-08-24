@@ -74,14 +74,21 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <a
             href={siteConfig.phoneHref}
             aria-label={`Call ${siteConfig.name} at ${siteConfig.phone}`}
-            title={siteConfig.phone}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-slate transition-colors hover:bg-mist hover:text-paper-foreground"
+            className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-slate transition-colors hover:bg-mist hover:text-paper-foreground lg:flex xl:hidden"
           >
             <Phone className="h-4 w-4" aria-hidden />
+            Call us
+          </a>
+          <a
+            href={siteConfig.phoneHref}
+            className="hidden items-center gap-2 text-sm font-medium text-slate transition-colors hover:text-paper-foreground xl:flex"
+          >
+            <Phone className="h-4 w-4 shrink-0" aria-hidden />
+            {siteConfig.phone}
           </a>
           <Button href="/contact" variant="primary">
             Start a project

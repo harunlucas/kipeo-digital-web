@@ -10,7 +10,7 @@ const trustPoints = ["Nairobi-based", "Working worldwide", "Free initial proposa
 
 export function Hero() {
   return (
-    <section className="bg-grid-paper relative overflow-hidden bg-paper pb-24 pt-16 sm:pb-32 sm:pt-20">
+    <section className="bg-grid-paper relative overflow-hidden bg-paper pb-16 pt-12 sm:pb-20 sm:pt-14">
       <div
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
@@ -56,7 +56,7 @@ export function Hero() {
             </Reveal>
 
             <Reveal delay={0.32}>
-              <ul className="mt-12 flex flex-col gap-3 border-t border-neutral-200 pt-8 sm:flex-row sm:gap-8">
+              <ul className="mt-10 flex flex-col gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:gap-8">
                 {trustPoints.map((point) => (
                   <li key={point} className="flex items-center gap-2 text-sm text-slate">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-teal-strong" aria-hidden />

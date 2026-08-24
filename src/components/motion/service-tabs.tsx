@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useState } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
+import { useId, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -16,23 +16,70 @@ type TabItem = {
 };
 
 export function ServiceTabs({ items }: { items: TabItem[] }) {
+  const baseId = useId();
   const [active, setActive] = useState(0);
   const shouldReduceMotion = useReducedMotion();
   const current = items[active];
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function focusTab(index: number) {
+    const next = (index + items.length) % items.length;
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    switch (event.key) {
+      case "ArrowDown":
+      case "ArrowRight":
+        event.preventDefault();
+        focusTab(index + 1);
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+        event.preventDefault();
+        focusTab(index - 1);
+        break;
+      case "Home":
+        event.preventDefault();
+        focusTab(0);
+        break;
+      case "End":
+        event.preventDefault();
+        focusTab(items.length - 1);
+        break;
+    }
+  }
 
   return (
     <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:gap-8">
-      <ol className="flex flex-col divide-y divide-neutral-200 rounded-2xl border border-neutral-200 bg-paper">
+      <ol
+        role="tablist"
+        aria-label="Service pillars"
+        aria-orientation="vertical"
+        className="flex flex-col divide-y divide-neutral-200 rounded-2xl border border-neutral-200 bg-paper"
+      >
         {items.map((item, index) => {
           const isActive = index === active;
+          const tabId = `${baseId}-tab-${index}`;
+          const panelId = `${baseId}-panel`;
+
           return (
-            <li key={item.id}>
+            <li key={item.id} role="presentation">
               <button
                 type="button"
+                id={tabId}
+                role="tab"
+                ref={(el) => {
+                  tabRefs.current[index] = el;
+                }}
+                aria-selected={isActive}
+                aria-controls={panelId}
+                tabIndex={isActive ? 0 : -1}
                 onMouseEnter={() => setActive(index)}
                 onClick={() => setActive(index)}
-                aria-current={isActive}
-                className={`flex w-full items-start gap-4 border-l-2 px-5 py-5 text-left transition-colors duration-200 ${
+                onKeyDown={(event) => onKeyDown(event, index)}
+                className={`flex w-full items-start gap-4 border-l-2 px-5 py-4 text-left transition-colors duration-200 ${
                   isActive ? "border-teal-strong bg-teal-tint/60" : "border-transparent hover:bg-mist"
                 }`}
               >
@@ -60,7 +107,14 @@ export function ServiceTabs({ items }: { items: TabItem[] }) {
         })}
       </ol>
 
-      <div className="relative min-h-[360px] overflow-hidden rounded-2xl border border-neutral-200 bg-ink">
+      <div
+        id={`${baseId}-panel`}
+        role="tabpanel"
+        aria-labelledby={`${baseId}-tab-${active}`}
+        aria-live="polite"
+        tabIndex={0}
+        className="relative min-h-[280px] overflow-hidden rounded-2xl border border-neutral-200 bg-ink"
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
@@ -68,7 +122,7 @@ export function ServiceTabs({ items }: { items: TabItem[] }) {
             animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex h-full min-h-[360px] flex-col justify-between p-8"
+            className="relative flex h-full min-h-[280px] flex-col justify-between p-7"
           >
             <div aria-hidden className="pointer-events-none absolute inset-0 opacity-70">
               <PillarArtwork id={current.id} />

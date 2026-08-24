@@ -11,12 +11,10 @@ export function FinalCta() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_20%,color-mix(in_srgb,var(--color-teal)_14%,transparent),transparent)]"
       />
-      <span
+      <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-10 left-1/2 hidden -translate-x-1/2 select-none whitespace-nowrap text-[10rem] font-semibold leading-none text-ink-foreground/[0.04] sm:block sm:text-[13rem]"
-      >
-        KIPEO
-      </span>
+        className="animate-spotlight pointer-events-none absolute -bottom-32 left-1/2 h-80 w-[42rem] -translate-x-1/2 rounded-full bg-highlight/10 blur-[120px]"
+      />
 
       <div className="relative mx-auto max-w-2xl text-center">
         <Reveal>

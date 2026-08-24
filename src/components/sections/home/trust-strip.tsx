@@ -6,7 +6,7 @@ import { trustCommitments } from "@/content/trust";
 
 export function TrustStrip() {
   return (
-    <Section tone="ink" className="py-20 sm:py-24">
+    <Section tone="ink" className="py-10 sm:py-14">
       <div className="max-w-xl">
         <Reveal>
           <Eyebrow tone="ink">How we deliver</Eyebrow>
@@ -18,7 +18,7 @@ export function TrustStrip() {
         </Reveal>
       </div>
 
-      <div className="mt-14">
+      <div className="mt-8">
         <TrustPath
           items={trustCommitments.map((commitment) => ({
             title: commitment.title,

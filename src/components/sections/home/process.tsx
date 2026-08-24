@@ -13,12 +13,18 @@ export function Process() {
         </Reveal>
         <Reveal delay={0.08}>
           <h2 className="text-display-2 mt-4 text-paper-foreground">
-            From first enquiry to a supported launch.
+            From first conversation to a system ready for use.
           </h2>
+        </Reveal>
+        <Reveal delay={0.14}>
+          <p className="mt-3 text-base text-slate sm:text-lg">
+            Every engagement follows a visible process, with decisions, deliverables and responsibilities
+            agreed at each stage.
+          </p>
         </Reveal>
       </div>
 
-      <div className="mt-14">
+      <div className="mt-10">
         <ProcessRoute stages={processStages} />
       </div>
     </Section>

@@ -1,32 +1,58 @@
+export type ProblemVisual = "enquiry" | "operations" | "website" | "automation" | "commerce";
+
 export type ProblemPair = {
   problem: string;
-  direction: string;
+  solutionLabel: string;
+  response: string;
+  visual: ProblemVisual;
+  linkLabel: string;
+  linkHref: string;
 };
 
+/**
+ * Capped at five for the homepage; any additional problem belongs on the
+ * future Services page instead. Link anchors match the pillar ids used by
+ * ServiceTabs and CapabilityPathCard (see content/service-pillars.ts).
+ */
 export const problemPairs: ProblemPair[] = [
   {
     problem: "Enquiries trapped in manual follow-up",
-    direction:
-      "A structured intake and follow-up workflow, so enquiries are tracked and answered consistently.",
+    solutionLabel: "Enquiry workflow",
+    response: "Capture, assign and follow up every enquiry from one structured workflow.",
+    visual: "enquiry",
+    linkLabel: "Explore workflow automation",
+    linkHref: "/services#software-and-systems",
   },
   {
     problem: "Operations spread across spreadsheets",
-    direction: "A business system that brings the data your team relies on into one manageable place.",
+    solutionLabel: "Business system",
+    response: "Bring records, tasks and reporting into one system built around the way your team works.",
+    visual: "operations",
+    linkLabel: "Explore custom software",
+    linkHref: "/services#software-and-systems",
   },
   {
     problem: "A website that does not generate qualified leads",
-    direction: "A redesign built around how your customers actually decide, not just how the business looks.",
+    solutionLabel: "Conversion-focused website",
+    response: "Clarify the offer, guide the right visitors and create a deliberate path to enquiry.",
+    visual: "website",
+    linkLabel: "Explore website development",
+    linkHref: "/services#websites-and-commerce",
   },
   {
     problem: "Repetitive work consuming staff time",
-    direction: "Workflow automation that removes manual steps between the tools you already use.",
+    solutionLabel: "Workflow automation",
+    response: "Connect repeated steps so routine work moves forward with less manual handling.",
+    visual: "automation",
+    linkLabel: "Explore automation",
+    linkHref: "/services#software-and-systems",
   },
   {
     problem: "An online store that is difficult to manage",
-    direction: "A catalogue and admin setup your team can run day to day without developer help.",
-  },
-  {
-    problem: "Digital tools that do not communicate with each other",
-    direction: "Integrations that connect existing systems, instead of adding another disconnected tool.",
+    solutionLabel: "Commerce platform",
+    response: "Create a manageable catalogue, ordering process and administration experience.",
+    visual: "commerce",
+    linkLabel: "Explore e-commerce",
+    linkHref: "/services#websites-and-commerce",
   },
 ];

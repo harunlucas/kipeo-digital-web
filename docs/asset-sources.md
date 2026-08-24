@@ -1,65 +1,96 @@
 # Homepage visual assets
 
-## Decision: no external stock photography
+## Real project imagery (added this session)
 
-The homepage redesign uses **no downloaded stock photographs**. This was a
-deliberate art-direction choice, not an oversight:
+One genuine, verifiable software project — BushLite WiFi — is presented in
+the "Selected digital work" section. Its screenshots were downloaded
+locally (not hotlinked) from the original, non-optimized source path on
+the public case-study site:
 
-- No genuine Kipeo Digital project screenshots have been approved yet
-  (confirmed by inspecting `@reference-old-site`, whose own
-  `IMAGE-CREDITS.md` explicitly states its stock imagery "must not be
-  presented as Kipeo Digital client work"). Using generic stock photos in
-  their place would misrepresent unfinished/placeholder content as real
-  work, which the project brief explicitly prohibits.
-- The brief's own preferred asset categories — "abstract technology
-  imagery," "premium 3D compositions," "architectural or geometric digital
-  forms" — describe exactly what this redesign builds natively in code
-  (CSS 3D panels, SVG artwork, layered device frames), so no external image
-  file is needed to satisfy them.
-- The brief explicitly warns against "random decorative stock
-  photographs" and staged office/handshake photography, which is the
-  majority of what's freely available and relevant-sounding on Unsplash/
-  Pexels for a "digital agency" search — reviewed the GHJ Dev reference
-  site (which relies heavily on exactly this kind of generic staged
-  photography plus fabricated stats and testimonials) as a negative
-  example of what to avoid, not a pattern to follow.
+| Local file | Original source | Used |
+|---|---|---|
+| `public/images/projects/bushlite-wifi-dashboard.webp` | `https://harunlucas.com/images/projects/bushlite-dashboard.webp` | Featured image in the "Selected digital work" section |
+| `public/images/projects/bushlite-wifi-login-portal.webp` | `https://harunlucas.com/images/projects/bushlite-wifi-login-portal.webp` | Downloaded, not currently used on the homepage — available for the future Work/Services page |
+| `public/images/projects/bushlite-wifi-access-point.webp` | `https://harunlucas.com/images/projects/bushlite-network-device.webp` | Downloaded, not currently used — hardware photo, less relevant to a software-agency presentation than the UI screenshots |
 
-All homepage imagery is instead original, hand-built SVG/CSS artwork,
-authored directly in the component files below (no binary assets, so
-nothing to store under `public/images/`):
+**Licence/ownership:** these are the project owner's own case-study
+images, referenced from `https://harunlucas.com/projects/bushlite-wifi`,
+which the user explicitly authorized linking to this session. Format is
+already `.webp`; no further optimization was applied since file sizes
+(79–97KB) are already reasonable for hero-sized imagery.
+
+**Attribution:** BushLite WiFi is disclosed on-page as "Independently
+developed software work, shared as an example of related systems
+capability — not a Kipeo Digital client project," per the user's
+instruction not to disguise it as Kipeo-delivered or Kipeo-owned work.
+The featured card links out to the case study with a visible external-link
+indicator (`<ExternalLink>` icon + `target="_blank"`, `rel="noopener
+noreferrer"`).
+
+## Everything else: original SVG/CSS artwork, no stock photography
+
+Every other visual on the homepage remains hand-built SVG/CSS/HTML,
+authored directly in the component files below — no binary assets:
 
 | Visual | Component | Purpose |
 |---|---|---|
-| Dimensional hero cluster | `src/components/motion/hero-visual.tsx` | Layered "glass" panels in real 3D perspective, representing connected digital capability |
-| Per-pillar service artwork | `src/components/motion/service-tabs.tsx` | Distinct abstract SVG motif per service pillar (nested windows, connected nodes, ascending bars, radiating rings) |
-| System-type artwork | `src/components/motion/system-card.tsx` | Abstract dashboard/app/commerce device-frame illustrations for the "Systems we build" showcase |
-| Problem→solution artwork | `src/components/motion/problems-showcase.tsx` | Generative connected-node illustration that reconfigures per selected problem |
-| Global collaboration cards | `src/components/motion/global-stack.tsx` | Layered timezone/milestone cards |
+| Dimensional hero core + orbiting surfaces | `src/components/motion/hero-visual.tsx` | Pointer-responsive 3D composition (real `perspective`/`translateZ`, animated SVG data-paths via native `<animateMotion>`) representing connected digital capability |
+| Per-pillar service artwork | `src/components/motion/service-tabs.tsx` | Distinct abstract SVG motif per service pillar |
+| Capability path artwork | `src/components/motion/capability-path-card.tsx` | Abstract dashboard/commerce device-frame illustrations for the two "What we build" cards adjacent to the BushLite feature |
+| Problem→solution artwork | `src/components/motion/problems-showcase.tsx` | Five distinct interface illustrations (enquiry pipeline, operations dashboard, lead-gen website, automated workflow, commerce catalogue) matched to each selected problem |
+| Layered architecture visual | `src/components/sections/home/capabilities.tsx` | Three offset "layer" cards (infrastructure / applications / frontend) suggesting system depth |
+| Scheduling/collaboration panel | `src/components/ui/schedule-panel.tsx` | Premium-style meeting-availability interface (Nairobi/EAT row, generic "your time" row, overlap window, milestone checklist) |
 
-## If real project imagery becomes available
+This was a deliberate choice, not an oversight, for the sections above:
+the brief's own preferred asset categories ("abstract technology imagery,"
+"premium 3D compositions," "architectural or geometric digital forms")
+describe exactly what these components build natively, and the brief
+explicitly warns against generic stock photography (staged offices,
+handshakes, unrelated laptops) — most of what's readily available and
+"agency"-relevant on Unsplash/Pexels falls into that category. The GHJ Dev
+reference site, which leans heavily on exactly that kind of staged
+photography plus fabricated stats and testimonials, was reviewed as a
+negative example to avoid, not a pattern to follow.
 
-`src/content/projects.ts` already defines a typed `Project` shape (title,
-category, problem, solution, technologies, image, url, collaboration,
-contribution, outcome) ready to receive genuine, approved screenshots.
-When real images are supplied:
+## 3D approach used in the hero
 
-1. Save them under `public/images/projects/<project-slug>/` using
-   descriptive lowercase filenames, converted to WebP.
-2. Reference them via `next/image` with explicit `width`/`height` (or
-   `fill` inside a sized container) to avoid layout shift.
-3. Record the source/ownership of each screenshot in this file.
-4. Swap the homepage's "Systems we build" capability showcase for the
-   real "Selected work" section once at least one project is approved.
+CSS/HTML dimensional composition (Option C), not WebGL. `three` /
+`@react-three/fiber` / `@react-three/drei` were **not** installed. The
+hero uses real 3D CSS (`perspective`, `translateZ`, `preserve-3d`), a
+pointer-responsive tilt via Motion's `useMotionValue`/`useSpring`, and
+native SVG `<animateMotion>` for the data-path flow dots. Rationale:
 
-## Verification performed this session
+- No WebGL asset or scene could be procedurally justified as "clearly
+  better" within this session's verification constraints (SSR/dynamic-
+  import correctness, static fallback, mobile GPU behaviour) versus the
+  reliability of a CSS-native approach that needs no fallback because
+  there is nothing that can fail to load.
+- `[data-hero-stage]` on the outer container remains the intended future
+  mount point if a real WebGL scene is ever justified later — the
+  surrounding hero layout would not need to change.
 
-- Checked `@reference-old-site` for any project the brief could point to:
-  only "PlagAiReport" is named (About page), with no screenshot, no URL,
-  no confirmed technologies, and an explicit note in the prior audit that
-  it needs client confirmation before reuse.
-- Fetched `harunlucas.com` directly: no "PlagAiReport," "GHJDev," or
-  "Kipeo" project appears there. The one real, verified, documented
-  project (BushLite WiFi — Node.js/Express hotspot management system) is
-  presented as Harun Lucas's personal work, not as Kipeo Digital
-  delivered/collaborative work, so using it as a Kipeo case study would
-  misattribute authorship. It was not used.
+## If more real project imagery becomes available
+
+`src/content/projects.ts` still defines a typed `Project` shape ready to
+receive additional genuine, approved case studies beyond BushLite. When
+supplied:
+
+1. Save under `public/images/projects/<project-slug>/` with descriptive
+   lowercase filenames (WebP where practical).
+2. Reference via `next/image` with explicit `sizes` to avoid layout shift.
+3. Record source/ownership/licence in this file.
+4. Expand "Selected digital work" from one featured project to up to
+   three, per the brief's cap.
+
+## Verification performed
+
+- Checked `@reference-old-site`: only "PlagAiReport" is named (About
+  page), with no screenshot, URL or confirmed technologies — not usable.
+- Fetched `harunlucas.com/projects` directly: confirmed BushLite WiFi is
+  the only mature, fully-documented project with a public case-study page,
+  verified technologies, and real screenshots. The other two listed
+  projects (AI/predictive-maintenance research, CNC/Python automation) are
+  personal engineering research, explicitly excluded by the brief.
+- Confirmed the BushLite screenshots' original (non-Next.js-optimized)
+  URLs resolve directly (HTTP 200) before downloading, so the local copies
+  are full quality, not resized `_next/image` proxies.

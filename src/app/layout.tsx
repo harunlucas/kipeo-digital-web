@@ -30,7 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-paper text-paper-foreground">
+      <body
+        className="flex min-h-full flex-col bg-paper text-paper-foreground"
+        suppressHydrationWarning
+      >
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

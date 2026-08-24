@@ -2,7 +2,7 @@ import { Globe, MessageSquare, Milestone, Clock } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/motion/reveal";
-import { GlobalStack } from "@/components/motion/global-stack";
+import { SchedulePanel } from "@/components/ui/schedule-panel";
 import { siteConfig } from "@/content/site-config";
 
 const commitments = [
@@ -44,7 +44,9 @@ export function GlobalCollaboration() {
           </ul>
         </div>
 
-        <GlobalStack />
+        <Reveal delay={0.1}>
+          <SchedulePanel />
+        </Reveal>
       </div>
     </Section>
   );
