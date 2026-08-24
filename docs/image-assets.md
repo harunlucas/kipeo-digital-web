@@ -1,10 +1,27 @@
-# Image assets — /services and /work
+# Image assets — /services, /work and /insights
 
 Internal record only. Nothing in this file is shown in the page UI — the
-Services and Work pages carry no visible "Photo by…", source URL, licence
-name or "representative photo" badges. See `docs/asset-sources.md` for the
-fuller project history; this file covers the redesign and the subsequent
-refinement pass (both /services and /work only).
+Services, Work and Insights pages carry no visible "Photo by…", source URL,
+licence name or "representative photo" badges. See `docs/asset-sources.md`
+for the fuller project history; this file covers the redesign, the
+subsequent refinement pass, and the new /insights section.
+
+## /insights (new section)
+
+Same approach as /services and /work: every visual is an original hand-built
+SVG/CSS composition — no photography, no AI-generated renders, nothing to
+license or store as a binary file.
+
+| Component | Used on | Depicts |
+|---|---|---|
+| `src/components/motion/insights-hero-visual.tsx` | /insights hero | An idea moving through a decision point into a built system, connected by a drawn path — a compact composition distinct from Services' `EcosystemVisual` |
+| `src/components/motion/insight-visual.tsx` | /insights featured article, grid cards, article pages | `custom-vs-off-the-shelf` (balance scale) / `plan-business-system` (discovery-node branches) / `website-vs-web-application` (rising complexity spectrum) — one per launch article, reused at featured/grid/article scale by the same component |
+
+Each article's `featuredImage` frontmatter field is a visual-variant key
+(e.g. `"custom-vs-off-the-shelf"`), not a file path — `InsightVisual`
+switches on it. `featuredImageAlt` is the real accessible description,
+applied via `role="img"`/`aria-label` on the wrapping element. See the
+comment on the `Insight` type in `src/content/insights.ts` for the reasoning.
 
 ## Refinement pass (this session)
 

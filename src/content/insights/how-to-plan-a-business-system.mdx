@@ -1,0 +1,108 @@
+export const meta = {
+  title: "How to Plan a Business System Before Development Starts",
+  description:
+    "A practical discovery process for planning a business system: the problem, users, workflow, permissions, data, integrations, reporting, security and measures of success.",
+  category: "Business Systems",
+  publishedAt: "2026-08-20",
+  readingTime: "8 min read",
+  featuredImage: "plan-business-system",
+  featuredImageAlt: "A discovery diagram branching into users, workflow, data and permissions before a system is built",
+  author: "Kipeo Digital",
+  featured: false,
+  published: true,
+  keywords: [
+    "how to plan a business system",
+    "software discovery process",
+    "business system requirements",
+    "system planning checklist",
+  ],
+};
+
+The most common reason a business system disappoints isn't the development — it's what happened, or didn't happen, before development started. A system built without a clear problem, a real understanding of its users, and an honest map of the workflow it needs to support will function technically and still fail practically. Planning isn't a formality before the "real work" begins. It is the work that determines whether the real work succeeds.
+
+This is the discovery process worth going through before a single screen is designed: the problem, the users, the workflow, the permissions, the data, the integrations, the reporting, the security, the delivery stages, and how you'll know it worked.
+
+## Start with the problem, not the software
+
+It's tempting to begin planning by describing the system you want — "we need a dashboard," "we need a portal." Start one step earlier instead: what specifically isn't working today? Is information scattered across spreadsheets that don't talk to each other? Do approvals get lost in email threads? Does nobody have a reliable, current view of what's actually happening in the business right now?
+
+A precise problem statement does more work than it looks like it does. It tells you what the system must solve, gives you a way to judge whether a proposed feature actually helps, and stops "nice to have" ideas from expanding the project past what it needs to be. If you can't state the problem in a sentence or two, it's worth spending more time here before moving forward.
+
+## Define who will actually use the system
+
+Every business system serves more than one kind of user, even when it doesn't look that way at first. A system might have a small operational team entering data daily, a supervisor reviewing and approving that work weekly, and a manager who only ever looks at summary reports. Each of these people needs the system to do something different, and planning has to account for all three — not just the person requesting the project.
+
+Concretely, list out each user type, what they need to be able to do, and how often they'll use the system. This becomes the backbone of both the workflow design and the permission structure that follows.
+
+### Roles and permissions
+
+Once you know who's using the system, define what each role can see and do. This matters more than it might seem: getting it wrong in either direction causes real problems. Too little access and staff can't do their jobs without escalating everything. Too much access and you lose accountability, and potentially create a compliance issue if the system handles sensitive records. A simple table — role, what they can view, what they can edit, what requires someone else's approval — is usually enough to settle this before development starts, and saves considerable rework later.
+
+## Map the workflow before you map the screens
+
+It's a common mistake to jump straight to designing interfaces. Interfaces are downstream of workflow, not the other way around. Before any screen is planned, walk through the actual sequence of steps a piece of work goes through today, end to end — who starts it, what happens next, who reviews it, what can send it backward, and what marks it as finished.
+
+This step usually surfaces details that get missed otherwise: a step that happens only for certain cases, an approval that's informal today but should be explicit in the system, or a handoff between two people who don't currently have a reliable way to notify each other. Mapping this first means the interface can be built to fit the real process, instead of forcing the process to bend around whatever screens got designed first.
+
+## Decide what data the system owns
+
+Every business system needs a clear answer to a simple question: what information does this system record, and what does it just reference from somewhere else? Trying to have two systems both "own" the same data — customer records in both a CRM and a custom system, for example — is a reliable way to end up with conflicting, outdated information in one of them.
+
+Planning this early means deciding, for each type of data the system touches, whether it's created and maintained here, or pulled in from an existing source. That decision directly shapes the integration work that follows.
+
+## Plan integrations early, not at the end
+
+Integration requirements have a way of getting treated as a detail to sort out later, and that's usually a mistake. If a system needs to connect to accounting software, a payment provider, an existing customer database or another internal tool, that need shapes the technical architecture from the start — not something that can be bolted on cleanly once the system is otherwise finished.
+
+For each integration, it's worth establishing early: what data needs to move, in which direction, how often, and what should happen if the connection fails temporarily. Even a rough answer to these questions at the planning stage prevents a much more expensive redesign later.
+
+## Design reporting around real decisions
+
+Reporting is often planned last and used most. The useful approach is to work backward from decisions: what does a supervisor need to know to approve or reject something? What does a manager need to see weekly to know whether operations are on track? What would someone need pulled together quickly if asked to justify a decision after the fact?
+
+Reports designed around actual decisions tend to be short and genuinely used. Reports designed around "everything we might want to know" tend to be long, rarely opened, and expensive to build for very little return. Planning reporting requirements alongside the workflow — not as an afterthought — keeps this focused.
+
+## Build in security from the start, not after
+
+Security planning at the discovery stage doesn't need to be exhaustive, but it does need to happen. At minimum, this means agreeing early on: how people log in, what happens when someone leaves the business or changes role, whether any data handled is sensitive enough to need particular protection, and who is responsible for keeping the system current after launch. Retrofitting security considerations after a system is built is possible, but it's slower and more disruptive than designing around them from the outset.
+
+## Break delivery into stages
+
+Few business systems benefit from being planned as one large release. Breaking delivery into stages — an initial version covering the core workflow, followed by planned additions — means the business starts getting value earlier, and each stage gives a real opportunity to check the direction against how the system is actually being used, before committing further budget to the next stage. Planning should identify what belongs in the first working version and what can reasonably wait.
+
+## Define what success actually looks like
+
+Before development starts, agree on how you'll know the system worked. This doesn't require invented statistics or projections — it means naming the specific outcomes that matter for this project: has the manual re-entry been eliminated, is the approval step now tracked instead of happening over email, can a manager get an accurate weekly view without asking three different people. Naming these up front gives everyone — the business and whoever builds the system — a shared, honest way to judge the result once it's live.
+
+## A practical planning checklist
+
+Before requesting a proposal or starting development, you should be able to answer:
+
+- What specific problem is this system solving, in one or two sentences?
+- Who are the distinct user types, and what does each one need to do?
+- What can each role see, edit and approve?
+- What is the actual step-by-step workflow today, including exceptions?
+- What data will the system own, and what will it reference from elsewhere?
+- What other systems does it need to integrate with, and how?
+- What reports does someone need to make a real decision, not just "everything"?
+- Who can log in, what happens when access needs to be revoked, and is any handled data sensitive?
+- What belongs in the first delivered version, and what can come later?
+- What specific outcome will tell you the system succeeded?
+
+## Frequently asked questions
+
+**How long should planning take before development starts?**
+It depends on the system's complexity, but a focused discovery phase — working through the questions above with the people who'll actually use the system — is time well spent regardless of scale. Skipping it rarely saves time overall; it usually moves the cost of unanswered questions later, where they're more expensive to resolve.
+
+**Do we need to have all the answers before we talk to a developer?**
+No. A good discovery process is often done together with whoever will build the system, not entirely beforehand. What helps most is coming in with a clear problem statement and an honest sense of your current workflow — the rest can be worked through jointly.
+
+**What if requirements change after development has started?**
+They usually do, to some degree — that's normal. Planning in stages, with an agreed first version, limits the impact: changes can be scoped into a later stage rather than disrupting work already underway.
+
+<ArticleCta
+  heading="Planning a system and want a second opinion?"
+  body="If you're working through discovery for a business system and want help turning it into a clear, buildable scope, we're glad to talk it through."
+  href="/services#software-and-business-systems"
+  label="Explore business systems"
+/>
