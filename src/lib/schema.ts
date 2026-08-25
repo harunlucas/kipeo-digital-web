@@ -1,5 +1,6 @@
 import { siteConfig } from "@/content/site-config";
-import type { ServicesFaqItem } from "@/content/services-page";
+
+type FaqItem = { question: string; answer: string };
 
 export function organizationSchema() {
   return {
@@ -36,7 +37,17 @@ export function professionalServiceSchema() {
   };
 }
 
-export function faqSchema(items: ServicesFaqItem[]) {
+export function contactPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: `Contact ${siteConfig.name}`,
+    url: `${siteConfig.url}/contact`,
+    about: organizationSchema(),
+  };
+}
+
+export function faqSchema(items: FaqItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",

@@ -12,7 +12,7 @@ import { InsightsUpdatePrompt } from "@/components/sections/insights/insights-up
 import { getAvailableCategories, getFeaturedInsight, getLatestInsights } from "@/lib/insights";
 import { buildMetadata } from "@/lib/metadata";
 
-const title = "Insights | Kipeo Digital";
+const title = "Software and Digital Strategy Insights | Kipeo Digital";
 const description =
   "Clear guidance on planning, building and maintaining software, websites and operational platforms — from the team behind Kipeo Digital.";
 
