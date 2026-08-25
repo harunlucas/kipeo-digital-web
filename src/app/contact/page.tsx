@@ -4,7 +4,8 @@ import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { ContactFlowVisual } from "@/components/motion/contact-flow-visual";
+import { ContactIntakePanel } from "@/components/motion/contact-intake-panel";
+import { StartEnquiryButton } from "@/components/sections/contact/start-enquiry-button";
 import { ContactPathways } from "@/components/sections/contact/contact-pathways";
 import { ContactProcess } from "@/components/sections/contact/contact-process";
 import { ContactTrustStrip } from "@/components/sections/contact/contact-trust-strip";
@@ -35,19 +36,26 @@ export default function ContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(contactFaq)) }} />
 
-      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-6 pt-10 sm:pb-8 sm:pt-12">
+      <section className="relative overflow-hidden bg-paper py-10 sm:py-12 lg:flex lg:min-h-[580px] lg:items-center lg:py-0">
+        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-50" />
         <div
           aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_50%_55%_at_82%_38%,var(--color-teal-tint),transparent)]"
         />
-        <Container className="relative">
-          <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_35%_40%_at_18%_88%,color-mix(in_srgb,var(--color-highlight)_9%,transparent),transparent)]"
+        />
+        <Container className="relative w-full">
+          <div className="grid items-center gap-10 min-[900px]:grid-cols-[11fr_9fr] min-[900px]:gap-14">
             <div>
               <Reveal immediate>
                 <Eyebrow>Start a conversation</Eyebrow>
               </Reveal>
               <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-5 text-paper-foreground">Tell us what needs to work better.</h1>
+                <h1 className="mt-5 font-display leading-[1.05] tracking-[-0.02em] text-paper-foreground [text-wrap:balance] text-[clamp(2.625rem,2.05rem+3vw,5.125rem)]">
+                  Tell us what needs to work better.
+                </h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
                 <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate">
@@ -57,9 +65,7 @@ export default function ContactPage() {
               </Reveal>
               <Reveal immediate delay={0.18}>
                 <div className="mt-7 flex flex-col gap-4 sm:flex-row">
-                  <Button href="#enquiry-form" variant="primary" size="lg">
-                    Start your enquiry
-                  </Button>
+                  <StartEnquiryButton />
                   <Button href={`mailto:${siteConfig.email}`} variant="outline" size="lg">
                     <Mail className="h-4 w-4" aria-hidden />
                     Email Kipeo
@@ -73,13 +79,13 @@ export default function ContactPage() {
               </Reveal>
             </div>
             <Reveal immediate delay={0.1}>
-              <ContactFlowVisual />
+              <ContactIntakePanel />
             </Reveal>
           </div>
         </Container>
       </section>
 
-      <Container className="pb-16 sm:pb-20">
+      <Container className="border-t border-neutral-200/80 pb-16 pt-14 sm:pb-20 sm:pt-16">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
           <div className="lg:col-start-1 lg:row-start-1">
             <h2 className="text-display-3 text-paper-foreground">Choose the easiest way to reach us.</h2>

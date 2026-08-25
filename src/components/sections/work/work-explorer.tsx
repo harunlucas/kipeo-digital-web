@@ -1,52 +1,33 @@
-import Link from "next/link";
 import { Section } from "@/components/layout/section";
-import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { WorkFeaturedSpotlight } from "@/components/motion/work-featured-spotlight";
 import { InternalProductSpotlight } from "@/components/motion/internal-product-spotlight";
 import { CapabilityPanel } from "@/components/motion/capability-panel";
 import type { FeaturedWork } from "@/content/selected-work";
-import type { InternalProduct, WorkCapabilityArea, WorkSectionAnchor } from "@/content/work";
+import type { InternalProduct, WorkCapabilityArea } from "@/content/work";
 
 type WorkExplorerProps = {
   featured: FeaturedWork;
   featuredSecondaryScreenshot?: { src: string; alt: string };
   internalProduct: InternalProduct;
   capabilityAreas: WorkCapabilityArea[];
-  sectionAnchors: WorkSectionAnchor[];
 };
 
 /**
  * There's too little verified work yet to justify a filter UI, so this is
  * a plain server component: three always-visible views (Verified work,
- * Internal products, Capabilities) in a fixed order, with simple anchor
- * navigation between them instead of client-side filtering.
+ * Internal products, Capabilities) in a fixed order. The jump-navigation
+ * between them lives in the hero now (`PortfolioNavigator`, in
+ * `/work/page.tsx`) rather than here.
  */
 export function WorkExplorer({
   featured,
   featuredSecondaryScreenshot,
   internalProduct,
   capabilityAreas,
-  sectionAnchors,
 }: WorkExplorerProps) {
   return (
     <>
-      <div className="border-b border-neutral-200 bg-paper/95">
-        <Container className="py-3">
-          <nav aria-label="Jump to a section" className="flex gap-2 overflow-x-auto px-1 py-1">
-            {sectionAnchors.map((anchor) => (
-              <Link
-                key={anchor.id}
-                href={`#${anchor.id}`}
-                className="flex min-h-11 shrink-0 items-center rounded-full border border-neutral-300 px-4 text-sm font-medium text-slate transition-colors duration-150 hover:bg-mist"
-              >
-                {anchor.label}
-              </Link>
-            ))}
-          </nav>
-        </Container>
-      </div>
-
       <Section id="verified-work" tone="paper">
         <Eyebrow>Verified work</Eyebrow>
         <h2 className="text-display-3 mt-2 text-paper-foreground">A verified, live project.</h2>

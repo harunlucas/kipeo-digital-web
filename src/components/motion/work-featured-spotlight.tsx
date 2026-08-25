@@ -17,7 +17,7 @@ const statusLabels: Record<WorkStatus, string> = {
  * /work — built fresh rather than extending `FeaturedProjectCard`, which
  * the homepage also renders and this pass must not change. Genuine BushLite
  * screenshots are shown here exclusively — no longer duplicated in the
- * /work hero, which uses `WorkIndexVisual` instead.
+ * /work hero, which uses `WorkSystemsLandscape` instead.
  */
 export function WorkFeaturedSpotlight({
   work,

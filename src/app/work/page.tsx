@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { WorkIndexVisual } from "@/components/motion/work-index-visual";
+import { WorkSystemsLandscape } from "@/components/motion/work-systems-landscape";
+import { PortfolioNavigator } from "@/components/sections/work/portfolio-navigator";
 import { WorkExplorer } from "@/components/sections/work/work-explorer";
 import { featuredWork } from "@/content/selected-work";
 import { featuredSecondaryScreenshot, internalProduct, workCapabilityAreas, workSectionAnchors } from "@/content/work";
@@ -39,34 +41,45 @@ export const metadata: Metadata = buildMetadata({
 export default function WorkPage() {
   return (
     <>
-      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-10 pt-10 sm:pb-12 sm:pt-12">
+      <section className="relative overflow-hidden border-b border-neutral-200/70 bg-paper pb-10 pt-8 sm:pb-12 sm:pt-10 min-[900px]:flex min-[900px]:min-h-[500px] min-[900px]:flex-col min-[900px]:justify-center min-[900px]:py-8">
+        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-50" />
         <div
           aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_55%_at_82%_30%,var(--color-teal-tint),transparent)]"
         />
-        <div className="relative mx-auto w-full max-w-[1280px] px-6 sm:px-8 lg:px-12">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_32%_36%_at_70%_62%,color-mix(in_srgb,var(--color-highlight)_9%,transparent),transparent)]"
+        />
+        <Container className="relative">
+          <div className="grid items-center gap-10 min-[900px]:grid-cols-[48fr_52fr] min-[900px]:gap-14">
             <div>
               <Reveal immediate>
                 <Eyebrow>Work</Eyebrow>
               </Reveal>
               <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-6 text-paper-foreground">Software work, built for real operations.</h1>
+                <h1 className="max-w-[620px] font-display leading-[1.05] tracking-[-0.02em] text-paper-foreground [text-wrap:balance] text-[clamp(2.625rem,2.26rem+2.63vw,5rem)] mt-5">
+                  Software work built for real operations.
+                </h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
-                <p className="mt-6 max-w-md text-lg leading-relaxed text-slate">
-                  A verified live project, an internal product in active development, and the capability areas
+                <p className="mt-5 max-w-md text-lg leading-relaxed text-slate">
+                  A verified live project, an internal product in active development and the software capabilities
                   Kipeo builds from.
                 </p>
               </Reveal>
             </div>
             <Reveal immediate delay={0.1}>
-              <div className="mx-auto lg:ml-auto lg:mr-0">
-                <WorkIndexVisual />
-              </div>
+              <WorkSystemsLandscape />
             </Reveal>
           </div>
-        </div>
+
+          <Reveal immediate delay={0.2}>
+            <div className="mt-9 min-[900px]:mt-8">
+              <PortfolioNavigator anchors={workSectionAnchors} />
+            </div>
+          </Reveal>
+        </Container>
       </section>
 
       <WorkExplorer
@@ -74,7 +87,6 @@ export default function WorkPage() {
         featuredSecondaryScreenshot={featuredSecondaryScreenshot}
         internalProduct={internalProduct}
         capabilityAreas={workCapabilityAreas}
-        sectionAnchors={workSectionAnchors}
       />
 
       <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
