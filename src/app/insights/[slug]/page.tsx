@@ -11,6 +11,8 @@ import { InsightCard } from "@/components/sections/insights/insight-card";
 import { getAllSlugs, getInsightBySlug, getLatestInsights } from "@/lib/insights";
 import { formatInsightDate } from "@/lib/format-date";
 import { buildMetadata } from "@/lib/metadata";
+import { articleSchema, breadcrumbListSchema } from "@/lib/schema";
+import { siteConfig } from "@/content/site-config";
 
 export const dynamicParams = false;
 
@@ -55,6 +57,20 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(insight)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbListSchema([
+              { name: "Home", url: siteConfig.url },
+              { name: "Insights", url: `${siteConfig.url}/insights` },
+              { name: insight.title, url: `${siteConfig.url}/insights/${insight.slug}` },
+            ]),
+          ),
+        }}
+      />
+
       <section className="bg-grid-paper relative overflow-hidden bg-paper pb-8 pt-10 sm:pt-12">
         <div
           aria-hidden

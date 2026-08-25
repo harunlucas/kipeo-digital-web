@@ -6,8 +6,12 @@ export function ContactProcess() {
     <div>
       <h2 className="text-lg font-semibold text-paper-foreground">What happens next</h2>
       <p className="mt-1.5 text-sm leading-relaxed text-slate">
-        Not every enquiry automatically receives a proposal — some need clarification first, and some may not fit
-        what Kipeo builds.
+        The initial consultation is free. Where the project is a suitable fit, the written proposal is also provided
+        without obligation.
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-slate">
+        Not every enquiry automatically receives a proposal. Some enquiries require clarification first, and some
+        may not fit the services Kipeo provides.
       </p>
       <ol className="mt-5 flex flex-col gap-4">
         {contactProcessSteps.map((step, index) => (

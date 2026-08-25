@@ -6,5 +6,5 @@
  * fails the build. This formatter has no server-only dependencies.
  */
 export function formatInsightDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  return new Date(iso).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
 }

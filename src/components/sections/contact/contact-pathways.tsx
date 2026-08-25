@@ -11,9 +11,17 @@ export function ContactPathways() {
             <a
               href={pathway.href}
               {...(pathway.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="flex min-h-11 items-center gap-3 rounded-xl border border-neutral-200 bg-paper px-4 py-3 transition-colors duration-150 hover:border-teal-strong/40 hover:bg-paper-elevated"
+              className={`flex min-h-11 items-center gap-3 rounded-xl border px-4 py-3 transition-colors duration-150 ${
+                pathway.prominent
+                  ? "border-teal-strong/35 bg-teal-tint hover:border-teal-strong/60"
+                  : "border-neutral-200 bg-paper hover:border-teal-strong/40 hover:bg-paper-elevated"
+              }`}
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-teal-tint text-teal-strong">
+              <span
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                  pathway.prominent ? "bg-teal-strong text-white" : "bg-teal-tint text-teal-strong"
+                }`}
+              >
                 <Icon className="h-4 w-4" aria-hidden />
               </span>
               <span className="flex flex-col">

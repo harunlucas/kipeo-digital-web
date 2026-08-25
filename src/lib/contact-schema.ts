@@ -6,6 +6,7 @@ import {
   projectTypeOptions,
   timelineOptions,
 } from "@/content/contact";
+import { normalizeWebsiteUrl } from "@/lib/normalize-url";
 
 /**
  * Single source of truth for the enquiry form, used by both the client
@@ -30,12 +31,21 @@ export const contactFormSchema = z
       .optional()
       .or(z.literal("")),
     countryOrTimezone: z.string().trim().max(120, "This field is too long.").optional().or(z.literal("")),
-    websiteUrl: z.string().trim().max(200, "URL is too long.").optional().or(z.literal("")),
+    websiteUrl: z
+      .string()
+      .trim()
+      .max(200, "URL is too long.")
+      .optional()
+      .or(z.literal(""))
+      .transform((value) => normalizeWebsiteUrl(value ?? ""))
+      .refine((value): value is string => value !== null, {
+        message: "Enter a valid website URL, e.g. example.com.",
+      }),
     preferredContact: z.enum(preferredContactOptions).optional().or(z.literal("")),
-    projectType: z.enum(projectTypeOptions, "Select a project type."),
-    projectStage: z.enum(projectStageOptions, "Select a project stage."),
-    timeline: z.enum(timelineOptions, "Select a timeline."),
-    budget: z.enum(budgetOptions, "Select a budget range."),
+    projectType: z.enum(projectTypeOptions).optional().or(z.literal("")),
+    projectStage: z.enum(projectStageOptions).optional().or(z.literal("")),
+    timeline: z.enum(timelineOptions).optional().or(z.literal("")),
+    budget: z.enum(budgetOptions).optional().or(z.literal("")),
     projectSummary: z
       .string()
       .trim()
@@ -68,8 +78,8 @@ export const contactFormDefaults: ContactFormState = {
   websiteUrl: "",
   preferredContact: "",
   projectType: projectTypeOptions[0],
-  projectStage: projectStageOptions[0],
-  timeline: timelineOptions[timelineOptions.length - 1],
+  projectStage: "",
+  timeline: "",
   budget: budgetOptions[0],
   projectSummary: "",
   privacyAcknowledged: false,

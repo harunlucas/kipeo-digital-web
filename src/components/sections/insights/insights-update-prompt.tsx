@@ -20,7 +20,7 @@ export function InsightsUpdatePrompt() {
         </div>
         <Button href={`mailto:${siteConfig.email}?subject=${encodeURIComponent("Notify me about new Insights articles")}`} variant="outline">
           <Mail className="h-4 w-4" aria-hidden />
-          Get notified by email
+          Email us about new insights
         </Button>
       </div>
     </Reveal>

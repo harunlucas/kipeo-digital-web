@@ -26,10 +26,10 @@ export function buildInternalNotificationEmail(data: ContactFormValues, submitte
     ["Company", data.company || ""],
     ["Country / timezone", data.countryOrTimezone || ""],
     ["Preferred contact", data.preferredContact || ""],
-    ["Project type", data.projectType],
-    ["Project stage", data.projectStage],
-    ["Timeline", data.timeline],
-    ["Budget guidance", data.budget],
+    ["Project type", data.projectType || ""],
+    ["Project stage", data.projectStage || ""],
+    ["Timeline", data.timeline || ""],
+    ["Budget guidance", data.budget || ""],
     ["Existing URL", data.websiteUrl || ""],
   ]
     .map(([label, value]) => row(label, value))
@@ -51,10 +51,10 @@ export function buildInternalNotificationEmail(data: ContactFormValues, submitte
     `Company: ${data.company || "—"}`,
     `Country / timezone: ${data.countryOrTimezone || "—"}`,
     `Preferred contact: ${data.preferredContact || "—"}`,
-    `Project type: ${data.projectType}`,
-    `Project stage: ${data.projectStage}`,
-    `Timeline: ${data.timeline}`,
-    `Budget guidance: ${data.budget}`,
+    `Project type: ${data.projectType || "—"}`,
+    `Project stage: ${data.projectStage || "—"}`,
+    `Timeline: ${data.timeline || "—"}`,
+    `Budget guidance: ${data.budget || "—"}`,
     `Existing URL: ${data.websiteUrl || "—"}`,
     "",
     "Project summary:",
@@ -67,10 +67,10 @@ export function buildInternalNotificationEmail(data: ContactFormValues, submitte
 /** Sent to the person who submitted the form. No marketing subscription language, no invented response deadline. */
 export function buildConfirmationEmail(data: ContactFormValues): EmailContent {
   const summaryRows = [
-    ["Project type", data.projectType],
-    ["Project stage", data.projectStage],
-    ["Timeline", data.timeline],
-    ["Budget guidance", data.budget],
+    ["Project type", data.projectType || ""],
+    ["Project stage", data.projectStage || ""],
+    ["Timeline", data.timeline || ""],
+    ["Budget guidance", data.budget || ""],
   ]
     .map(([label, value]) => row(label, value))
     .join("");
@@ -81,6 +81,10 @@ export function buildConfirmationEmail(data: ContactFormValues): EmailContent {
      <p style="font-size:14px;color:#14171a;line-height:1.6;">
        Thank you for contacting ${escapeHtml(siteConfig.name)}. We'll review the information below and respond using
        your preferred contact method.
+     </p>
+     <p style="font-size:14px;color:#14171a;line-height:1.6;">
+       The initial consultation is free. Where the project is a suitable fit, the written proposal is also provided
+       without obligation.
      </p>
      <table role="presentation" style="border-collapse:collapse;width:100%;margin:16px 0;">${summaryRows}</table>
      <p style="font-size:13px;color:#6b7580;margin:0 0 4px;">Your project summary</p>
@@ -97,10 +101,12 @@ export function buildConfirmationEmail(data: ContactFormValues): EmailContent {
     "",
     `Thank you for contacting ${siteConfig.name}. We'll review the information below and respond using your preferred contact method.`,
     "",
-    `Project type: ${data.projectType}`,
-    `Project stage: ${data.projectStage}`,
-    `Timeline: ${data.timeline}`,
-    `Budget guidance: ${data.budget}`,
+    "The initial consultation is free. Where the project is a suitable fit, the written proposal is also provided without obligation.",
+    "",
+    `Project type: ${data.projectType || "—"}`,
+    `Project stage: ${data.projectStage || "—"}`,
+    `Timeline: ${data.timeline || "—"}`,
+    `Budget guidance: ${data.budget || "—"}`,
     "",
     "Your project summary:",
     data.projectSummary,

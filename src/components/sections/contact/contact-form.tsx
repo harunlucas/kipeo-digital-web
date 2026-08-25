@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import Link from "next/link";
-import { ArrowUpRight, ShieldAlert } from "lucide-react";
+import { ArrowUpRight, Plus, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Turnstile } from "@/components/ui/turnstile";
 import {
@@ -13,15 +13,29 @@ import {
   timelineOptions,
 } from "@/content/contact";
 import { contactFormDefaults, contactFormSchema, type ContactFormState } from "@/lib/contact-schema";
+import { siteConfig } from "@/content/site-config";
 
 const inputClasses =
   "min-h-11 w-full rounded-lg border border-neutral-300 bg-paper px-3.5 py-2.5 text-sm text-paper-foreground placeholder:text-slate-muted/70 focus-visible:border-teal-strong disabled:opacity-60";
 const labelClasses = "text-sm font-medium text-paper-foreground";
 const helperClasses = "mt-1.5 text-xs leading-relaxed text-slate-muted";
 const errorClasses = "mt-1.5 text-xs font-medium text-[#b3261e]";
+const GENERIC_ERROR_MESSAGE = `We couldn't send your enquiry. Please try again or email ${siteConfig.email}.`;
 
 type SubmitState = { status: "idle" | "submitting" | "success" | "error"; message?: string };
 type StringFieldKey = Exclude<keyof ContactFormState, "privacyAcknowledged">;
+
+/** Fields inside the "Add project details" disclosure — used to decide whether a validation error should force it open. */
+const OPTIONAL_DETAIL_KEYS: StringFieldKey[] = [
+  "company",
+  "phone",
+  "countryOrTimezone",
+  "websiteUrl",
+  "preferredContact",
+  "projectStage",
+  "timeline",
+  "budget",
+];
 
 export function ContactForm() {
   const idPrefix = useId();
@@ -29,6 +43,7 @@ export function ContactForm() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submit, setSubmit] = useState<SubmitState>({ status: "idle" });
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const isSubmittingRef = useRef(false);
   const statusRef = useRef<HTMLDivElement>(null);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -44,6 +59,11 @@ export function ContactForm() {
     };
   }
 
+  function applyErrors(errors: Record<string, string>) {
+    setFieldErrors(errors);
+    if (OPTIONAL_DETAIL_KEYS.some((key) => key in errors)) setDetailsOpen(true);
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (isSubmittingRef.current) return;
@@ -56,7 +76,7 @@ export function ContactForm() {
         const key = issue.path[0];
         if (typeof key === "string" && !(key in errors)) errors[key] = issue.message;
       }
-      setFieldErrors(errors);
+      applyErrors(errors);
       setSubmit({ status: "error", message: "Please check the highlighted fields." });
       requestAnimationFrame(() => errorSummaryRef.current?.focus());
       return;
@@ -75,24 +95,25 @@ export function ContactForm() {
       const result = await response.json();
 
       if (response.ok && result.ok) {
+        setValues(contactFormDefaults);
+        setTurnstileToken("");
+        setDetailsOpen(false);
+        setFieldErrors({});
         setSubmit({ status: "success" });
         requestAnimationFrame(() => statusRef.current?.focus());
       } else if (result.kind === "validation" && result.fieldErrors) {
-        setFieldErrors(result.fieldErrors);
+        applyErrors(result.fieldErrors);
         setSubmit({ status: "error", message: "Please check the highlighted fields." });
         requestAnimationFrame(() => errorSummaryRef.current?.focus());
       } else {
         setSubmit({
           status: "error",
-          message: result.message || "We couldn't send your enquiry. Please try again or email kipeo@harunlucas.com.",
+          message: result.message || GENERIC_ERROR_MESSAGE,
         });
         requestAnimationFrame(() => statusRef.current?.focus());
       }
     } catch {
-      setSubmit({
-        status: "error",
-        message: "We couldn't send your enquiry. Please try again or email kipeo@harunlucas.com.",
-      });
+      setSubmit({ status: "error", message: GENERIC_ERROR_MESSAGE });
       requestAnimationFrame(() => statusRef.current?.focus());
     } finally {
       isSubmittingRef.current = false;
@@ -194,136 +215,207 @@ export function ContactForm() {
             </p>
           )}
         </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-company`} className={labelClasses}>
-            Company or organisation
-          </label>
-          <input {...field("company")} type="text" autoComplete="organization" maxLength={160} className={`mt-1.5 ${inputClasses}`} />
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-phone`} className={labelClasses}>
-            Phone or WhatsApp
-          </label>
-          <input {...field("phone")} type="tel" autoComplete="tel" maxLength={40} className={`mt-1.5 ${inputClasses}`} />
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-countryOrTimezone`} className={labelClasses}>
-            Country or timezone
-          </label>
-          <input
-            {...field("countryOrTimezone")}
-            type="text"
-            autoComplete="country-name"
-            maxLength={120}
-            className={`mt-1.5 ${inputClasses}`}
-          />
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-websiteUrl`} className={labelClasses}>
-            Website or existing system URL
-          </label>
-          <input {...field("websiteUrl")} type="text" autoComplete="url" maxLength={200} className={`mt-1.5 ${inputClasses}`} />
-        </div>
-
-        <div className="sm:col-span-2">
-          <label htmlFor={`${idPrefix}-preferredContact`} className={labelClasses}>
-            Preferred contact method
-          </label>
-          <select {...field("preferredContact")} className={`mt-1.5 ${inputClasses}`}>
-            <option value="">No preference</option>
-            {preferredContactOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-projectType`} className={labelClasses}>
-            Project type
-          </label>
-          <select {...field("projectType")} className={`mt-1.5 ${inputClasses}`}>
-            {projectTypeOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-projectStage`} className={labelClasses}>
-            Project stage
-          </label>
-          <select {...field("projectStage")} className={`mt-1.5 ${inputClasses}`}>
-            {projectStageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-timeline`} className={labelClasses}>
-            Timeline
-          </label>
-          <select {...field("timeline")} className={`mt-1.5 ${inputClasses}`}>
-            {timelineOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor={`${idPrefix}-budget`} className={labelClasses}>
-            Budget guidance
-          </label>
-          <select {...field("budget")} className={`mt-1.5 ${inputClasses}`}>
-            {budgetOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <p className={helperClasses}>These ranges help us understand likely project scale. They are not fixed Kipeo prices.</p>
-        </div>
-
-        <div className="sm:col-span-2">
-          <label htmlFor={`${idPrefix}-projectSummary`} className={labelClasses}>
-            Project summary <span aria-hidden>*</span>
-            <span className="sr-only">(required)</span>
-          </label>
-          <p id={`${idPrefix}-projectSummary-helper`} className="mt-1 text-xs leading-relaxed text-slate-muted">
-            Describe the problem, who will use the result, what currently exists and what you would like to improve.
-          </p>
-          <textarea
-            {...field("projectSummary")}
-            required
-            rows={5}
-            maxLength={4000}
-            aria-describedby={`${idPrefix}-projectSummary-helper${fieldErrors.projectSummary ? ` ${idPrefix}-projectSummary-error` : ""}`}
-            aria-invalid={Boolean(fieldErrors.projectSummary)}
-            className={`mt-2 ${inputClasses} min-h-32 resize-y py-3`}
-          />
-          {fieldErrors.projectSummary && (
-            <p id={`${idPrefix}-projectSummary-error`} className={errorClasses}>
-              {fieldErrors.projectSummary}
-            </p>
-          )}
-          <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-slate-muted">
-            <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
-            Please do not include passwords, access keys or sensitive personal information.
-          </p>
-        </div>
       </div>
+
+      <div className="mt-5">
+        <label htmlFor={`${idPrefix}-projectType`} className={labelClasses}>
+          Project type
+        </label>
+        <select {...field("projectType")} className={`mt-1.5 ${inputClasses} sm:max-w-xs`}>
+          {projectTypeOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mt-5">
+        <label htmlFor={`${idPrefix}-projectSummary`} className={labelClasses}>
+          Project summary <span aria-hidden>*</span>
+          <span className="sr-only">(required)</span>
+        </label>
+        <p id={`${idPrefix}-projectSummary-helper`} className="mt-1 text-xs leading-relaxed text-slate-muted">
+          Describe the problem, who will use the result, what currently exists and what you would like to improve.
+        </p>
+        <textarea
+          {...field("projectSummary")}
+          required
+          rows={5}
+          maxLength={4000}
+          aria-describedby={`${idPrefix}-projectSummary-helper${fieldErrors.projectSummary ? ` ${idPrefix}-projectSummary-error` : ""}`}
+          aria-invalid={Boolean(fieldErrors.projectSummary)}
+          className={`mt-2 ${inputClasses} min-h-32 resize-y py-3`}
+        />
+        {fieldErrors.projectSummary && (
+          <p id={`${idPrefix}-projectSummary-error`} className={errorClasses}>
+            {fieldErrors.projectSummary}
+          </p>
+        )}
+        <p className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-slate-muted">
+          <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
+          Please do not include passwords, access keys or sensitive personal information.
+        </p>
+      </div>
+
+      <details
+        open={detailsOpen}
+        onToggle={(e) => setDetailsOpen(e.currentTarget.open)}
+        className="group mt-6 rounded-xl border border-neutral-200 bg-paper"
+      >
+        <summary className="flex min-h-11 w-full cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 text-sm font-medium text-paper-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-strong [&::-webkit-details-marker]:hidden">
+          <span>Add project details — optional</span>
+          <Plus
+            className="h-4 w-4 shrink-0 text-teal-strong transition-transform duration-200 group-open:rotate-45"
+            aria-hidden
+          />
+        </summary>
+        <div className="border-t border-neutral-200 px-4 pb-5 pt-4">
+          <p className="text-xs leading-relaxed text-slate-muted">
+            Timeline, budget guidance and existing-system details can help us prepare for the conversation.
+          </p>
+
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor={`${idPrefix}-company`} className={labelClasses}>
+                Company or organisation
+              </label>
+              <input
+                {...field("company")}
+                type="text"
+                autoComplete="organization"
+                maxLength={160}
+                className={`mt-1.5 ${inputClasses}`}
+                aria-invalid={Boolean(fieldErrors.company)}
+                aria-describedby={fieldErrors.company ? `${idPrefix}-company-error` : undefined}
+              />
+              {fieldErrors.company && (
+                <p id={`${idPrefix}-company-error`} className={errorClasses}>
+                  {fieldErrors.company}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={`${idPrefix}-phone`} className={labelClasses}>
+                Phone or WhatsApp
+              </label>
+              <input
+                {...field("phone")}
+                type="tel"
+                autoComplete="tel"
+                maxLength={40}
+                className={`mt-1.5 ${inputClasses}`}
+                aria-invalid={Boolean(fieldErrors.phone)}
+                aria-describedby={fieldErrors.phone ? `${idPrefix}-phone-error` : undefined}
+              />
+              {fieldErrors.phone && (
+                <p id={`${idPrefix}-phone-error`} className={errorClasses}>
+                  {fieldErrors.phone}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={`${idPrefix}-countryOrTimezone`} className={labelClasses}>
+                Country or timezone
+              </label>
+              <input
+                {...field("countryOrTimezone")}
+                type="text"
+                autoComplete="country-name"
+                maxLength={120}
+                className={`mt-1.5 ${inputClasses}`}
+                aria-invalid={Boolean(fieldErrors.countryOrTimezone)}
+                aria-describedby={fieldErrors.countryOrTimezone ? `${idPrefix}-countryOrTimezone-error` : undefined}
+              />
+              {fieldErrors.countryOrTimezone && (
+                <p id={`${idPrefix}-countryOrTimezone-error`} className={errorClasses}>
+                  {fieldErrors.countryOrTimezone}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor={`${idPrefix}-websiteUrl`} className={labelClasses}>
+                Website or existing system URL
+              </label>
+              <input
+                {...field("websiteUrl")}
+                type="url"
+                inputMode="url"
+                autoComplete="url"
+                maxLength={200}
+                placeholder="example.com"
+                className={`mt-1.5 ${inputClasses}`}
+                aria-invalid={Boolean(fieldErrors.websiteUrl)}
+                aria-describedby={fieldErrors.websiteUrl ? `${idPrefix}-websiteUrl-error` : undefined}
+              />
+              {fieldErrors.websiteUrl && (
+                <p id={`${idPrefix}-websiteUrl-error`} className={errorClasses}>
+                  {fieldErrors.websiteUrl}
+                </p>
+              )}
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor={`${idPrefix}-preferredContact`} className={labelClasses}>
+                Preferred contact method
+              </label>
+              <select {...field("preferredContact")} className={`mt-1.5 ${inputClasses}`}>
+                <option value="">No preference</option>
+                {preferredContactOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor={`${idPrefix}-projectStage`} className={labelClasses}>
+                Project stage
+              </label>
+              <select {...field("projectStage")} className={`mt-1.5 ${inputClasses}`}>
+                <option value="">Select a project stage — optional</option>
+                {projectStageOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor={`${idPrefix}-timeline`} className={labelClasses}>
+                Timeline
+              </label>
+              <select {...field("timeline")} className={`mt-1.5 ${inputClasses}`}>
+                <option value="">Select a timeline — optional</option>
+                {timelineOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor={`${idPrefix}-budget`} className={labelClasses}>
+                Budget guidance
+              </label>
+              <select {...field("budget")} className={`mt-1.5 ${inputClasses}`}>
+                {budgetOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <p className={helperClasses}>These ranges help us understand likely project scale. They are not fixed Kipeo prices.</p>
+            </div>
+          </div>
+        </div>
+      </details>
 
       {/* Honeypot — hidden from sighted and assistive-tech users, left open for scripted bots. */}
       <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
@@ -342,10 +434,12 @@ export function ContactForm() {
       <div className="mt-6 flex items-start gap-3">
         <input
           id={`${idPrefix}-privacyAcknowledged`}
+          name="privacyAcknowledged"
           type="checkbox"
           checked={values.privacyAcknowledged}
           onChange={(e) => setValues((prev) => ({ ...prev, privacyAcknowledged: e.target.checked }))}
           required
+          aria-invalid={Boolean(fieldErrors.privacyAcknowledged)}
           className="mt-0.5 h-5 w-5 shrink-0 rounded border-neutral-300 text-teal-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-teal-strong"
           aria-describedby={fieldErrors.privacyAcknowledged ? `${idPrefix}-privacy-error` : undefined}
         />

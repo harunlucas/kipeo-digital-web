@@ -35,7 +35,7 @@ export default function ContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(contactFaq)) }} />
 
-      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-8 pt-12 sm:pb-10 sm:pt-14">
+      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-6 pt-10 sm:pb-8 sm:pt-12">
         <div
           aria-hidden
           className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
@@ -81,25 +81,20 @@ export default function ContactPage() {
 
       <Container className="pb-16 sm:pb-20">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
-          <div className="flex flex-col gap-10">
-            <div>
-              <h2 className="text-display-3 text-paper-foreground">How to reach us.</h2>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-slate sm:text-base">
-                Email, call or message us directly, or fill in the project enquiry form with as much or as little
-                detail as you have.
-              </p>
-              <div className="mt-6">
-                <ContactPathways />
-              </div>
+          <div className="lg:col-start-1 lg:row-start-1">
+            <h2 className="text-display-3 text-paper-foreground">Choose the easiest way to reach us.</h2>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-slate sm:text-base">
+              Email, call or message us directly, or fill in the project enquiry form with as much or as little
+              detail as you have.
+            </p>
+            <div className="mt-6">
+              <ContactPathways />
             </div>
-
-            <ContactProcess />
-            <ContactTrustStrip />
           </div>
 
-          <div>
+          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <h2 id="enquiry-form" tabIndex={-1} className="text-display-3 text-paper-foreground focus:outline-none">
-              Project enquiry.
+              Tell us about your project.
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate sm:text-base">
               Fields marked required help us understand the project; everything else is optional context.
@@ -107,6 +102,11 @@ export default function ContactPage() {
             <div className="mt-6">
               <ContactForm />
             </div>
+          </div>
+
+          <div className="flex flex-col gap-10 lg:col-start-1 lg:row-start-2">
+            <ContactProcess />
+            <ContactTrustStrip />
           </div>
         </div>
       </Container>

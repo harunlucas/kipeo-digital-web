@@ -47,6 +47,16 @@ export function contactPageSchema() {
   };
 }
 
+export function aboutPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: `About ${siteConfig.name}`,
+    url: `${siteConfig.url}/about`,
+    about: organizationSchema(),
+  };
+}
+
 export function faqSchema(items: FaqItem[]) {
   return {
     "@context": "https://schema.org",
@@ -58,6 +68,47 @@ export function faqSchema(items: FaqItem[]) {
         "@type": "Answer",
         text: item.answer,
       },
+    })),
+  };
+}
+
+type ArticleInput = {
+  slug: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  updatedAt?: string;
+  category: string;
+};
+
+export function articleSchema(insight: ArticleInput) {
+  const publisher = { "@type": "Organization", name: siteConfig.name, url: siteConfig.url };
+  const url = `${siteConfig.url}/insights/${insight.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: insight.title,
+    description: insight.description,
+    image: `${url}/opengraph-image`,
+    datePublished: insight.publishedAt,
+    dateModified: insight.updatedAt ?? insight.publishedAt,
+    articleSection: insight.category,
+    author: publisher,
+    publisher,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+}
+
+export function breadcrumbListSchema(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
     })),
   };
 }

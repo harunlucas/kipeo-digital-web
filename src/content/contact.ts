@@ -56,6 +56,8 @@ export type ContactPathway = {
   href: string;
   icon: LucideIcon;
   external?: boolean;
+  /** Slightly more prominent styling — reserved for the pathways that work best for international visitors. */
+  prominent?: boolean;
 };
 
 export const contactPathways: ContactPathway[] = [
@@ -65,6 +67,7 @@ export const contactPathways: ContactPathway[] = [
     value: siteConfig.email,
     href: `mailto:${siteConfig.email}`,
     icon: Mail,
+    prominent: true,
   },
   {
     id: "call",
@@ -80,6 +83,7 @@ export const contactPathways: ContactPathway[] = [
     href: `${siteConfig.whatsappHref}?text=${encodeURIComponent(whatsappMessage)}`,
     icon: MessageCircle,
     external: true,
+    prominent: true,
   },
 ];
 
@@ -99,7 +103,8 @@ export const contactProcessSteps: ContactProcessStep[] = [
   {
     number: "03",
     title: "Propose",
-    description: "You receive a written proposal covering scope, deliverables, timeline, milestones and investment.",
+    description:
+      "Where the project is a suitable fit, you receive a written proposal covering scope, deliverables, timeline, milestones and investment.",
   },
   {
     number: "04",
@@ -121,7 +126,8 @@ export type ContactFaqItem = { question: string; answer: string };
 export const contactFaq: ContactFaqItem[] = [
   {
     question: "Is the initial consultation free?",
-    answer: "Yes. The initial discussion and written proposal are free, with no obligation to proceed.",
+    answer:
+      "The initial consultation is free. Where the project is a suitable fit, the written proposal is also provided without obligation.",
   },
   {
     question: "Do I need complete requirements before contacting Kipeo?",

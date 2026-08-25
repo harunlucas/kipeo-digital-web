@@ -1,72 +1,51 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { Inbox, Search, MessagesSquare, FileText, Rocket } from "lucide-react";
-
-const steps = [
-  { id: "enquiry", label: "Enquiry", icon: Inbox },
-  { id: "review", label: "Review", icon: Search },
-  { id: "clarification", label: "Clarification", icon: MessagesSquare },
-  { id: "proposal", label: "Proposal", icon: FileText },
-  { id: "start", label: "Project start", icon: Rocket },
-];
+import { Mail, MessageCircle } from "lucide-react";
 
 /**
- * A quiet, compact visual for the /contact hero: an enquiry moving through
- * review, clarification and a proposal to a project start, as a connected
- * horizontal path. Built fresh for this page — not the Insights hero's
- * idea→decision→system composition, not any Services/Work visual.
+ * A small, decorative signal for the /contact hero — an enquiry reaching
+ * Kipeo and a response coming back. Deliberately not a repeat of the four
+ * "What happens next" stages (see contact-process.tsx); this is just
+ * connection and response, kept compact.
  */
 export function ContactFlowVisual() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative mx-auto w-full max-w-[440px] py-4">
-      <div aria-hidden className="absolute -right-6 top-0 h-40 w-40 rounded-full bg-teal/15 blur-[80px]" />
-      <div aria-hidden className="absolute -left-6 bottom-0 h-32 w-32 rounded-full bg-highlight/15 blur-[70px]" />
+    <div className="relative mx-auto flex w-full max-w-[320px] items-center justify-center py-4">
+      <div aria-hidden className="absolute -right-4 top-0 h-28 w-28 rounded-full bg-teal/15 blur-[70px]" />
+      <div aria-hidden className="absolute -left-4 bottom-0 h-24 w-24 rounded-full bg-highlight/15 blur-[60px]" />
 
-      <div className="relative flex items-start justify-between">
-        <svg
-          viewBox="0 0 100 10"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute left-[10%] right-[10%] top-6 h-px w-[80%]"
-          aria-hidden
-        >
+      <div className="relative flex items-center gap-5">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-teal-strong bg-teal-strong text-white shadow-panel">
+          <Mail className="h-5 w-5" aria-hidden />
+        </span>
+
+        <svg viewBox="0 0 100 10" preserveAspectRatio="none" className="h-px w-16 sm:w-20" aria-hidden>
           <motion.line
             x1="0"
             y1="5"
             x2="100"
             y2="5"
             stroke="var(--color-teal)"
-            strokeOpacity="0.4"
-            strokeWidth="1"
+            strokeOpacity="0.45"
+            strokeWidth="1.5"
             strokeDasharray="3 3"
             initial={shouldReduceMotion ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           />
         </svg>
 
-        {steps.map(({ id, label, icon: Icon }, index) => (
-          <motion.div
-            key={id}
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-1/5 flex-col items-center gap-2 text-center"
-          >
-            <span
-              className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-panel sm:h-12 sm:w-12 ${
-                index === 0
-                  ? "border-teal-strong bg-teal-strong text-white"
-                  : "border-neutral-200 bg-paper text-teal-strong"
-              }`}
-            >
-              <Icon className="h-4 w-4" aria-hidden />
-            </span>
-            <span className="text-[10px] font-medium leading-tight text-slate">{label}</span>
-          </motion.div>
-        ))}
+        <motion.span
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-paper text-teal-strong shadow-panel"
+        >
+          <MessageCircle className="h-5 w-5" aria-hidden />
+        </motion.span>
       </div>
     </div>
   );
