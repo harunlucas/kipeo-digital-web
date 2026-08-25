@@ -1,6 +1,6 @@
-import { Cloud, Globe2, Lock, RefreshCw, ShieldCheck, Wrench } from "lucide-react";
+import { Cloud, Globe2, ListChecks, Lock, RefreshCw, Search, ShieldCheck, Tag, Wrench } from "lucide-react";
 
-export type ServiceGroupVisualVariant = "systems" | "operational" | "commerce" | "integration";
+export type ServiceGroupVisualVariant = "systems" | "operational" | "commerce" | "seo" | "integration";
 
 /**
  * One hand-built SVG/CSS composition per /services solution group, each
@@ -141,6 +141,78 @@ export function ServiceGroupVisual({ variant }: { variant: ServiceGroupVisualVar
               <span className="h-3 w-1.5 rounded-full bg-white/20" />
               <span className="h-3 w-1.5 rounded-full bg-white/20" />
             </div>
+          </div>
+        </div>
+      );
+
+    // SEO and digital growth: a small site-structure tree feeding a search-
+    // discovery node, metadata and indexing chips, and a conversion path —
+    // a connected technical-visibility system, not a fake ranking, traffic
+    // graph or follower count. Distinct grid/flow shape from the other four.
+    case "seo":
+      return (
+        <div className="flex h-full w-full flex-col justify-center gap-3 p-6">
+          <div className="flex items-center gap-2">
+            <svg viewBox="0 0 80 40" className="h-9 w-20 shrink-0" aria-hidden>
+              <g stroke="var(--color-teal)" strokeOpacity="0.5" strokeWidth="1.4" fill="none">
+                <path d="M12,32 L12,20 L40,20" />
+                <path d="M40,20 L40,8 M40,20 L68,20 L68,8 M40,20 L40,32" />
+              </g>
+              {[
+                [12, 32],
+                [40, 8],
+                [68, 8],
+                [40, 32],
+              ].map(([cx, cy], i) => (
+                <rect
+                  key={i}
+                  x={cx - 5}
+                  y={cy - 4}
+                  width="10"
+                  height="8"
+                  rx="2"
+                  fill="var(--color-ink-elevated)"
+                  stroke="var(--color-teal)"
+                  strokeOpacity="0.6"
+                />
+              ))}
+            </svg>
+            <span className="text-[9px] uppercase tracking-wide text-ink-muted">Site structure</span>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-teal/50 bg-teal/15 text-teal">
+              <Search className="h-4 w-4" aria-hidden />
+            </span>
+            <div className="h-px flex-1 border-t border-dashed border-teal/40" />
+            <span className="flex items-center gap-1 rounded-full border border-white/10 bg-ink-elevated/60 px-2 py-1 text-[9px] text-ink-foreground/80">
+              <Tag className="h-3 w-3 text-highlight" aria-hidden />
+              Metadata
+            </span>
+            <div className="h-px flex-1 border-t border-dashed border-teal/40" />
+            <span className="flex items-center gap-1 rounded-full border border-white/10 bg-ink-elevated/60 px-2 py-1 text-[9px] text-ink-foreground/80">
+              <ListChecks className="h-3 w-3 text-teal" aria-hidden />
+              Indexed
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-ink-elevated/60 px-3.5 py-3">
+            <svg viewBox="0 0 40 24" className="h-6 w-10 shrink-0" aria-hidden>
+              <path
+                d="M2,2 L38,2 L26,12 L26,22 L14,22 L14,12 Z"
+                fill="none"
+                stroke="var(--color-highlight)"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <div className="flex flex-1 flex-col gap-1">
+              <span className="h-1.5 w-3/4 rounded-full bg-white/15" />
+              <span className="h-1.5 w-1/2 rounded-full bg-white/10" />
+            </div>
+            <span className="rounded-full bg-teal px-2 py-0.5 text-[8px] font-medium text-teal-foreground">
+              Convert
+            </span>
           </div>
         </div>
       );

@@ -12,10 +12,11 @@ export const projectTypeOptions = [
   "Not sure — I need guidance",
   "Custom software or web application",
   "Business system or workflow automation",
+  "Product and UI/UX design",
   "HSE or operational software",
   "Engineering or technical software",
-  "Website or landing page",
-  "E-commerce platform",
+  "Website, commerce or digital experience",
+  "SEO and digital growth",
   "Integration or automation",
   "Hosting, maintenance or support",
 ] as const;

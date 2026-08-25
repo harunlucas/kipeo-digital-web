@@ -1,15 +1,19 @@
 import type { LucideIcon } from "lucide-react";
-import { Cloud, Cpu, Globe2, ShieldCheck } from "lucide-react";
+import { Cloud, Cpu, Globe2, ShieldCheck, TrendingUp } from "lucide-react";
 import type { ServiceGroupVisualVariant } from "@/components/motion/service-group-visual";
 
 /**
- * /services-only content. Deliberately independent of `service-pillars.ts`
- * (the homepage's four-pillar `ServiceTabs` data) and `services.ts` (the
- * flat service list) — neither is shaped for four full editorial groups
- * with their own outcomes and expandable detail, and editing either would
- * change the homepage. The "websites-and-commerce" group id intentionally
- * matches the homepage pillar id so `problemPairs`/`footerServiceLinks`
- * anchors into this page keep resolving.
+ * /services-only content. Deliberately independent of `service-groups.ts`
+ * (the compact canonical identity used by nav/footer/homepage/Studio) and
+ * `services.ts` (the flat service list) — neither is shaped for five full
+ * editorial groups with their own outcomes and expandable detail, and
+ * editing either would change those surfaces. Ids and visible titles are
+ * kept in sync with `service-groups.ts` by hand rather than imported, so
+ * this page's richer shape isn't forced through a generic one. The
+ * "websites-and-commerce" group id intentionally stays unchanged even
+ * though its visible title is now "Websites, Commerce and Digital
+ * Experience", so existing anchors (`problemPairs`, `footerServiceLinks`,
+ * search engines) keep resolving.
  */
 
 export type ExpertiseStripLink = { label: string; href: string; sourceName: string };
@@ -35,6 +39,7 @@ export type ServiceGroup = {
   visual: ServiceGroupVisualVariant;
   tone: "paper" | "ink" | "elevated";
   imageSide: "left" | "right";
+  supporting?: boolean;
 };
 
 export const serviceGroups: ServiceGroup[] = [
@@ -50,10 +55,16 @@ export const serviceGroups: ServiceGroup[] = [
     capabilities: [
       "Custom web applications",
       "Internal business systems",
-      "Workflow automation",
+      "Operational dashboards",
+      "Workflow automation and AI-assisted automation",
       "Databases and data management",
       "APIs and integrations",
-      "Operational dashboards",
+      "Authentication and role-based permissions",
+      "Reporting systems",
+      "Product and UI/UX design",
+      "Product discovery and requirements",
+      "User flows and wireframing",
+      "Interactive prototyping and design systems",
     ],
     typicalOutcomes: [
       "One connected system instead of scattered spreadsheets and tools",
@@ -61,7 +72,7 @@ export const serviceGroups: ServiceGroup[] = [
       "A platform your team can extend as the business grows",
     ],
     expandableDetails:
-      "This group also covers AI-assisted automation where it genuinely removes manual work. Where required, systems include authentication, role-based permissions, structured data and operational reporting.",
+      "This group also covers AI-assisted automation where it genuinely removes manual work. Product and interface design is planned alongside the system architecture, so user flows, permissions, data and application behaviour work as one connected product. Where required, systems include authentication, role-based permissions, structured data and operational reporting.",
     workLink: { label: "See related software work", href: "/work" },
     visual: "systems",
     tone: "paper",
@@ -77,12 +88,16 @@ export const serviceGroups: ServiceGroup[] = [
     intro:
       "Software for two specialist operational workflows — HSE and compliance, and engineering and technical operations. Both are software-development capabilities, not consultancy, education or certification.",
     capabilities: [
+      "HSE and compliance software",
       "Inspection workflows",
       "Hazard and incident reporting",
       "Corrective-action tracking",
       "Document control",
       "Maintenance-management systems",
-      "Equipment-data and monitoring dashboards",
+      "Equipment-data workflows",
+      "Monitoring dashboards",
+      "Technical calculations",
+      "Operational reporting",
     ],
     typicalOutcomes: [
       "A structured, auditable record instead of scattered paperwork",
@@ -116,33 +131,77 @@ export const serviceGroups: ServiceGroup[] = [
     number: "03",
     navLabel: "Websites & commerce",
     icon: Globe2,
-    eyebrow: "Websites and commerce",
+    eyebrow: "Websites, Commerce and Digital Experience",
     heading: "For a site or store that undersells the business, or is hard to find and manage.",
     intro:
-      "Business websites, content platforms and online stores, built on a clear structure with the SEO foundations and analytics to support them.",
+      "Websites and commerce platforms are designed around clear content, useful journeys and day-to-day management—not appearance alone.",
     capabilities: [
-      "Business and agency websites",
+      "Business and corporate websites",
+      "Agency and professional websites",
       "Landing pages",
+      "Content-led websites and redesigns",
+      "Custom-built and WordPress websites",
       "WooCommerce and Shopify",
-      "Content platforms",
-      "SEO foundations",
-      "Analytics and conversion support",
+      "Product catalogues",
+      "Responsive interface design and website UI/UX",
+      "Information architecture",
+      "Accessibility foundations",
+      "Analytics",
+      "Conversion-focused enquiry paths",
     ],
     typicalOutcomes: [
       "A site people trust and can navigate to a decision",
       "A store your team can manage without developer help",
-      "Structured content and analytics that support visibility",
+      "A structure ready to extend with SEO and analytics when needed",
     ],
     expandableDetails:
-      "Marketing and visibility — technical SEO, analytics setup and conversion support — are built in as supporting capabilities of the website itself, not offered as a separate marketing-agency service. We don't promise specific rankings, leads or sales.",
+      "Search visibility and growth support are covered by the separate SEO and Digital Growth group below, so they can be added when useful without being bundled into every website build.",
     workLink: { label: "See related website work", href: "/work" },
     visual: "commerce",
     tone: "elevated",
     imageSide: "right",
   },
   {
-    id: "integration-deployment-and-support",
+    id: "seo-and-digital-growth",
     number: "04",
+    navLabel: "SEO & growth",
+    icon: TrendingUp,
+    eyebrow: "SEO and Digital Growth",
+    heading: "For businesses with a useful website or platform that is still difficult to find, measure or improve.",
+    intro:
+      "SEO and digital-growth support connects technical visibility, useful content, measurement and conversion paths to the website or platform itself.",
+    capabilities: [
+      "Technical SEO audits",
+      "Search-intent and keyword planning",
+      "On-page SEO, titles and metadata",
+      "Structured data, sitemap and robots.txt configuration",
+      "Google Search Console and indexing support",
+      "Content optimization",
+      "Local SEO where appropriate",
+      "Analytics, measurement and Core Web Vitals",
+      "Conversion-path improvements",
+      "Digital strategy and content-channel planning",
+      "Campaign landing pages",
+      "Email-marketing technical setup",
+      "Paid-campaign landing-page and tracking support",
+      "Social-platform setup where required",
+    ],
+    typicalOutcomes: [
+      "A website or platform people can actually find",
+      "Clear measurement of what's working and what isn't",
+      "Conversion paths that turn visits into enquiries",
+    ],
+    expandableDetails:
+      "Kipeo does not promise rankings, traffic, leads, sales or advertising performance. Recommendations and implementation are based on the website, audience, competition, available content and agreed scope.",
+    workLink: { label: "See how our websites are built", href: "/work" },
+    visual: "seo",
+    tone: "paper",
+    imageSide: "left",
+    supporting: true,
+  },
+  {
+    id: "integration-deployment-and-support",
+    number: "05",
     navLabel: "Integration & support",
     icon: Cloud,
     eyebrow: "Integration, deployment and support",
@@ -150,12 +209,20 @@ export const serviceGroups: ServiceGroup[] = [
     intro:
       "API integrations and automation, plus the production hosting, monitoring and support that keeps a launched system secure and current.",
     capabilities: [
-      "API integrations",
-      "Payment and communication integrations",
-      "Hosting and deployment",
-      "Monitoring and backups",
-      "Platform updates",
-      "Maintenance and technical support",
+      "API and payment integrations",
+      "Communication and email-delivery integrations",
+      "Workflow connections and automation",
+      "Production deployment",
+      "Vercel deployment where appropriate",
+      "Cloud and hosting environments",
+      "Domain, DNS and SSL configuration",
+      "Managed hosting",
+      "Performance and uptime monitoring",
+      "Backups and platform updates",
+      "WordPress and application maintenance",
+      "Security-update support",
+      "Analytics integrations",
+      "Documentation and handover",
     ],
     typicalOutcomes: [
       "Systems that stay connected instead of breaking silently",
@@ -163,11 +230,12 @@ export const serviceGroups: ServiceGroup[] = [
       "An agreed maintenance arrangement, not a site left to go stale",
     ],
     expandableDetails:
-      "Production deployment across suitable cloud, hosting and platform environments, including Vercel where appropriate, with domains, DNS and SSL configured as part of launch. Platform updates and technical support continue under a maintenance agreement.",
+      "Deployment and ongoing support cover the infrastructure, integrations, monitoring and maintenance required to keep a digital product working after launch. Maintenance agreements are scoped clearly rather than open-ended, and hosting, licences and other third-party charges are typically kept separate from the agreement itself.",
     workLink: { label: "See our deployment approach", href: "/studio" },
     visual: "integration",
     tone: "ink",
     imageSide: "left",
+    supporting: true,
   },
 ];
 

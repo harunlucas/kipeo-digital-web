@@ -172,7 +172,7 @@ function PillarArtwork({ id }: { id: string }) {
           <rect x="70" y="140" width="220" height="150" rx="10" fill="var(--color-ink-elevated)" stroke="var(--color-teal)" />
         </svg>
       );
-    case "software-and-systems":
+    case "software-and-business-systems":
       return (
         <svg viewBox="0 0 400 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
           <g stroke="var(--color-teal)" strokeOpacity="0.4">
@@ -190,19 +190,7 @@ function PillarArtwork({ id }: { id: string }) {
           ))}
         </svg>
       );
-    case "growth-and-visibility":
-      return (
-        <svg viewBox="0 0 400 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-          <g fill="var(--color-highlight)" fillOpacity="0.55">
-            <rect x="70" y="220" width="30" height="60" rx="4" />
-            <rect x="130" y="180" width="30" height="100" rx="4" />
-            <rect x="190" y="140" width="30" height="140" rx="4" />
-            <rect x="250" y="90" width="30" height="190" rx="4" />
-          </g>
-          <path d="M70,235 L145,190 L205,150 L320,70" stroke="var(--color-teal)" strokeWidth="3" fill="none" />
-        </svg>
-      );
-    case "infrastructure-and-support":
+    case "integration-deployment-and-support":
       return (
         <svg viewBox="0 0 400 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
           {[40, 80, 120, 160].map((r) => (
@@ -219,7 +207,7 @@ function PillarArtwork({ id }: { id: string }) {
           <circle cx="260" cy="160" r="10" fill="var(--color-teal)" />
         </svg>
       );
-    case "hse-and-technical-workflows":
+    case "operational-and-technical-software":
       return (
         <svg viewBox="0 0 400 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
           <path

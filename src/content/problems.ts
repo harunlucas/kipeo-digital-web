@@ -11,8 +11,8 @@ export type ProblemPair = {
 
 /**
  * Capped at five for the homepage; any additional problem belongs on the
- * future Services page instead. Link anchors match the pillar ids used by
- * ServiceTabs and CapabilityPathCard (see content/service-pillars.ts).
+ * Services page instead. Link anchors match the service group ids in
+ * content/service-groups.ts.
  */
 export const problemPairs: ProblemPair[] = [
   {

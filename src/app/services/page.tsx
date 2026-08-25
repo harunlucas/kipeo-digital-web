@@ -16,7 +16,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Software Development Services | Kipeo Digital";
 const description =
-  "Kipeo Digital designs and builds custom software, business systems, operational platforms, websites, integrations and supported digital products for clients worldwide.";
+  "Kipeo Digital provides custom software, business systems, product and UI/UX design, operational platforms, websites, commerce, SEO, integrations, deployment and support.";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -24,11 +24,13 @@ export const metadata: Metadata = buildMetadata({
   keywords: [
     "software development agency",
     "business systems",
+    "product and UI/UX design",
     "workflow automation",
     "HSE software",
     "engineering software",
     "web application development",
     "e-commerce development",
+    "SEO and digital growth",
     "API integrations",
   ],
   alternates: { canonical: "/services" },

@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { ShieldCheck } from "lucide-react";
-import { servicePillars } from "@/content/service-pillars";
+import { serviceGroups } from "@/content/service-groups";
 
 export type CapabilitySelectorPillar = {
   id: string;
@@ -120,28 +119,25 @@ export const studioLayers: StudioLayer[] = [
 ];
 
 /**
- * Reuses three of the four homepage service pillars verbatim (no
- * duplicated content) and adds one studio-specific pillar — HSE work is
- * central to Kipeo's studio story but isn't one of the four homepage
- * pillars, which are marketing-service-oriented rather than capability-area
- * oriented.
+ * Reuses four of the five canonical service groups (no duplicated content) —
+ * SEO and Digital Growth is left out here as it's marketing-service-oriented
+ * rather than build-capability-oriented, the same reasoning this selector
+ * has always used to shape which groups represent "where to start building."
  */
-const hseAndTechnicalWorkflows: CapabilitySelectorPillar = {
-  id: "hse-and-technical-workflows",
-  title: "HSE and Technical Workflows",
-  problem: "For safety, compliance and technical operations still running on paper or spreadsheets.",
-  subservices: [
-    "HSE management systems",
-    "Inspection and audit workflows",
-    "Corrective-action tracking",
-    "Equipment and maintenance records",
-  ],
-  icon: ShieldCheck,
-};
+const studioSelectorIds = [
+  "websites-and-commerce",
+  "software-and-business-systems",
+  "operational-and-technical-software",
+  "integration-deployment-and-support",
+] as const;
 
-export const studioCapabilitySelector: CapabilitySelectorPillar[] = [
-  servicePillars.find((pillar) => pillar.id === "websites-and-commerce")!,
-  servicePillars.find((pillar) => pillar.id === "software-and-systems")!,
-  hseAndTechnicalWorkflows,
-  servicePillars.find((pillar) => pillar.id === "infrastructure-and-support")!,
-];
+export const studioCapabilitySelector: CapabilitySelectorPillar[] = studioSelectorIds.map((id) => {
+  const group = serviceGroups.find((candidate) => candidate.id === id)!;
+  return {
+    id: group.id,
+    title: group.title,
+    problem: group.problem,
+    subservices: group.capabilities.slice(0, 4),
+    icon: group.icon,
+  };
+});

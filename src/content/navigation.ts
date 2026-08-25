@@ -1,3 +1,5 @@
+import { serviceGroups } from "@/content/service-groups";
+
 export type NavItem = {
   label: string;
   href: string;
@@ -13,31 +15,27 @@ export const mainNav: NavItem[] = [
 
 export type ServiceMenuLink = NavItem & { description: string };
 
+/** Short, dropdown-voice description per service group — id/href/title come from `service-groups.ts`. */
+const servicesMenuDescriptions: Record<string, string> = {
+  "software-and-business-systems": "Custom systems for manual, disconnected operations.",
+  "operational-and-technical-software": "HSE, compliance and technical-operations software.",
+  "websites-and-commerce": "Business websites, content platforms and online stores.",
+  "seo-and-digital-growth": "Technical visibility, measurement and conversion support.",
+  "integration-deployment-and-support": "Integrations, hosting, monitoring and ongoing support.",
+};
+
 /**
  * Shared by the desktop Services dropdown and the mobile Services accordion
- * — both should list the same five destinations in the same order.
+ * — both should list the same destinations in the same order. Sourced from
+ * the canonical `serviceGroups`, with Kipeo Studio appended as the "how we
+ * work" destination (not itself a service group).
  */
 export const servicesMenuLinks: ServiceMenuLink[] = [
-  {
-    label: "Software and Business Systems",
-    href: "/services#software-and-business-systems",
-    description: "Custom systems for manual, disconnected operations.",
-  },
-  {
-    label: "Operational and Technical Software",
-    href: "/services#operational-and-technical-software",
-    description: "HSE, compliance and technical-operations software.",
-  },
-  {
-    label: "Websites and Commerce",
-    href: "/services#websites-and-commerce",
-    description: "Business websites, content platforms and online stores.",
-  },
-  {
-    label: "Integration, Deployment and Support",
-    href: "/services#integration-deployment-and-support",
-    description: "Integrations, hosting, monitoring and ongoing support.",
-  },
+  ...serviceGroups.map((group) => ({
+    label: group.title,
+    href: group.href,
+    description: servicesMenuDescriptions[group.id] ?? group.problem,
+  })),
   {
     label: "How We Work — Kipeo Studio",
     href: "/studio",
@@ -45,12 +43,10 @@ export const servicesMenuLinks: ServiceMenuLink[] = [
   },
 ];
 
-export const footerServiceLinks: NavItem[] = [
-  { label: "Software and Business Systems", href: "/services#software-and-business-systems" },
-  { label: "Operational and Technical Software", href: "/services#operational-and-technical-software" },
-  { label: "Websites and Commerce", href: "/services#websites-and-commerce" },
-  { label: "Integration, Deployment and Support", href: "/services#integration-deployment-and-support" },
-];
+export const footerServiceLinks: NavItem[] = serviceGroups.map((group) => ({
+  label: group.title,
+  href: group.href,
+}));
 
 export const footerCompanyLinks: NavItem[] = [
   { label: "Work", href: "/work" },
