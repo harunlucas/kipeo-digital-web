@@ -208,8 +208,9 @@ export const investmentPoints: InvestmentPoint[] = [
     description: "Every project is scoped on its own — a landing page and a multi-role operational system aren't priced the same way.",
   },
   {
-    title: "Free initial proposal",
-    description: "The initial consultation and written proposal are free, with no obligation to proceed.",
+    title: "Free initial consultation",
+    description:
+      "The initial consultation is free. Where the project is a suitable fit, a written proposal is also provided at no cost, with no obligation to proceed.",
   },
   {
     title: "Deliverables, milestones, timeline, investment",

@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline:
     "Websites, software and digital systems for businesses working and growing online.",
   description:
-    "Kipeo Digital builds websites, web applications and business systems for companies working and growing online. Free consultation and a written proposal before development.",
+    "Kipeo Digital is a team-led software and digital-product studio in Nairobi, building websites, web apps and business systems for clients working and growing online worldwide.",
   url: "https://kipeo.harunlucas.com",
   email: "kipeo@harunlucas.com",
   phone: "+254 797 610 755",

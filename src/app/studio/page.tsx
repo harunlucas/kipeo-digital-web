@@ -20,11 +20,16 @@ import {
 import { trustCommitments } from "@/content/trust";
 import { buildMetadata } from "@/lib/metadata";
 
+const studioTitle = "Kipeo Studio";
+const studioDescription =
+  "A guided look inside how Kipeo Digital builds: strategy, interfaces, application logic, data, HSE and operational workflows, integrations, deployment and support.";
+
 export const metadata: Metadata = buildMetadata({
-  title: "Kipeo Studio",
-  description:
-    "A guided look inside how Kipeo Digital builds: strategy, interfaces, application logic, data, HSE and operational workflows, integrations, deployment and support.",
+  title: studioTitle,
+  description: studioDescription,
   alternates: { canonical: "/studio" },
+  openGraph: { url: "/studio", title: studioTitle, description: studioDescription },
+  twitter: { title: studioTitle, description: studioDescription },
 });
 
 const layerIcons: Record<StudioLayer["id"], LucideIcon> = {
@@ -66,6 +71,7 @@ export default function StudioPage() {
               <StudioTeaserVisual
                 src="/images/projects/studio/kipeo-studio-workstation.webp"
                 alt="Illustration of a Kipeo workstation with connected screens showing interface, application, HSE and integration panels"
+                priority
               />
             </Reveal>
           </div>

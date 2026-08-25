@@ -10,7 +10,15 @@ import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } fro
  * pattern already used in hero-visual.tsx but far more subtle. Disabled
  * entirely for touch/pen input and for prefers-reduced-motion.
  */
-export function StudioTeaserVisual({ src, alt }: { src: string; alt: string }) {
+export function StudioTeaserVisual({
+  src,
+  alt,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  priority?: boolean;
+}) {
   const shouldReduceMotion = useReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -56,7 +64,7 @@ export function StudioTeaserVisual({ src, alt }: { src: string; alt: string }) {
           fill
           sizes="(min-width: 1024px) 60vw, 100vw"
           className="object-cover"
-          priority
+          priority={priority}
         />
         <div aria-hidden className="bg-grain pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay" />
       </motion.div>
