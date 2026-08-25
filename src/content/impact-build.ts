@@ -41,14 +41,13 @@ function resolveStatus(defaultStatus: ImpactBuildStatus): ImpactBuildStatus {
 }
 
 /**
- * EDIT HERE when a cycle's dates are confirmed. Leave a field `null` rather
- * than inventing a date — the pages only render what's set here. Flip
- * `status` to "open" to go live: the announcement bar, homepage teaser and
- * /impact-build/apply all respond to this one value automatically. This is
- * the Production default — see `resolveStatus` above for how to test "open"
- * on Preview/local without changing it.
+ * EDIT HERE when a cycle's dates are confirmed or the status changes. Leave
+ * a date field `null` rather than inventing one — the pages only render
+ * what's set here. This is the Production default — see `resolveStatus`
+ * above for how to test a *different* status on Preview/local without
+ * changing this value (e.g. while preparing next cycle's "closed" state).
  */
-const resolvedStatus = resolveStatus("draft");
+const resolvedStatus = resolveStatus("open");
 
 export const impactBuildConfig: ImpactBuildConfig = {
   status: resolvedStatus,

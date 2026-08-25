@@ -16,6 +16,8 @@ const CHANGE_EVENT = isImpactBuildOpen
   ? "kipeo-impact-build-announcement-dismissed-change"
   : "kipeo-announcement-dismissed-change";
 
+const DISMISSAL_TTL_MS = 3 * 24 * 60 * 60 * 1000; // 3 days — the banner returns automatically after this
+
 function subscribe(callback: () => void) {
   window.addEventListener("storage", callback);
   window.addEventListener(CHANGE_EVENT, callback);
@@ -25,8 +27,19 @@ function subscribe(callback: () => void) {
   };
 }
 
+/**
+ * Stores the dismissal timestamp (not a plain boolean) so it expires on its
+ * own after `DISMISSAL_TTL_MS` — no separate cleanup job needed, and a
+ * corrupt or pre-existing non-numeric value is treated as "not dismissed"
+ * rather than crashing. localStorage only, so dismissal is scoped to this
+ * browser and never touches the server or any other device.
+ */
 function getSnapshot() {
-  return window.localStorage.getItem(STORAGE_KEY) === "true";
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  if (!stored) return false;
+  const dismissedAt = Number(stored);
+  if (!Number.isFinite(dismissedAt)) return false;
+  return Date.now() - dismissedAt < DISMISSAL_TTL_MS;
 }
 
 function getServerSnapshot() {
@@ -48,7 +61,7 @@ export function AnnouncementBar() {
   if (dismissed) return null;
 
   function handleDismiss() {
-    window.localStorage.setItem(STORAGE_KEY, "true");
+    window.localStorage.setItem(STORAGE_KEY, String(Date.now()));
     window.dispatchEvent(new Event(CHANGE_EVENT));
   }
 

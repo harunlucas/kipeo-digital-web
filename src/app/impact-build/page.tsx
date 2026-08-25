@@ -50,9 +50,17 @@ function StatusPanel() {
   const status = impactBuildConfig.status;
 
   if (status === "open") {
+    const { openingDate, closingDate, expectedProjectStart } = impactBuildConfig;
     return (
       <>
         <p className="text-sm font-medium text-teal-strong">Applications are currently open.</p>
+        {(openingDate || closingDate || expectedProjectStart) && (
+          <ul className="mt-2 flex flex-col gap-1 text-sm leading-relaxed text-slate">
+            {openingDate && <li>Opened {openingDate}.</li>}
+            {closingDate && <li>Applications close {closingDate}.</li>}
+            {expectedProjectStart && <li>The selected project is expected to start {expectedProjectStart}.</li>}
+          </ul>
+        )}
         <div className="mt-5 flex flex-wrap gap-3">
           <Button href="/impact-build/apply" variant="accent" size="md">
             Apply now
