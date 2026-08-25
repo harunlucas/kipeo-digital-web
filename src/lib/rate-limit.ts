@@ -6,8 +6,8 @@
  * alongside the honeypot, origin check and Turnstile (when configured), not
  * as the only line of defense. See docs/contact-form-setup.md.
  */
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_REQUESTS = 5;
+const DEFAULT_WINDOW_MS = 10 * 60 * 1000;
+const DEFAULT_MAX_REQUESTS = 5;
 
 const hits = new Map<string, { count: number; resetAt: number }>();
 
@@ -18,16 +18,28 @@ function sweep(now: number) {
   }
 }
 
-export function isRateLimited(key: string): boolean {
+/**
+ * `key` should be namespaced per form (e.g. `` `impact-build:${ip}` ``) so
+ * distinct forms don't share one bucket. Options default to the original
+ * contact-form budget; pass a stricter `maxRequests`/`windowMs` for a form
+ * that warrants tighter limits.
+ */
+export function isRateLimited(
+  key: string,
+  options?: { windowMs?: number; maxRequests?: number },
+): boolean {
+  const windowMs = options?.windowMs ?? DEFAULT_WINDOW_MS;
+  const maxRequests = options?.maxRequests ?? DEFAULT_MAX_REQUESTS;
+
   const now = Date.now();
   sweep(now);
 
   const entry = hits.get(key);
   if (!entry || entry.resetAt <= now) {
-    hits.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    hits.set(key, { count: 1, resetAt: now + windowMs });
     return false;
   }
 
   entry.count += 1;
-  return entry.count > MAX_REQUESTS;
+  return entry.count > maxRequests;
 }

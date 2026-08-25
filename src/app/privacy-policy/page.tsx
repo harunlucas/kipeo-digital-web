@@ -39,12 +39,16 @@ export default function PrivacyPolicyPage() {
         <p>
           This policy explains what information Kipeo Digital (&ldquo;Kipeo&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;)
           collects through this website, why, and how it is handled. It covers the website at{" "}
-          <span className="font-medium text-paper-foreground">{siteConfig.url}</span> and the enquiry form on the{" "}
+          <span className="font-medium text-paper-foreground">{siteConfig.url}</span>, the enquiry form on the{" "}
           <Link href="/contact" className="text-teal-strong underline underline-offset-2 hover:text-ink">
             Contact
           </Link>{" "}
-          page. It does not cover the separate terms of any individual client project, which are agreed in writing
-          before work begins.
+          page, and the application form on the{" "}
+          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+            Kipeo Impact Build
+          </Link>{" "}
+          page. It does not cover the separate terms of any individual client project or Impact Build agreement,
+          which are agreed in writing before work begins.
         </p>
       </LegalSection>
 
@@ -61,6 +65,17 @@ export default function PrivacyPolicyPage() {
           information that message contains. The &ldquo;Notify me&rdquo; link on the Insights page simply opens your
           own email app addressed to us &mdash; it does not add you to a mailing list, and Kipeo does not operate a
           newsletter or marketing email list.
+        </p>
+        <p>
+          The application form on the{" "}
+          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+            Kipeo Impact Build
+          </Link>{" "}
+          page is separate from the Contact form. It asks for your contact details, information about your
+          organisation or initiative, a description of the problem and intended users, your readiness to
+          participate in the project, and three explicit acknowledgements (privacy, the Impact Build Terms, and an
+          accuracy declaration). The form warns against submitting passwords, access keys, identification documents,
+          confidential records, health information or sensitive beneficiary data, and does not ask for any of it.
         </p>
       </LegalSection>
 
@@ -82,8 +97,8 @@ export default function PrivacyPolicyPage() {
           Kipeo Digital does not set tracking or advertising cookies. The site uses your browser&rsquo;s
           <code className="mx-1 rounded bg-mist px-1.5 py-0.5 font-mono text-[0.85em]">localStorage</code>
           for one purpose only: remembering that you dismissed the announcement banner, so it doesn&rsquo;t reappear
-          on your next visit. This value stays on your device, is never sent to us or any third party, and isn&rsquo;t
-          a cookie. See the{" "}
+          on your next visit. These values stay on your device, are never sent to us or any third party, and
+          aren&rsquo;t cookies. See the{" "}
           <Link href="/cookie-policy" className="text-teal-strong underline underline-offset-2 hover:text-ink">
             Cookie Policy
           </Link>{" "}
@@ -96,10 +111,15 @@ export default function PrivacyPolicyPage() {
         <ul className="list-disc space-y-1.5 pl-5">
           <li>To respond to your enquiry and prepare a proposal where relevant</li>
           <li>To communicate with you about a potential or active project</li>
-          <li>To protect the website and form from spam, abuse and automated submissions</li>
+          <li>To assess and respond to a Kipeo Impact Build application against its published criteria</li>
+          <li>To protect the website and forms from spam, abuse and automated submissions</li>
           <li>To operate, secure and maintain the website</li>
         </ul>
-        <p>We do not sell or rent visitor information, and we do not use it for advertising.</p>
+        <p>
+          We do not sell or rent visitor information, we do not use it for advertising, and we do not add anyone to
+          a marketing list without separate consent. Kipeo does not publicly identify Impact Build applicants or a
+          selected recipient without their separate written consent.
+        </p>
       </LegalSection>
 
       <LegalSection id="service-providers" heading="Service providers">
@@ -134,7 +154,19 @@ export default function PrivacyPolicyPage() {
           Enquiry emails are kept in our mailbox for as long as reasonably needed to respond to you and manage any
           resulting project relationship, then deleted or archived in the ordinary course of business. IP addresses
           used for rate limiting are held in memory only and clear automatically after a short window; Kipeo does not
-          maintain a database of visitor information.
+          maintain a database of visitor information &mdash; enquiries and Impact Build applications alike exist only
+          as email.
+        </p>
+        <p>
+          An Impact Build application that is not selected is retained only for the review cycle it was submitted
+          for, plus a limited administrative period afterwards, then deleted or archived in the ordinary course of
+          business. Where an application is selected, the information is retained for as long as reasonably needed
+          for the resulting written Impact Build agreement and project. You can ask us to delete an application
+          earlier under{" "}
+          <a href="#your-rights" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+            Your rights
+          </a>
+          , subject to any legitimate legal or administrative need to keep it.
         </p>
       </LegalSection>
 

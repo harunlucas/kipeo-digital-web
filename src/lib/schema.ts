@@ -47,6 +47,17 @@ export function contactPageSchema() {
   };
 }
 
+export function webPageSchema({ name, url, description }: { name: string; url: string; description: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    url,
+    description,
+    about: organizationSchema(),
+  };
+}
+
 export function aboutPageSchema() {
   return {
     "@context": "https://schema.org",

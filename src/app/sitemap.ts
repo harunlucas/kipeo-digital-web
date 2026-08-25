@@ -1,9 +1,41 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/content/site-config";
 import { getAllInsights } from "@/lib/insights";
+import { impactBuildConfig } from "@/content/impact-build";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const insights = await getAllInsights();
+
+  // Only listed once the programme is publicly visible — excluded entirely
+  // while status is "draft". The apply form is additionally excluded unless
+  // a cycle is actually open, since there's nothing to index otherwise.
+  const impactBuildIsPublic = impactBuildConfig.status !== "draft";
+  const impactBuildRoutes: MetadataRoute.Sitemap = impactBuildIsPublic
+    ? [
+        {
+          url: `${siteConfig.url}/impact-build`,
+          lastModified: new Date(),
+          changeFrequency: "monthly",
+          priority: 0.5,
+        },
+        {
+          url: `${siteConfig.url}/impact-build/terms`,
+          lastModified: new Date(),
+          changeFrequency: "yearly",
+          priority: 0.3,
+        },
+        ...(impactBuildConfig.status === "open"
+          ? [
+              {
+                url: `${siteConfig.url}/impact-build/apply`,
+                lastModified: new Date(),
+                changeFrequency: "monthly" as const,
+                priority: 0.4,
+              },
+            ]
+          : []),
+      ]
+    : [];
 
   return [
     {
@@ -78,5 +110,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly",
       priority: 0.3,
     },
+    ...impactBuildRoutes,
   ];
 }

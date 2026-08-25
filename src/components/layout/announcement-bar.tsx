@@ -4,9 +4,17 @@ import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { Container } from "./container";
+import { impactBuildConfig } from "@/content/impact-build";
 
-const STORAGE_KEY = "kipeo-announcement-dismissed";
-const CHANGE_EVENT = "kipeo-announcement-dismissed-change";
+const isImpactBuildOpen = impactBuildConfig.status === "open";
+
+// Two independent dismissal keys: dismissing one banner should never
+// suppress the other, and a visitor who dismissed the default bar should
+// still see the Impact Build announcement once applications open.
+const STORAGE_KEY = isImpactBuildOpen ? "kipeo-impact-build-announcement-dismissed" : "kipeo-announcement-dismissed";
+const CHANGE_EVENT = isImpactBuildOpen
+  ? "kipeo-impact-build-announcement-dismissed-change"
+  : "kipeo-announcement-dismissed-change";
 
 function subscribe(callback: () => void) {
   window.addEventListener("storage", callback);
@@ -47,15 +55,32 @@ export function AnnouncementBar() {
   return (
     <div className="relative bg-ink text-ink-foreground">
       <Container className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-2.5 pr-12 text-center sm:pr-14">
-        <p className="text-xs sm:text-sm">
-          Planning software, a business system or a new website? Your initial consultation is free.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-teal px-4 py-2 text-xs font-medium text-teal-foreground transition-colors hover:brightness-95 sm:text-sm"
-        >
-          Start your enquiry
-        </Link>
+        {isImpactBuildOpen ? (
+          <>
+            <p className="text-xs sm:hidden">Impact Build applications open</p>
+            <p className="hidden text-sm sm:block">
+              Applications open · Kipeo Impact Build — one clearly scoped digital project supported this year.
+            </p>
+            <Link
+              href="/impact-build"
+              className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-teal px-4 py-2 text-xs font-medium text-teal-foreground transition-colors hover:brightness-95 sm:text-sm"
+            >
+              Learn more and apply
+            </Link>
+          </>
+        ) : (
+          <>
+            <p className="text-xs sm:text-sm">
+              Planning software, a business system or a new website? Your initial consultation is free.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-teal px-4 py-2 text-xs font-medium text-teal-foreground transition-colors hover:brightness-95 sm:text-sm"
+            >
+              Start your enquiry
+            </Link>
+          </>
+        )}
       </Container>
       <button
         type="button"

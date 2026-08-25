@@ -7,6 +7,7 @@ import { Process } from "@/components/sections/home/process";
 import { Capabilities } from "@/components/sections/home/capabilities";
 import { InteractiveStudioSection } from "@/components/sections/home/interactive-studio-section";
 import { GlobalCollaboration } from "@/components/sections/home/global-collaboration";
+import { ImpactBuildTeaser } from "@/components/sections/home/impact-build-teaser";
 import { FinalCta } from "@/components/sections/home/final-cta";
 import { organizationSchema, professionalServiceSchema } from "@/lib/schema";
 
@@ -31,6 +32,7 @@ export default function Home() {
       <Capabilities />
       <InteractiveStudioSection />
       <GlobalCollaboration />
+      <ImpactBuildTeaser />
       <FinalCta />
     </>
   );

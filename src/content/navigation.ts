@@ -53,6 +53,7 @@ export const footerCompanyLinks: NavItem[] = [
   { label: "About", href: "/about" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
+  { label: "Impact Build", href: "/impact-build" },
 ];
 
 export const footerLegalLinks: NavItem[] = [
