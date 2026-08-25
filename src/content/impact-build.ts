@@ -23,16 +23,37 @@ export type ImpactBuildConfig = {
   applicationEmail: string;
 };
 
+const VALID_STATUSES: readonly ImpactBuildStatus[] = ["draft", "open", "reviewing", "closed", "selected"];
+
+/**
+ * Lets a non-Production deployment test the "open" (or any other) status
+ * without changing the committed default below — set
+ * `NEXT_PUBLIC_IMPACT_BUILD_STATUS_OVERRIDE` only on a Vercel Preview
+ * environment (or in `.env.local`), never on Production. Deliberately
+ * `NEXT_PUBLIC_` — this value is read by the client announcement bar too, and
+ * a server/client mismatch on a non-public var would cause a hydration
+ * mismatch. See docs/impact-build-operations.md.
+ */
+function resolveStatus(defaultStatus: ImpactBuildStatus): ImpactBuildStatus {
+  const override = process.env.NEXT_PUBLIC_IMPACT_BUILD_STATUS_OVERRIDE;
+  if (override && (VALID_STATUSES as string[]).includes(override)) return override as ImpactBuildStatus;
+  return defaultStatus;
+}
+
 /**
  * EDIT HERE when a cycle's dates are confirmed. Leave a field `null` rather
  * than inventing a date — the pages only render what's set here. Flip
  * `status` to "open" to go live: the announcement bar, homepage teaser and
- * /impact-build/apply all respond to this one value automatically.
+ * /impact-build/apply all respond to this one value automatically. This is
+ * the Production default — see `resolveStatus` above for how to test "open"
+ * on Preview/local without changing it.
  */
+const resolvedStatus = resolveStatus("draft");
+
 export const impactBuildConfig: ImpactBuildConfig = {
-  status: "draft",
+  status: resolvedStatus,
   cycleLabel: "Annual Cycle",
-  applicationsOpen: false,
+  applicationsOpen: resolvedStatus === "open",
   openingDate: null,
   closingDate: null,
   reviewPeriod: null,

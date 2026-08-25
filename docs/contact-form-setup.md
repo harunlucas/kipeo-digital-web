@@ -17,6 +17,7 @@ Required environment variables:
 |---|---|
 | `BREVO_API_KEY` | Brevo transactional API key. Server-only — read in `src/lib/email/brevo-client.ts`, never sent to the client. |
 | `CONTACT_FROM_EMAIL` | The verified sender address both emails are sent from. **Must be a sender Brevo has verified for your account** (Brevo rejects sends from unverified senders) — set this up in Brevo → Senders before going live. |
+| `CONTACT_FROM_NAME` | Optional. Display name shown for the sender (e.g. "Kipeo Digital"). Falls back to the site name if unset — never required for delivery to work. |
 | `CONTACT_TO_EMAIL` | Where the internal notification email is delivered — set to `kipeo@harunlucas.com`. |
 
 **Until these three are set, the form is fully wired but cannot send email.**

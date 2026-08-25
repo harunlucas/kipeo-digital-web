@@ -24,15 +24,17 @@ export function buildInternalNotificationEmail(data: ContactFormValues, submitte
     .map(([label, value]) => row(label, value))
     .join("");
 
+  const subject = `New Kipeo project enquiry — ${data.company || data.fullName}`;
+
   const html = wrap(
-    "New project enquiry",
+    subject,
     `<table role="presentation" style="border-collapse:collapse;width:100%;margin-bottom:16px;">${rows}</table>
      <p style="font-size:13px;color:#6b7580;margin:0 0 4px;">Project summary</p>
      <p style="font-size:14px;color:#14171a;white-space:pre-wrap;border-left:2px solid #14b8a6;padding-left:12px;">${escapeHtml(data.projectSummary)}</p>`,
   );
 
   const text = [
-    "New project enquiry",
+    subject,
     `Submitted: ${submittedAt.toISOString()}`,
     `Full name: ${data.fullName}`,
     `Email: ${data.email}`,
@@ -50,7 +52,7 @@ export function buildInternalNotificationEmail(data: ContactFormValues, submitte
     data.projectSummary,
   ].join("\n");
 
-  return { subject: `New enquiry — ${data.fullName}`, html, text };
+  return { subject, html, text };
 }
 
 /** Sent to the person who submitted the form. No marketing subscription language, no invented response deadline. */

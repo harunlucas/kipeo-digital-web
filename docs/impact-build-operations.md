@@ -20,6 +20,17 @@ Everything public — the announcement bar, the homepage teaser, `/impact-build`
 
 The `/api/impact-build` route also independently checks `impactBuildConfig.status === "open"` server-side and rejects any submission otherwise — the apply page's form isn't the only gate, so status changes take effect immediately even against a direct POST.
 
+### Testing "open" without changing Production
+
+`status` is committed as `"draft"` — that's what ships to Production. To exercise the real application flow (form, Turnstile, emails) without touching that default or opening the programme publicly:
+
+- **Locally**: set `NEXT_PUBLIC_IMPACT_BUILD_STATUS_OVERRIDE=open` in `.env.local`.
+- **On a Vercel Preview deployment**: set `NEXT_PUBLIC_IMPACT_BUILD_STATUS_OVERRIDE=open` as an environment variable scoped to the **Preview** environment only (Vercel Project Settings → Environment Variables → uncheck Production).
+
+`src/content/impact-build.ts` reads this override at module load and falls back to the committed `"draft"` default whenever it's unset — which is always true for Production, since the variable is never set there. Remove/leave unset once testing is done; there's nothing to revert in source. This same mechanism means the sitemap, banner and homepage teaser also reflect the override automatically wherever you've set it, and revert automatically wherever you haven't.
+
+Being `NEXT_PUBLIC_`, Next.js inlines this value at build time (not read live per-request) — after adding or changing it in Vercel's Preview environment variables, trigger a new Preview deployment (push a commit, or redeploy) for it to take effect. Locally, restart `next dev` after editing `.env.local`.
+
 ### Setting dates
 
 `openingDate`, `closingDate`, `reviewPeriod` and `expectedProjectStart` all default to `null` and are only rendered where set — never invent a date to fill the field. Edit them directly in `src/content/impact-build.ts` at the `EDIT HERE` comment once a cycle's dates are confirmed. `reviewPeriod` (a short string, e.g. `"2–3 weeks"`) is also used to add one sentence to the applicant confirmation email if set.
@@ -42,7 +53,7 @@ When a recipient is selected:
 
 ## Environment variables
 
-No new variables. `/api/impact-build` reuses exactly what `/api/contact` already uses: `BREVO_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, and (optionally) `NEXT_PUBLIC_TURNSTILE_SITE_KEY`/`TURNSTILE_SECRET_KEY`. See `.env.example` and `docs/contact-form-setup.md` for what each does and how to provision them — nothing here is Impact-Build-specific.
+No new variables. `/api/impact-build` reuses exactly what `/api/contact` already uses: `BREVO_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_FROM_NAME`, `CONTACT_TO_EMAIL`, and (optionally) `NEXT_PUBLIC_TURNSTILE_SITE_KEY`/`TURNSTILE_SECRET_KEY`. See `.env.example` and `docs/contact-form-setup.md` for what each does and how to provision them — nothing here is Impact-Build-specific.
 
 Application notifications land in the same inbox as ordinary contact enquiries (`CONTACT_TO_EMAIL`). Distinguish them by subject line (`New Impact Build application — KIB-XXXXXX`) or the reference itself.
 

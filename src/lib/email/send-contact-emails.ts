@@ -22,9 +22,13 @@ export async function sendContactEmails(data: ContactFormValues, submittedAt: Da
     );
   }
 
+  // CONTACT_FROM_NAME is the display name Brevo shows for the sender; falls
+  // back to the site name if not yet configured, rather than failing.
+  const fromName = process.env.CONTACT_FROM_NAME || siteConfig.name;
+
   const internal = buildInternalNotificationEmail(data, submittedAt);
   await sendBrevoEmail({
-    sender: { email: fromEmail, name: siteConfig.name },
+    sender: { email: fromEmail, name: fromName },
     to: [{ email: toEmail }],
     replyTo: { email: data.email, name: data.fullName },
     subject: internal.subject,
@@ -36,7 +40,7 @@ export async function sendContactEmails(data: ContactFormValues, submittedAt: Da
   try {
     const confirmation = buildConfirmationEmail(data);
     await sendBrevoEmail({
-      sender: { email: fromEmail, name: siteConfig.name },
+      sender: { email: fromEmail, name: fromName },
       to: [{ email: data.email, name: data.fullName }],
       subject: confirmation.subject,
       htmlContent: confirmation.html,

@@ -62,13 +62,15 @@ export function buildInternalNotificationEmail(
     )
     .join("");
 
+  const subject = `New Kipeo Impact Build application — ${reference}`;
+
   const html = wrap(
-    `New Impact Build application — ${reference}`,
+    subject,
     `<table role="presentation" style="border-collapse:collapse;width:100%;margin-bottom:8px;">${rows}</table>${longAnswersHtml}`,
   );
 
   const text = [
-    `New Impact Build application — ${reference}`,
+    subject,
     `Submitted: ${submittedAt.toISOString()}`,
     `Full name: ${data.fullName}`,
     `Email: ${data.email}`,
@@ -94,7 +96,7 @@ export function buildInternalNotificationEmail(
     ...longAnswers.flatMap(([label, value]) => [`${label}:`, value, ""]),
   ].join("\n");
 
-  return { subject: `New Impact Build application — ${reference}`, html, text };
+  return { subject, html, text };
 }
 
 /** Sent to the applicant. No promised decision date unless a review period is configured. No marketing-subscription language. */
