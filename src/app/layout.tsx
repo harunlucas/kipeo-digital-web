@@ -1,4 +1,5 @@
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { defaultMetadata } from "@/lib/metadata";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className="flex min-h-full flex-col bg-paper text-paper-foreground"
         suppressHydrationWarning
       >
+        <AnnouncementBar />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

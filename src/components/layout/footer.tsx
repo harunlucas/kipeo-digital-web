@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { footerCompanyLinks, footerLegalLinks, footerServiceLinks } from "@/content/navigation";
 import { siteConfig } from "@/content/site-config";
+import { BrandLockup } from "./brand-mark";
 import { Container } from "./container";
 
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
@@ -26,9 +27,8 @@ export function Footer() {
       <Container className="py-16 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <Link href="/" className="font-display text-lg font-semibold">
-              {siteConfig.shortName}
-              <span className="text-teal">.</span>
+            <Link href="/" aria-label="Kipeo Digital — Home" className="inline-flex">
+              <BrandLockup tone="on-dark" />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-ink-muted">{siteConfig.tagline}</p>
             <p className="mt-6 text-sm text-ink-muted">

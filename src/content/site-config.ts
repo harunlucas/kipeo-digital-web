@@ -1,6 +1,5 @@
 export const siteConfig = {
   name: "Kipeo Digital",
-  shortName: "Kipeo",
   tagline:
     "Websites, software and digital systems for businesses working and growing online.",
   description:

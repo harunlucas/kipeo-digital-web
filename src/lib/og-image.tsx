@@ -33,15 +33,23 @@ export function renderOgImage({ eyebrow, heading }: { eyebrow: string; heading: 
               width: "44px",
               height: "44px",
               borderRadius: "12px",
-              backgroundColor: "#14b8a6",
+              backgroundColor: "#0d1117",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "24px",
-              fontWeight: 700,
-              color: "#04201d",
             }}
           >
-            K
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M8.5 22.5 16 15.5 23.5 8.5"
+                stroke="#14b8a6"
+                strokeWidth="3.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="8.5" cy="22.5" r="3.2" fill="#14b8a6" />
+              <circle cx="16" cy="15.5" r="3.2" fill="#14b8a6" />
+              <circle cx="23.5" cy="8.5" r="3.2" fill="#14b8a6" />
+            </svg>
           </div>
           <div style={{ display: "flex", fontSize: "28px", fontWeight: 700, color: "#f5f2ea" }}>Kipeo Digital</div>
         </div>
