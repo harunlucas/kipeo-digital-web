@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import type { NavItem } from "@/content/navigation";
-import { servicesMenuLinks } from "@/content/navigation";
+import { allServicesLink, howWeWorkLink, serviceFamilyLinks } from "@/content/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { useIsClient } from "@/lib/use-is-client";
@@ -79,7 +79,8 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
   }, [open]);
 
   return (
-    <div className="lg:hidden">
+    // Shown below the header's measured 1200px desktop breakpoint (see header.tsx).
+    <div className="min-[1200px]:hidden">
       <button
         ref={triggerRef}
         type="button"
@@ -141,7 +142,7 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
 
                           {servicesOpen && (
                             <ul id="mobile-services-panel" className="flex flex-col gap-1 pb-4 pl-1">
-                              {servicesMenuLinks.map((link) => (
+                              {serviceFamilyLinks.map((link) => (
                                 <li key={link.href}>
                                   <NavLink
                                     href={link.href}
@@ -149,6 +150,18 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
                                     activeClassName="text-teal"
                                   >
                                     {link.label}
+                                  </NavLink>
+                                </li>
+                              ))}
+                              {[allServicesLink, howWeWorkLink].map((link, i) => (
+                                <li key={link.href} className={i === 0 ? "mt-2 border-t border-ink-elevated pt-2" : undefined}>
+                                  <NavLink
+                                    href={link.href}
+                                    className="flex min-h-11 items-center gap-2 rounded-lg px-3 py-2.5 text-base font-medium text-teal transition-colors hover:text-ink-foreground"
+                                    activeClassName="text-ink-foreground"
+                                  >
+                                    {link.label}
+                                    <span aria-hidden>→</span>
                                   </NavLink>
                                 </li>
                               ))}

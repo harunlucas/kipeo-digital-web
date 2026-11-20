@@ -31,9 +31,10 @@ export const defaultMetadata: Metadata = {
     title: `${siteConfig.name} — Websites and Software for Growing Businesses`,
     description: siteConfig.description,
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
+  // No `icons` here: setting it replaces the links Next generates from the
+  // file conventions, which left `app/icon.tsx` and `app/apple-icon.tsx`
+  // unlinked. With it omitted, favicon.ico, /icon and /apple-icon are all
+  // linked automatically.
 };
 
 export function buildMetadata(overrides: Metadata): Metadata {

@@ -25,23 +25,39 @@ const servicesMenuDescriptions: Record<string, string> = {
 };
 
 /**
- * Shared by the desktop Services dropdown and the mobile Services accordion
- * — both should list the same destinations in the same order. Sourced from
- * the canonical `serviceGroups`, with Kipeo Studio appended as the "how we
- * work" destination (not itself a service group).
+ * Compact navigation labels for the service families. Navigation only: the
+ * destination pages keep the full catalogue titles from `service-groups.ts`.
  */
-export const servicesMenuLinks: ServiceMenuLink[] = [
-  ...serviceGroups.map((group) => ({
-    label: group.title,
+const serviceNavLabels: Record<string, string> = {
+  "software-and-business-systems": "Software & business systems",
+  "operational-and-technical-software": "Operational & technical software",
+  "websites-and-commerce": "Websites & e-commerce",
+  "seo-and-digital-growth": "SEO & digital growth",
+  "integration-deployment-and-support": "Integration, deployment & support",
+};
+
+/**
+ * The service families, in catalogue order, shared by the desktop Services
+ * panel and the mobile Services group so both list the same destinations.
+ * Each family is a single destination (its section on /services), so each
+ * carries one short descriptive line rather than sub-links.
+ */
+export const serviceFamilyLinks: ServiceMenuLink[] = serviceGroups
+  .filter((group) => group.published)
+  .map((group) => ({
+    label: serviceNavLabels[group.id] ?? group.title,
     href: group.href,
     description: servicesMenuDescriptions[group.id] ?? group.problem,
-  })),
-  {
-    label: "How We Work — Kipeo Studio",
-    href: "/studio",
-    description: "Our process, from discovery through to launch and support.",
-  },
-];
+  }));
+
+export const allServicesLink: NavItem = { label: "View all services", href: "/services" };
+
+/** The process page: listed apart from the families (it isn't one). */
+export const howWeWorkLink: ServiceMenuLink = {
+  label: "How we work",
+  href: "/studio",
+  description: "Our process, from discovery through to launch and support.",
+};
 
 export const footerServiceLinks: NavItem[] = serviceGroups.map((group) => ({
   label: group.title,

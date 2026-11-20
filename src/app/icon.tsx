@@ -1,8 +1,11 @@
 import { ImageResponse } from "next/og";
+import { PEAK_PATH } from "@/components/layout/brand-mark";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
+/** The charcoal Kipeo peak on a warm-ivory tile, so it reads on both light
+ *  and dark browser tab strips. */
 export default function Icon() {
   return new ImageResponse(
     (
@@ -13,21 +16,12 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0d1117",
-          borderRadius: "9px",
+          background: "#f8f3ea",
+          borderRadius: "7px",
         }}
       >
-        <svg width="23" height="23" viewBox="0 0 32 32" fill="none">
-          <path
-            d="M8.5 22.5 16 15.5 23.5 8.5"
-            stroke="#14b8a6"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle cx="8.5" cy="22.5" r="3" fill="#14b8a6" />
-          <circle cx="16" cy="15.5" r="3" fill="#14b8a6" />
-          <circle cx="23.5" cy="8.5" r="3" fill="#14b8a6" />
+        <svg width="26" height="26" viewBox="0 0 32 32">
+          <path d={PEAK_PATH} fillRule="evenodd" fill="#14171a" />
         </svg>
       </div>
     ),

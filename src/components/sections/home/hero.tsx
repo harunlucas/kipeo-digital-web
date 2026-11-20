@@ -1,75 +1,68 @@
-import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal } from "@/components/motion/reveal";
-import { HeroVisual } from "@/components/motion/hero-visual";
-import { siteConfig } from "@/content/site-config";
+import { ReleaseEnvironment } from "./release-environment";
 
-const trustPoints = ["Nairobi-based", "Working worldwide", "Free initial proposal"];
-
+/**
+ * Two populated columns on one continuous ivory field: the studio message at
+ * 40% and the release-environment visual at 60%. Both sit inside the same
+ * `Container` the header uses, so the headline's left edge lines up with the
+ * logo. The grid collapses to a single column below `lg` with the copy first.
+ *
+ * The section is sized by its contents rather than the viewport — a forced
+ * full height would leave a dead band under the controls on short screens.
+ *
+ * The headline's intended desktop arrangement — "We build the / systems /
+ * your business / runs on." — is set by two `<br>`s that only exist from
+ * `lg` up (`hidden lg:inline` removes and restores them). Leaving it to a
+ * `ch`-based max-width would make the break point depend on each face's
+ * glyph metrics; below `lg` the breaks are gone and the text wraps
+ * naturally. Either way the H1 stays one run of selectable text.
+ */
 export function Hero() {
   return (
-    <section className="bg-grid-paper relative overflow-hidden bg-paper pb-16 pt-12 sm:pb-20 sm:pt-14">
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
-      />
-      <span
-        aria-hidden
-        className="text-display-1 pointer-events-none absolute -left-6 top-20 select-none text-[9rem] font-semibold leading-none text-paper-foreground/[0.03] sm:text-[13rem]"
-      >
-        K
-      </span>
-
-      <Container className="relative">
-        <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
+    <section className="bg-ivory pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+      <Container>
+        <div className="grid gap-14 lg:grid-cols-[40fr_60fr] lg:items-center lg:gap-16">
           <div>
-            <Reveal immediate>
-              <Eyebrow>Software &amp; digital studio</Eyebrow>
-            </Reveal>
+            <h1 className="hero-headline">
+              <span className="block font-display font-semibold text-paper-foreground">
+                We build the
+                <br className="hidden lg:inline" /> systems
+              </span>{" "}
+              {/* `pb` leaves room for the italic descenders in "your" and "business".
+                  The light sweep plays once on load (see `.phrase-sweep`). */}
+              <span
+                className="phrase-sweep is-sweeping block pb-[0.08em] font-serif-display italic"
+                style={{ "--phrase-sweep-delay": "0.35s" } as React.CSSProperties}
+              >
+                your business
+                <br className="hidden lg:inline" /> runs on.
+              </span>
+            </h1>
 
-            <Reveal immediate delay={0.04}>
-              <h1 className="text-display-1 text-sheen mt-6">
-                Websites and software
-                <br />
-                built to run your business
-              </h1>
-            </Reveal>
+            <p className="mt-7 max-w-md text-base leading-relaxed text-slate sm:text-lg">
+              Web platforms, custom software and integrations, engineered together.
+            </p>
 
-            <Reveal immediate delay={0.08}>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
-                {siteConfig.name} designs websites, applications and digital systems that help
-                organisations operate, sell and grow more effectively.
-              </p>
-            </Reveal>
+            <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <Button href="/contact" variant="primary" size="lg">
+                Start a project
+              </Button>
+              <Link
+                href="#what-we-build"
+                className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-slate underline decoration-slate/40 underline-offset-4 transition-colors hover:text-paper-foreground hover:decoration-paper-foreground/50"
+              >
+                Explore services
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
 
-            <Reveal immediate delay={0.12}>
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <Button href="/contact" variant="primary" size="lg">
-                  Start a project
-                </Button>
-                <Button href="/work" variant="outline" size="lg">
-                  Explore our work
-                </Button>
-              </div>
-            </Reveal>
-
-            <Reveal immediate delay={0.15}>
-              <ul className="mt-10 flex flex-col gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:gap-8">
-                {trustPoints.map((point) => (
-                  <li key={point} className="flex items-center gap-2 text-sm text-slate">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-teal-strong" aria-hidden />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+            <p className="mt-8 text-sm text-slate-muted">Nairobi, Kenya · Working worldwide.</p>
           </div>
 
-          <div className="lg:-mr-10 xl:-mr-16">
-            <HeroVisual />
-          </div>
+          <ReleaseEnvironment />
         </div>
       </Container>
     </section>

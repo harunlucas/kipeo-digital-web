@@ -1,4 +1,4 @@
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Inter, Space_Grotesk, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -23,6 +23,20 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+/*
+  Display serif, used only for the italic half of the homepage hero headline
+  and that section's "Interactive demo" caption. Instrument Serif ships a
+  single 400 weight, so the weight is explicit; only the italic face is
+  loaded because that is the only cut the design uses.
+*/
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: "italic",
+  display: "swap",
+});
+
 export const metadata = defaultMetadata;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body
         className="flex min-h-full flex-col bg-paper text-paper-foreground"

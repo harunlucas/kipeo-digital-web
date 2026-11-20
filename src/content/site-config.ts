@@ -5,7 +5,10 @@ export const siteConfig = {
   description:
     "Kipeo Digital is a team-led software and digital-product studio in Nairobi, building websites, web apps and business systems for clients working and growing online worldwide.",
   url: "https://kipeo.harunlucas.com",
-  email: "kipeo@harunlucas.com",
+  /** Public contact address only: shown and linked on the site, in JSON-LD
+   *  and in auto-reply footers. Where enquiries are delivered is set
+   *  separately (`CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`). */
+  email: "hello@kipeodigital.com",
   phone: "+254 797 610 755",
   phoneHref: "tel:+254797610755",
   whatsappHref: "https://wa.me/254797610755",

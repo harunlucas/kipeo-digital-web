@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/content/site-config";
 import { getAllInsights } from "@/lib/insights";
 import { impactBuildConfig } from "@/content/impact-build";
+import { caseStudies } from "@/content/case-studies";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const insights = await getAllInsights();
@@ -56,6 +57,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    ...caseStudies.map((study) => ({
+      url: `${siteConfig.url}/work/${study.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     {
       url: `${siteConfig.url}/about`,
       lastModified: new Date(),
