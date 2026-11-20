@@ -4,7 +4,9 @@ export const siteConfig = {
     "Websites, software and digital systems for businesses working and growing online.",
   description:
     "Kipeo Digital is a team-led software and digital-product studio in Nairobi, building websites, web apps and business systems for clients working and growing online worldwide.",
-  url: "https://kipeo.harunlucas.com",
+  /** Public canonical origin. Canonicals, social URLs, the sitemap and the
+   *  form origin check all derive from this. */
+  url: "https://kipeodigital.com",
   /** Public contact address only: shown and linked on the site, in JSON-LD
    *  and in auto-reply footers. Where enquiries are delivered is set
    *  separately (`CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`). */

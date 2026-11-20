@@ -5,7 +5,7 @@ export const contentType = ogImageContentType;
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "Work",
-    heading: "Verified software work, internal products and capability areas.",
+    eyebrow: "Selected work",
+    heading: "Real projects, and who built what.",
   });
 }

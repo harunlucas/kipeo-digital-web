@@ -673,6 +673,219 @@ body {
   }
 }
 
+/*
+  Work pages (`/work`, `/work/[slug]`). Everything here is namespaced
+  `work-` and used only by `src/components/sections/work/`.
+
+  `.work-mat` is the quiet surface every piece of project evidence sits on:
+  a half-step darker than Ivory with a hairline edge, so screenshots and
+  typeset extracts read as exhibits without competing with the page.
+
+  `.work-entry` lays out one project from a single copy of each piece, the
+  same named-areas approach as `.wwb-layout` above. Mobile reads name and
+  purpose, then the media and its caption, then contribution and link.
+  From `lg` the media takes the left 60% and the story the right 40%; the
+  feature centres its story against the screenshot, rows top-align.
+*/
+.work-mat {
+  background: color-mix(in srgb, var(--color-paper-elevated) 72%, var(--color-ivory));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-neutral-300) 70%, transparent);
+}
+
+.work-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "media" "details";
+  row-gap: 1.5rem;
+}
+
+.work-entry-head {
+  grid-area: head;
+}
+
+.work-entry-media {
+  grid-area: media;
+  min-width: 0;
+}
+
+.work-entry-details {
+  grid-area: details;
+}
+
+@media (min-width: 1024px) {
+  .work-entry {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "media head" "media details";
+    column-gap: 3.5rem;
+    row-gap: 1.5rem;
+  }
+
+  .work-entry--feature {
+    grid-template-rows: 1fr auto auto 1fr;
+    grid-template-areas: "media ." "media head" "media details" "media .";
+    column-gap: 4rem;
+  }
+
+  /* Story on the left, image pair on the right (set per project via
+     `listing.mediaSide`). The mobile order is unchanged. */
+  .work-entry--media-right {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    grid-template-areas: "head media" "details media";
+  }
+}
+
+/*
+  Work index image pair (`project-image-pair.tsx`): a main interface concept
+  with a companion pinned over its lower edge.
+
+  GEOMETRY. Every length derives from the stage's width via custom
+  properties set per project (inset, width, overlap; `-sm` variants below
+  `lg`). Vertical margins and padding resolve against width, so:
+    companion height  = W × width × ratio + 2 × frame pad
+    companion top     = W × main-ratio − overlap × companion height
+    reserved space    = (1 − overlap) × companion height + rotation room
+  The reserve sits below the main image, so the next block always starts
+  after the full composition and nothing has to be measured in JS.
+
+  TRANSFORMS. Placement (`.work-pair-pin`), rotation (`.work-pair-rock`) and
+  hover breathing (`.work-pair-breathe`) are separate wrappers, so no state
+  can overwrite another's transform and nothing snaps.
+*/
+.work-pair {
+  --main-ratio: 0.6667;
+  --pw: var(--pin-width-sm);
+  --pi: var(--pin-inset-sm);
+  --po: var(--pin-overlap-sm);
+  --pad: 4px;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .work-pair {
+    --pw: var(--pin-width);
+    --pi: var(--pin-inset);
+    --po: var(--pin-overlap);
+    --pad: 5px;
+  }
+}
+
+.work-pair-stage {
+  position: relative;
+  /* (1 − overlap) × companion height, plus room for its tilt and shadow. */
+  padding-bottom: calc((1 - var(--po)) * (var(--pw) * var(--pin-ratio) + 2 * var(--pad)) + 14px);
+}
+
+.work-pair-main {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px rgb(13 17 23 / 0.06),
+    0 22px 44px -30px rgb(13 17 23 / 0.45);
+}
+
+.work-pair-pin {
+  position: absolute;
+  top: 0;
+  width: var(--pw);
+  margin-top: calc(100% * var(--main-ratio) - var(--po) * (var(--pw) * var(--pin-ratio) + 2 * var(--pad)));
+  z-index: 1;
+}
+
+.work-pair--left .work-pair-pin {
+  left: var(--pi);
+}
+
+.work-pair--right .work-pair-pin {
+  right: var(--pi);
+}
+
+/* Pinned at the corner that sits over the main image. */
+.work-pair-rock {
+  transform: rotate(var(--pin-rest, 0deg));
+  transform-origin: top right;
+}
+
+.work-pair--right .work-pair-rock {
+  transform-origin: top left;
+}
+
+.work-pair-frame {
+  padding: var(--pad);
+  border-radius: 10px;
+  background: var(--color-ivory);
+  box-shadow:
+    0 0 0 1px rgb(13 17 23 / 0.06),
+    0 2px 3px rgb(13 17 23 / 0.08),
+    0 16px 30px -14px rgb(13 17 23 / 0.42);
+}
+
+/* One slow rock on entering view: rest → −2° → +2° → rest, about the pin. */
+@keyframes work-pair-rock {
+  0% {
+    transform: rotate(var(--pin-rest, 0deg));
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(var(--pin-rest, 0deg));
+  }
+}
+
+.work-pair.is-rocking .work-pair-rock {
+  animation: work-pair-rock 4.5s cubic-bezier(0.45, 0, 0.55, 1) 0.2s 1 both;
+}
+
+/* Hover breathing. Each cycle starts and ends at rest; the component stops
+   it only at a cycle boundary, so entering and leaving stay continuous. */
+@keyframes work-pair-breathe-main {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.008);
+  }
+}
+
+@keyframes work-pair-breathe-pinned {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.015);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .work-pair-breathe {
+    will-change: transform;
+  }
+
+  .work-pair.is-breathing .work-pair-breathe--main {
+    animation: work-pair-breathe-main 3s ease-in-out infinite;
+  }
+
+  .work-pair.is-breathing .work-pair-breathe--pinned {
+    animation: work-pair-breathe-pinned 3s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-pair.is-rocking .work-pair-rock,
+  .work-pair.is-breathing .work-pair-breathe--main,
+  .work-pair.is-breathing .work-pair-breathe--pinned {
+    animation: none;
+  }
+}
+
 /* Subtle background grain used behind dimensional visuals. */
 .bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");

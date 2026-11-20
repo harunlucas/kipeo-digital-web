@@ -1,5 +1,39 @@
 # Homepage visual assets
 
+## /work "Selected work" redesign (2026-11-20)
+
+The Work index now shows only genuine project evidence, with no capability
+illustrations or concept renders. One new file was added:
+
+| Local file | Derived from | Used on |
+|---|---|---|
+| `public/images/projects/bushlite-wifi-portal-voucher.webp` | Crop (x872 y292, 552×590, WebP q90 via local `sharp`) of `bushlite-wifi-login-portal.webp` | /work feature and /work/bushlite-wifi |
+
+The SafetyOS workflow and the CNC example are HTML typeset from those
+projects' own source and engine output. They are not images. See
+`docs/work-page-sources.md` for every claim and credit.
+
+### Work index image pairs (interface concepts)
+
+Six user-supplied, generated interface concepts, captioned "Interface
+concepts" on the page. They are not product screenshots. The source PNGs in
+`public/images/` are left untouched. Each web asset was encoded as lossless
+WebP (sharp, `lossless: true, effort: 6, exact: true`) and compared against
+the original PNG and a max-compression PNG. In every case lossless WebP was
+the smallest, so it was kept. Each saved file was decoded and checked to be
+pixel-identical to its source (1536×1024, RGB, no alpha, no ICC profile).
+They are rendered with `next/image` `unoptimized`, so they are served as-is
+and never re-encoded by the lossy image optimiser.
+
+| Web asset | Source | Original | Lossless WebP |
+|---|---|---|---|
+| `projects/bushlite-wifi/bushlite-voucher-management.webp` | `BushLite WiFi voucher management-1.png` | 2,001,806 B | 1,290,912 B |
+| `projects/bushlite-wifi/bushlite-customer-portal.webp` | `BushLite WiFi captive portal in Nairobi-2.png` | 2,193,729 B | 1,401,714 B |
+| `projects/hse-management-system/safetyos-corrective-action-review.webp` | `SafetyOS pallet walkway closure review-2.png` | 1,993,596 B | 1,292,282 B |
+| `projects/hse-management-system/safetyos-field-inspection.webp` | `SafetyOS Loading Bay Inspection-1.png` | 1,993,283 B | 1,279,122 B |
+| `projects/cnc-learning-system/cnc-pocket-toolpath-simulation.webp` | `CNC Learning System Toolpath Simulation-1.png` | 1,893,601 B | 1,147,398 B |
+| `projects/cnc-learning-system/cnc-part-definition.webp` | `CNC Pocket Milling Learning System-2.png` | 2,010,238 B | 1,304,562 B |
+
 ## /services and /work full redesign (this session — see docs/image-assets.md)
 
 Both pages were rebuilt around original SVG/CSS interface compositions

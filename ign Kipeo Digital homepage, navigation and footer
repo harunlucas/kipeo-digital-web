@@ -1,0 +1,87 @@
+ .../images/automation/cnc-learning-workspace.png   | Bin [31m0[m -> [32m1375007[m bytes
+ .../images/automation/cnc-learning-workspace.webp  | Bin [31m0[m -> [32m830404[m bytes
+ .../images/automation/hse-corrective-actions.png   | Bin [31m0[m -> [32m1389011[m bytes
+ .../images/automation/hse-corrective-actions.webp  | Bin [31m0[m -> [32m836698[m bytes
+ public/images/how-we-work/kipeo-handover-guide.png | Bin [31m0[m -> [32m2588428[m bytes
+ public/images/how-we-work/kipeo-project-brief.png  | Bin [31m0[m -> [32m2407059[m bytes
+ .../images/how-we-work/kipeo-working-prototype.png | Bin [31m0[m -> [32m1612900[m bytes
+ .../commerce-platform-concept.webp                 | Bin [31m102812[m -> [32m0[m bytes
+ .../engineering-systems-concept.webp               | Bin [31m111442[m -> [32m0[m bytes
+ .../hse-app-multidevice-concept.webp               | Bin [31m54452[m -> [32m0[m bytes
+ .../hse-mobile-capture-concept.webp                | Bin [31m73562[m -> [32m0[m bytes
+ .../capability-photos/hse-systems-concept.webp     | Bin [31m66548[m -> [32m0[m bytes
+ .../Isometric three-layer software stack.png       | Bin [31m0[m -> [32m1824392[m bytes
+ public/images/services/_rect.webp                  | Bin [31m0[m -> [32m103364[m bytes
+ public/images/services/automation-ai-card.webp     | Bin [31m0[m -> [32m842248[m bytes
+ public/images/services/automation-ai-invoice.webp  | Bin [31m0[m -> [32m181798[m bytes
+ public/images/services/automation-ai.png           | Bin [31m0[m -> [32m1597325[m bytes
+ public/images/services/automation-ai.webp          | Bin [31m0[m -> [32m836806[m bytes
+ public/images/services/business-systems-card.webp  | Bin [31m0[m -> [32m1012408[m bytes
+ public/images/services/business-systems-pump.webp  | Bin [31m0[m -> [32m103364[m bytes
+ public/images/services/business-systems.png        | Bin [31m0[m -> [32m1810516[m bytes
+ public/images/services/business-systems.webp       | Bin [31m0[m -> [32m1009598[m bytes
+ .../images/services/websites-ecommerce-card.webp   | Bin [31m0[m -> [32m1125994[m bytes
+ .../images/services/websites-ecommerce-laptop.webp | Bin [31m0[m -> [32m875118[m bytes
+ .../images/services/websites-ecommerce-phone.webp  | Bin [31m0[m -> [32m192734[m bytes
+ public/images/services/websites-ecommerce.png      | Bin [31m0[m -> [32m1867033[m bytes
+ public/images/services/websites-ecommerce.webp     | Bin [31m0[m -> [32m1125994[m bytes
+ src/app/apple-icon.tsx                             |  18 [32m+[m[31m-[m
+ src/app/favicon.ico                                | Bin [31m2143[m -> [32m2450[m bytes
+ src/app/globals.css                                | 644 [32m++++++++++++++++++++[m[31m-[m
+ src/app/icon.tsx                                   |  20 [32m+[m[31m-[m
+ src/app/layout.tsx                                 |  18 [32m+[m[31m-[m
+ src/app/page.tsx                                   |  24 [32m+[m[31m-[m
+ src/app/sitemap.ts                                 |   7 [32m+[m
+ src/app/work/[slug]/opengraph-image.tsx            |  15 [32m+[m
+ src/app/work/[slug]/page.tsx                       | 149 [32m+++++[m
+ src/app/work/[slug]/twitter-image.tsx              |  15 [32m+[m
+ src/components/layout/announcement-bar.tsx         |  36 [32m+[m[31m-[m
+ src/components/layout/brand-mark.tsx               |  36 [32m+[m[31m-[m
+ src/components/layout/footer.tsx                   | 129 [32m++++[m[31m-[m
+ src/components/layout/header.tsx                   |  60 [32m+[m[31m-[m
+ src/components/layout/mobile-menu.tsx              |  19 [32m+[m[31m-[m
+ src/components/layout/services-dropdown.tsx        | 115 [31m----[m
+ src/components/layout/services-menu.tsx            | 248 [32m++++++++[m
+ src/components/motion/capability-architecture.tsx  | 225 [31m-------[m
+ src/components/motion/capability-path-card.tsx     | 363 [31m------------[m
+ src/components/motion/featured-project-card.tsx    |  89 [31m---[m
+ src/components/motion/hero-visual.tsx              | 201 [31m-------[m
+ src/components/motion/problem-solution-visuals.tsx | 469 [31m---------------[m
+ src/components/motion/problems-showcase.tsx        | 185 [31m------[m
+ src/components/motion/process-route.tsx            | 258 [31m---------[m
+ src/components/motion/process-stage-visuals.tsx    | 297 [31m----------[m
+ src/components/motion/product-spotlight.tsx        | 132 [31m-----[m
+ src/components/sections/home/animated-link.tsx     |  41 [32m++[m
+ .../sections/home/automation-preview.tsx           | 176 [32m++++++[m
+ .../sections/home/business-systems-preview.tsx     | 128 [32m++++[m
+ src/components/sections/home/capabilities.tsx      |  37 [31m--[m
+ src/components/sections/home/ecommerce-preview.tsx |  94 [32m+++[m
+ src/components/sections/home/final-cta.tsx         | 170 [32m++++[m[31m--[m
+ .../sections/home/global-collaboration.tsx         |  53 [31m--[m
+ src/components/sections/home/hero.tsx              | 115 [32m++[m[31m--[m
+ src/components/sections/home/how-we-work.tsx       | 167 [32m++++++[m
+ .../sections/home/impact-build-teaser.tsx          |  63 [31m--[m
+ .../sections/home/interactive-studio-section.tsx   |  78 [31m---[m
+ src/components/sections/home/order-system-demo.tsx | 241 [32m++++++++[m
+ src/components/sections/home/problems-we-solve.tsx |  36 [31m--[m
+ src/components/sections/home/process.tsx           |  32 [31m-[m
+ .../sections/home/release-environment.tsx          | 211 [32m+++++++[m
+ src/components/sections/home/selected-work.tsx     |  65 [31m---[m
+ .../sections/home/service-illustrations.tsx        | 266 [32m+++++++++[m
+ src/components/sections/home/studio-intro.tsx      |  78 [32m+++[m
+ .../sections/home/system-stack-artwork.tsx         | 543 [32m+++++++++++++++++[m
+ src/components/sections/home/trust-strip.tsx       |  32 [31m-[m
+ src/components/sections/home/what-we-build.tsx     | 364 [32m++++++++++++[m
+ src/components/ui/card.tsx                         |  41 [32m++[m
+ src/components/ui/schedule-panel.tsx               |  83 [31m---[m
+ src/components/ui/section-heading.tsx              |  58 [32m++[m
+ src/components/ui/tag.tsx                          |  31 [32m+[m
+ src/content/case-studies.ts                        |  86 [32m+++[m
+ src/content/navigation.ts                          |  44 [32m+[m[31m-[m
+ src/content/problems.ts                            |  58 [31m--[m
+ src/content/process.ts                             | 102 [31m----[m
+ src/content/selected-work.ts                       | 193 [31m------[m
+ src/content/site-config.ts                         |   5 [32m+[m[31m-[m
+ src/lib/metadata.ts                                |   7 [32m+[m[31m-[m
+ src/lib/use-enter-once.ts                          |  24 [32m+[m
+ 86 files changed, 4068 insertions(+), 3426 deletions(-)
