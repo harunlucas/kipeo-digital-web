@@ -18,6 +18,10 @@
   --color-paper-elevated: #f1ece2;
   --color-paper-foreground: #14171a;
 
+  /* Warm ivory canvas, used by the homepage hero. A half-step warmer than
+     Paper so the hero reads as its own field without a visible seam. */
+  --color-ivory: #f8f3ea;
+
   --color-mist: #eef1f2;
   --color-mist-elevated: #e4e9eb;
 
@@ -26,9 +30,18 @@
   --color-teal-tint: #e3f3f0;
   --color-teal-foreground: #04201d;
 
+  /* The lit crest of the homepage hero's headline sweep. As light as teal
+     gets while still clearing 3:1 against Ivory at display sizes (~3.7:1),
+     so the phrase stays readable at every point in the animation. */
+  --color-teal-sheen: #0e8c80;
+
   --color-highlight: #6c63e0;
   --color-highlight-strong: #514ab3;
   --color-highlight-foreground: #ffffff;
+
+  /* Restrained amber, used only for "waiting" states in the homepage hero's
+     order demo. Measured against --color-ink for contrast (~8:1). */
+  --color-amber: #d9a441;
 
   --color-slate: #3f4750;
   --color-slate-muted: #6b7580;
@@ -53,6 +66,8 @@
   --color-paper-elevated: var(--color-paper-elevated);
   --color-paper-foreground: var(--color-paper-foreground);
 
+  --color-ivory: var(--color-ivory);
+
   --color-mist: var(--color-mist);
   --color-mist-elevated: var(--color-mist-elevated);
 
@@ -60,10 +75,13 @@
   --color-teal-strong: var(--color-teal-strong);
   --color-teal-tint: var(--color-teal-tint);
   --color-teal-foreground: var(--color-teal-foreground);
+  --color-teal-sheen: var(--color-teal-sheen);
 
   --color-highlight: var(--color-highlight);
   --color-highlight-strong: var(--color-highlight-strong);
   --color-highlight-foreground: var(--color-highlight-foreground);
+
+  --color-amber: var(--color-amber);
 
   --color-slate: var(--color-slate);
   --color-slate-muted: var(--color-slate-muted);
@@ -80,6 +98,7 @@
   --font-sans: var(--font-inter);
   --font-display: var(--font-space-grotesk);
   --font-mono: var(--font-jetbrains-mono);
+  --font-serif-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
 
   --shadow-card: var(--shadow-card);
   --shadow-panel: var(--shadow-panel);
@@ -108,6 +127,54 @@ body {
   border-radius: 2px;
 }
 
+/* Header Services panel (`services-menu.tsx`): a short fade-and-settle as
+   it opens, none under reduced motion. Its text links take a teal
+   underline on hover and keyboard focus. */
+@keyframes services-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.services-panel {
+  animation: services-panel-in 0.16s ease-out both;
+}
+
+.services-panel-link {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.services-panel-link:hover,
+.services-panel-link:focus-visible {
+  color: var(--color-teal-strong);
+  text-decoration-color: var(--color-teal-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-panel {
+    animation: none;
+  }
+
+  .services-panel-link {
+    transition: none;
+  }
+}
+
+/* On the Ink footer the deep teal ring is too dark to read well; use the
+   brighter teal there. */
+.site-footer :focus-visible {
+  outline-color: var(--color-teal);
+}
+
 /* Fluid, clamp-based display scale so large headings resize smoothly
    instead of wrapping awkwardly between breakpoints. */
 .text-display-1 {
@@ -134,6 +201,478 @@ body {
   text-wrap: balance;
 }
 
+/* Homepage hero headline only. Larger and tighter than `.text-display-1`,
+   and deliberately not `text-wrap: balance` — the hero sets its own line
+   breaks with a per-span `max-width` in `ch`, which balancing would fight. */
+.hero-headline {
+  font-size: clamp(2.5rem, 1.5rem + 3vw, 3.375rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+
+/* One step below `.hero-headline`, for the homepage section headings that
+   use the same near-black sans / teal italic serif pairing. */
+.section-headline {
+  font-size: clamp(1.875rem, 1.3rem + 2.1vw, 2.625rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+/*
+  "What we build" section layout. Three pieces — the heading, the "Explore
+  all services" link and the card grid — need to swap positions between
+  breakpoints (link after the heading on desktop, after the cards on mobile)
+  without duplicating the link in the DOM. Named grid-template-areas does
+  that in one rule each; expressing the same thing as Tailwind utilities
+  would mean either rendering the link twice or fighting `order` across a
+  layout that isn't a simple row<->column flip. Breakpoint matches
+  Tailwind's default `lg` (1024px, unmodified by this project).
+*/
+.wwb-layout {
+  display: grid;
+  grid-template-areas: "heading" "grid" "link";
+  row-gap: 1.75rem;
+}
+
+.wwb-heading {
+  grid-area: heading;
+}
+
+.wwb-link {
+  grid-area: link;
+  justify-self: start;
+}
+
+.wwb-grid {
+  grid-area: grid;
+}
+
+@media (min-width: 1024px) {
+  .wwb-layout {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "heading link" "grid grid";
+    column-gap: 2rem;
+    row-gap: 2.5rem;
+    align-items: baseline;
+  }
+
+  .wwb-link {
+    justify-self: end;
+  }
+}
+
+/*
+  The service explorer inside `.wwb-grid`: three (selector, preview) pairs
+  that need to read as an accordion on mobile — each preview opening directly
+  under its own selector — and as a split pane on desktop, with the preview
+  moving into one shared 65% column on the right instead.
+
+  All three previews stay mounted at all times at every breakpoint (only
+  `hidden` toggles per the active service); this rule only ever repositions
+  them, which is what lets interactive state (the pump/loading-bay choice,
+  the bag count, the approved invoice) survive both switching between
+  services and resizing across the mobile/desktop boundary. Named
+  grid-template-areas does the repositioning in two rules; the alternative —
+  three `prev-N` elements each needing a *different* shared area only at one
+  breakpoint — doesn't reduce to a plain Tailwind `order` flip the way
+  `.wwb-layout` above does, so it's written as CSS for the same reason that
+  one was.
+*/
+.wwb-explorer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: "sel-1" "prev-1" "sel-2" "prev-2" "sel-3" "prev-3";
+}
+
+.wwb-explorer-sel-1 {
+  grid-area: sel-1;
+}
+.wwb-explorer-prev-1 {
+  grid-area: prev-1;
+}
+.wwb-explorer-sel-2 {
+  grid-area: sel-2;
+}
+.wwb-explorer-prev-2 {
+  grid-area: prev-2;
+}
+.wwb-explorer-sel-3 {
+  grid-area: sel-3;
+}
+.wwb-explorer-prev-3 {
+  grid-area: prev-3;
+}
+
+@media (min-width: 1024px) {
+  .wwb-explorer {
+    grid-template-columns: 35fr 65fr;
+    grid-template-areas: "sel-1 preview" "sel-2 preview" "sel-3 preview";
+    column-gap: 2.5rem;
+    /* Mobile separates selectors with a border instead (each one's own
+       border-top, skipped on the first) — not usable here since the three
+       selector rows no longer sit flush against each other now that the
+       preview column exists beside them. */
+    row-gap: 1.75rem;
+  }
+
+  /*
+    All three repeat the same area name on three consecutive rows of the
+    same column, so grid merges them into one spanning cell — the 65% pane.
+    Only the active one is actually visible there; `grid`'s default
+    `align-items: stretch` is what makes that one cell fill the full span
+    rather than sizing to the shortest selector row.
+  */
+  .wwb-explorer-prev-1,
+  .wwb-explorer-prev-2,
+  .wwb-explorer-prev-3 {
+    grid-area: preview;
+  }
+}
+
+/*
+  "How we work" layout, modelled on `.wwb-layout` above for the same reason:
+  the "Explore our process" link needs to sit under the intro in the left
+  column on desktop, but move to after the third stage row on mobile. Intro,
+  link and the three stages are five siblings here, repositioned per
+  breakpoint via named areas rather than duplicated or reordered in the DOM.
+*/
+.hww-layout {
+  display: grid;
+  grid-template-areas: "intro" "stage-1" "stage-2" "stage-3" "link";
+  row-gap: 1.75rem;
+}
+
+.hww-intro {
+  grid-area: intro;
+}
+.hww-link {
+  grid-area: link;
+}
+.hww-stage-1 {
+  grid-area: stage-1;
+}
+.hww-stage-2 {
+  grid-area: stage-2;
+}
+.hww-stage-3 {
+  grid-area: stage-3;
+}
+
+@media (min-width: 1024px) {
+  .hww-layout {
+    grid-template-columns: 1fr 2fr;
+    /* The empty cell below "link" keeps column 1 to two rows while column 2
+       still runs to three, so the intro column doesn't stretch to match it. */
+    grid-template-areas: "intro stage-1" "link stage-2" ". stage-3";
+    column-gap: 3rem;
+    row-gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+/*
+  Homepage phrase lighting, shared by the hero's "your business runs on."
+  and "work" in How we work.
+
+  A single narrow, soft-edged band of jade travels across the italic teal
+  phrase once, then the words settle back to their resting deep teal. The
+  band is a gradient clipped to the glyphs, so the light stays inside the
+  letterforms rather than washing over the ivory. The sweep runs while
+  `.is-sweeping` is present: the hero sets it in its markup (so it plays on
+  load, after `--phrase-sweep-delay`), How we work adds it once "work"
+  enters the viewport (`useEnterOnce`) and replays it by remounting the
+  span — a changed `key` — on pointer-enter.
+
+  The geometry: with `background-size: 300%`, the painted image is three
+  times the element's width, so the gradient's 40–60% band sits fully
+  off-stage at both ends of the travel — clear of the left edge at `92% 0`
+  and clear of the right at `8% 0`. The phrase therefore renders as solid
+  `--color-teal-strong` from the first frame (held by `animation-fill-mode:
+  both` through the delay) and for good after the band lands. Those two
+  endpoints are the tightest pair that still hides the band: widening them
+  to 100%/0% would spend most of the duration moving light nobody can see.
+
+  `color` is set first and unconditionally: browsers without text clipping
+  keep plain deep teal.
+*/
+.phrase-sweep {
+  color: var(--color-teal-strong);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .phrase-sweep {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-teal-strong) 0%,
+      var(--color-teal-strong) 40%,
+      var(--color-teal-sheen) 47%,
+      var(--color-teal-sheen) 53%,
+      var(--color-teal-strong) 60%,
+      var(--color-teal-strong) 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 300% 100%;
+    background-position: 92% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .phrase-sweep.is-sweeping {
+    animation: phrase-sweep-sheen 1.2s var(--phrase-sweep-delay, 0s) ease-in-out 1 both;
+  }
+}
+
+@keyframes phrase-sweep-sheen {
+  from {
+    background-position: 92% 0;
+  }
+  to {
+    background-position: 8% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phrase-sweep {
+    background-image: none;
+    color: var(--color-teal-strong);
+    -webkit-text-fill-color: var(--color-teal-strong);
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .phrase-sweep {
+    background-image: none;
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
+}
+
+/*
+  Homepage text underline, drawn left to right. A 1px background stripe on
+  an inline element rather than a pseudo-element, so a phrase that wraps
+  gets its line drawn across both lines in reading order. `padding-bottom`
+  drops the stripe just clear of descenders without affecting line layout.
+  Used by the What we build service names and How we work row phrases.
+*/
+.home-underline {
+  background-image: linear-gradient(var(--color-teal-strong), var(--color-teal-strong));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.35s ease-out;
+}
+
+.home-underline.is-active {
+  background-size: 100% 1px;
+}
+
+/*
+  How we work rows. The whole row is the hover target, and only the hovered
+  row responds: its step number brightens from deep teal to the lighter
+  sheen teal (still ~3.7:1 on ivory) and the title's key phrase underlines.
+  Hover rules sit behind `(hover: hover)` so a tap on a touchscreen can't
+  leave a row stuck "hovered"; touch gets every phrase underlined statically
+  instead.
+*/
+.hww-row-number {
+  color: var(--color-teal-strong);
+  transition: color 0.25s ease;
+}
+
+@media (hover: hover) {
+  .hww-stage:hover .hww-row-number {
+    color: var(--color-teal-sheen);
+  }
+
+  .hww-stage:hover .hww-row-phrase {
+    background-size: 100% 1px;
+  }
+}
+
+@media (hover: none) {
+  .hww-row-phrase {
+    background-size: 100% 1px;
+  }
+}
+
+/*
+  What we build: the newly selected service's preview fades in with a 4px
+  rise. The class is only present on the active preview, so adding it on
+  selection (re)starts the animation; with a rapid run of selections each
+  one restarts it on whichever preview is now current.
+
+  On desktop the three previews share one grid cell. Inactive ones stay in
+  layout with `visibility: hidden` (also removing them from the tab order
+  and accessibility tree), so that cell is always as tall as the tallest
+  preview and the page doesn't jump between selections. On mobile each
+  preview opens under its own selector, so inactive ones leave layout.
+*/
+@keyframes wwb-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wwb-preview-enter {
+  animation: wwb-preview-in 0.24s ease-out both;
+}
+
+/*
+  While What we build auto-rotates, the active service name's underline is
+  a progress line: a solid teal stripe filling over one segment (duration
+  from `--wwb-rotate`, set from `ROTATE_MS` in `what-we-build.tsx`), on a
+  faint full-width track so the selection stays identifiable when the
+  rotation is suspended part-way. The component pauses and resumes it with
+  the timer (inline `animation-play-state`) and restarts it per segment. It
+  isn't removed under reduced motion: that starts in manual mode, so it only
+  ever runs after the visitor has switched to auto.
+*/
+@keyframes wwb-progress {
+  from {
+    background-size: 0% 1px, 100% 1px;
+  }
+  to {
+    background-size: 100% 1px, 100% 1px;
+  }
+}
+
+.home-underline.wwb-progress {
+  background-image:
+    linear-gradient(var(--color-teal-strong), var(--color-teal-strong)),
+    linear-gradient(
+      color-mix(in srgb, var(--color-teal-strong) 22%, transparent),
+      color-mix(in srgb, var(--color-teal-strong) 22%, transparent)
+    );
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  animation: wwb-progress var(--wwb-rotate, 4s) linear both;
+}
+
+/*
+  The auto/manual control's light. In auto it is a lit teal dot with a soft
+  glow, and a ring of light swells out of it and fades every 1.6s — the one
+  continuous animation on the homepage, there so the visitor can see the
+  section is running and where to stop it. In manual it goes still and grey.
+  Under reduced motion the lit dot and glow stay but the ring doesn't pulse.
+*/
+@keyframes wwb-mode-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.wwb-mode-light {
+  position: relative;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--color-slate-muted);
+  opacity: 0.55;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.wwb-mode-light.is-on {
+  background: var(--color-teal);
+  opacity: 1;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-teal) 25%, transparent),
+    0 0 10px 2px color-mix(in srgb, var(--color-teal) 55%, transparent);
+}
+
+.wwb-mode-light.is-on::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-teal);
+  animation: wwb-mode-pulse 1.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wwb-mode-light.is-on::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .wwb-mode-light {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+.wwb-preview-inactive {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .wwb-preview-inactive {
+    display: block;
+    visibility: hidden;
+  }
+}
+
+/*
+  The Studio: one hand-drawn-feeling, slightly curved teal stroke under
+  "designing and building", drawn once when the section enters view
+  (`.is-drawn`, from `useEnterOnce`). `pathLength="1"` on the path lets a
+  single dash of length 1 stand for the whole stroke.
+*/
+.studio-scribble path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.15s;
+}
+
+.studio-scribble.is-drawn path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-underline,
+  .hww-row-number {
+    transition: none;
+  }
+
+  .wwb-preview-enter {
+    animation: none;
+  }
+
+  .studio-scribble path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .home-underline {
+    background-image: linear-gradient(CanvasText, CanvasText);
+  }
+
+  .studio-scribble path {
+    stroke: CanvasText;
+  }
+}
+
 /* Subtle background grain used behind dimensional visuals. */
 .bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
@@ -155,34 +694,101 @@ body {
   background-size: 64px 64px;
 }
 
-/* One-time light sweep across the hero headline on load. */
-@keyframes headline-sheen {
+/*
+  Homepage closing CTA (`final-cta.tsx`). See that component for the layer
+  structure. Two masks multiply: `.cta-decor` fades the whole decorative
+  layer out over the bottom 112px so it meets the `bg-ink` footer on the
+  same flat colour; `.cta-grid` thins the grid behind the words and lets it
+  show more around the edges. The grid lines are a touch lighter than
+  `.bg-grid-ink` to make that edge visible at all, and the grid is shifted
+  vertically so one horizontal line runs through the primary button's centre
+  (`--cta-line-y`), which is the line the signal travels.
+*/
+.cta-decor {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 112px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 112px), transparent);
+}
+
+.cta-grid {
+  --cta-grid-line: color-mix(in srgb, var(--color-ink-muted) 13%, transparent);
+  background-image:
+    linear-gradient(to right, var(--cta-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--cta-grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: 0 var(--cta-line-y, 0px);
+  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 42%, rgb(0 0 0 / 0.22), #000);
+  mask-image: radial-gradient(ellipse 58% 52% at 50% 42%, rgb(0 0 0 / 0.22), #000);
+}
+
+/* The signal: a short comet of mint whose bright head leads. Its track ends
+   just short of the button, so the head stops at the edge and fades. */
+.cta-signal-track {
+  position: absolute;
+  left: 0;
+  top: calc(var(--cta-line-y) - 1px);
+  width: var(--cta-stop-x);
+  height: 3px;
+  overflow: hidden;
+}
+
+.cta-signal {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 120px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, rgb(94 234 212 / 0.55) 70%, #ccfbf1);
+  box-shadow: 8px 0 10px 1px rgb(94 234 212 / 0.45);
+  opacity: 0;
+  transform: translateX(-120px);
+}
+
+@keyframes cta-signal-travel {
   0% {
-    background-position: -120% 0;
+    opacity: 1;
+    transform: translateX(-120px);
+  }
+  88% {
+    opacity: 1;
+    transform: translateX(calc(var(--cta-stop-x) - 120px));
   }
   100% {
-    background-position: 220% 0;
+    opacity: 0;
+    transform: translateX(calc(var(--cta-stop-x) - 120px));
   }
 }
 
-.text-sheen {
-  color: var(--color-paper-foreground);
+.cta-play .cta-signal {
+  animation: cta-signal-travel 1.15s cubic-bezier(0.5, 0, 0.3, 1) 0.35s 1 both;
 }
 
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .text-sheen {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-paper-foreground) 40%,
-      var(--color-teal) 50%,
-      var(--color-paper-foreground) 60%
-    );
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: headline-sheen 2.2s 0.6s ease-out 1 both;
+/* The button's edge catches the light as the signal arrives, then settles. */
+.cta-primary::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    0 0 0 1.5px rgb(153 246 228 / 0.9),
+    0 0 22px 4px rgb(94 234 212 / 0.45);
+}
+
+@keyframes cta-edge-light {
+  0% {
+    opacity: 0;
   }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.cta-play .cta-primary::after {
+  animation: cta-edge-light 0.9s ease-out 1.38s 1 both;
 }
 
 /* One-time diagonal light sweep across the hero's dimensional panels. */
