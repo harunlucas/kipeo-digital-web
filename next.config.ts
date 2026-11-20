@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         has: [{ type: "host", value: "kipeo-digital-web.vercel.app" }],
-        destination: "https://kipeo.harunlucas.com/:path*",
+        destination: "https://kipeodigital.com/:path*",
         permanent: true,
       },
     ];
