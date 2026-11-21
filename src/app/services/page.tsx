@@ -120,7 +120,7 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="services-next" className="border-t border-neutral-300 pb-24 pt-16 sm:pb-28 sm:pt-20">
+      <section aria-labelledby="services-next" className="pb-24 pt-16 sm:pb-28 sm:pt-20">
         <Container>
           <div className="max-w-2xl">
             <h2 id="services-next" className="section-headline">

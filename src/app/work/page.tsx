@@ -72,7 +72,7 @@ export default function WorkPage() {
               {rest.map((study, index) => (
                 <div
                   key={study.slug}
-                  className={index > 0 ? "mt-14 border-t border-neutral-300/70 pt-14 sm:mt-16 sm:pt-16" : undefined}
+                  className={index > 0 ? "mt-20 sm:mt-24" : undefined}
                 >
                   <WorkEntry study={study} variant="row" />
                 </div>
@@ -82,7 +82,7 @@ export default function WorkPage() {
         </section>
       ) : null}
 
-      <section aria-labelledby="work-next" className="border-t border-neutral-300 pb-24 pt-16 sm:pb-28 sm:pt-20">
+      <section aria-labelledby="work-next" className="pb-24 pt-16 sm:pb-28 sm:pt-20">
         <Container>
           <div className="max-w-2xl">
             <h2 id="work-next" className="section-headline">

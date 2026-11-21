@@ -32,7 +32,7 @@ export default function AccessibilityPage() {
           Kipeo Digital wants this website to be usable by as many people as possible, including people navigating by
           keyboard, using a screen reader, or with low vision or motion sensitivity. We aim to align the website with
           WCAG 2.2 Level AA principles. This website has not been through a formal third-party accessibility audit,
-          so we do not claim full conformance &mdash; this statement describes what we have done and what we know.
+          so we do not claim full conformance. This statement describes what we have done and what we know.
         </p>
       </LegalSection>
 
@@ -56,8 +56,8 @@ export default function AccessibilityPage() {
         <p>
           We are not currently aware of significant accessibility barriers on this website. As with any site, some
           areas may not yet fully meet every guideline. If you find something that doesn&rsquo;t work well with your
-          browser, keyboard or assistive technology, please tell us using the contact details below &mdash; specific,
-          reported issues are more useful to us than a general audit would be.
+          browser, keyboard or assistive technology, please tell us using the contact details below.
+          Specific reported issues help us more than a general audit would.
         </p>
       </LegalSection>
 

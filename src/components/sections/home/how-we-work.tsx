@@ -69,7 +69,7 @@ function StageRow({ stage, index }: { stage: Stage; index: number }) {
       className={cn(
         "hww-stage",
         `hww-stage-${index + 1}`,
-        index > 0 && "border-t border-neutral-300/70 pt-8",
+        index > 0 && "pt-8",
       )}
     >
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-8">

@@ -280,7 +280,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
           Project details <RequiredMark />
         </label>
         <p id={id("projectSummary-hint")} className="mt-1 text-xs leading-relaxed text-slate-muted">
-          An early idea is fine — no technical requirements, budget or timeline needed. Please leave out passwords
+          An early idea is fine. You don’t need technical requirements, a budget or a timeline. Please leave out passwords
           and sensitive personal information.
         </p>
         <textarea

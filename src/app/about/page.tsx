@@ -76,7 +76,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="about-decisions" className="border-t border-neutral-300 py-16 sm:py-20 lg:py-24">
+      <section aria-labelledby="about-decisions" className="py-16 sm:py-20 lg:py-24">
         <Container>
           <div className={grid}>
             <div>
@@ -89,7 +89,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="divide-y divide-neutral-300 border-y border-neutral-300">
+            <div className="divide-y divide-neutral-300">
               {teamMembers.map((member) => (
                 <article
                   key={member.id}
@@ -161,7 +161,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="about-next" className="border-t border-neutral-300 pb-24 pt-16 sm:pb-28 sm:pt-20">
+      <section aria-labelledby="about-next" className="pb-24 pt-16 sm:pb-28 sm:pt-20">
         <Container>
           <div className="max-w-2xl">
             <h2 id="about-next" className="section-headline">

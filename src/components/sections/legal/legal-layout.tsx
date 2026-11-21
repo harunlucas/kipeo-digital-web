@@ -60,7 +60,7 @@ export function LegalLayout({
 
             <div className="flex flex-col gap-10">{children}</div>
 
-            <div className="mt-14 border-t border-neutral-200 pt-6">
+            <div className="mt-16">
               <a href="#top" className="text-sm font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover">
                 Back to top
               </a>

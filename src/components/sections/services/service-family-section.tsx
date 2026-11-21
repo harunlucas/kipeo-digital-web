@@ -38,7 +38,6 @@ export function ServiceFamilySection({ family }: { family: ServiceFamily }) {
               {family.title}
             </h2>
             <p className="mt-5 max-w-[26ch] font-serif-display text-[clamp(1.375rem,1.2rem+0.7vw,1.75rem)] italic leading-[1.25] text-teal-strong lg:max-w-none">
-              <span className="sr-only">The question this answers: </span>
               <span aria-hidden>“</span>
               {family.question}
               <span aria-hidden>”</span>
