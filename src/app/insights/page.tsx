@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/motion/reveal";
-import { InsightsHeroVisual } from "@/components/motion/insights-hero-visual";
-import { FeaturedInsight } from "@/components/sections/insights/featured-insight";
-import { InsightsGrid } from "@/components/sections/insights/insights-grid";
-import { InsightsUpdatePrompt } from "@/components/sections/insights/insights-update-prompt";
-import { getAvailableCategories, getFeaturedInsight, getLatestInsights } from "@/lib/insights";
+import { AnimatedLink } from "@/components/sections/home/animated-link";
+import { InsightsHero } from "@/components/sections/insights/insights-hero";
+import { InsightFeature } from "@/components/sections/insights/insight-feature";
+import { InsightIndex } from "@/components/sections/insights/insight-index";
+import { getAllInsights, getAvailableCategories, getFeaturedInsight } from "@/lib/insights";
 import { buildMetadata } from "@/lib/metadata";
 
 const title = "Software and Digital Strategy Insights | Kipeo Digital";
@@ -25,87 +21,76 @@ export const metadata: Metadata = buildMetadata({
   twitter: { title, description },
 });
 
+/**
+ * The Insights index, in reading order: hero → featured article → topic
+ * filters and article index → closing invitation → site footer.
+ *
+ * The feature is the article marked `featured: true`, else the newest.
+ * Drafts never reach this page: every helper here reads `getAllInsights`,
+ * which keeps only `published: true`. Filters appear only for categories
+ * with published articles (`getAvailableCategories`). With a single
+ * published article, the index is omitted and the feature stands alone.
+ */
 export default async function InsightsPage() {
-  const featured = await getFeaturedInsight();
-  const latest = await getLatestInsights(featured?.slug);
-  const categories = await getAvailableCategories();
+  const [all, featured, categories] = await Promise.all([
+    getAllInsights(),
+    getFeaturedInsight(),
+    getAvailableCategories(),
+  ]);
 
   return (
-    <>
-      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-10 pt-12 sm:pb-12 sm:pt-14">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
-        />
-        <Container className="relative">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-            <div>
-              <Reveal immediate>
-                <Eyebrow>Insights</Eyebrow>
-              </Reveal>
-              <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-5 text-paper-foreground">
-                  Practical thinking for better digital systems.
-                </h1>
-              </Reveal>
-              <Reveal immediate delay={0.12}>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate">
-                  Clear guidance on planning, building and maintaining software, websites and operational platforms.
-                </p>
-              </Reveal>
+    <div className="bg-ivory">
+      <InsightsHero intro="Practical notes on choosing websites, planning software and improving how teams work." />
+
+      <section aria-label="Featured article" className="pb-14 pt-12 sm:pb-16 sm:pt-14 lg:pb-20 lg:pt-16">
+        <Container>
+          {featured ? (
+            <InsightFeature insight={featured} />
+          ) : (
+            <p className="text-base text-slate">New articles are on the way.</p>
+          )}
+        </Container>
+      </section>
+
+      {all.length > 1 ? (
+        <section aria-labelledby="browse-insights" className="pb-14 sm:pb-16 lg:pb-20">
+          <Container>
+            <h2
+              id="browse-insights"
+              className="border-t border-neutral-300 pt-8 text-sm font-medium text-slate-muted sm:pt-10"
+            >
+              Browse by topic
+            </h2>
+            <div className="mt-5">
+              <InsightIndex insights={all} featuredSlug={featured?.slug} categories={categories} />
             </div>
-            <Reveal immediate delay={0.1}>
-              <InsightsHeroVisual />
-            </Reveal>
+          </Container>
+        </section>
+      ) : null}
+
+      <section aria-labelledby="insights-next" className="border-t border-neutral-300 py-12 sm:py-14">
+        <Container>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
+            <div>
+              <h2
+                id="insights-next"
+                className="font-display text-2xl font-semibold leading-tight tracking-[-0.01em] text-paper-foreground sm:text-[1.75rem]"
+              >
+                Have a system in mind?
+              </h2>
+              <p className="mt-2 max-w-lg text-base leading-relaxed text-slate">
+                Tell us who will use it and what they need to get done.
+              </p>
+            </div>
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8">
+              <Button href="/contact" variant="primary" size="lg">
+                Start a project
+              </Button>
+              <AnimatedLink href="/services">Explore services</AnimatedLink>
+            </div>
           </div>
         </Container>
       </section>
-
-      {featured && (
-        <Section tone="paper">
-          <FeaturedInsight insight={featured} />
-        </Section>
-      )}
-
-      <Section tone="elevated">
-        <Eyebrow>Latest insights</Eyebrow>
-        <h2 className="text-display-3 mt-2 text-paper-foreground">More from Kipeo Digital.</h2>
-        <div className="mt-8">
-          <InsightsGrid insights={latest} categories={categories} />
-        </div>
-      </Section>
-
-      <Section tone="paper">
-        <InsightsUpdatePrompt />
-      </Section>
-
-      <section className="bg-grid-ink relative overflow-hidden bg-ink py-14 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_20%,color-mix(in_srgb,var(--color-teal)_14%,transparent),transparent)]"
-        />
-        <Container className="relative mx-auto max-w-2xl text-center">
-          <Reveal>
-            <h2 className="text-display-1 text-ink-foreground">Have a system in mind?</h2>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="mt-4 text-lg text-ink-muted">
-              See how Kipeo approaches software, business systems, websites and operational platforms.
-            </p>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button href="/services" variant="accent" size="lg" tone="ink">
-                Explore services
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
-              </Button>
-              <Button href="/contact" variant="outline" size="lg" tone="ink">
-                Start a project
-              </Button>
-            </div>
-          </Reveal>
-        </Container>
-      </section>
-    </>
+    </div>
   );
 }

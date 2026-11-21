@@ -219,6 +219,56 @@ body {
 }
 
 /*
+  The `AnimatedLink` interaction for links whose text wraps (the /insights
+  headlines): a 1px underline drawn as a background so it follows every
+  line, and the arrow's 2px diagonal move. Both trigger from the parent
+  `.group` link on hover or keyboard focus. Under reduced motion the
+  underline is simply present and the arrow stays still, as in
+  `AnimatedLink`.
+*/
+.headline-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 300ms ease-out;
+}
+
+.group:hover .headline-underline,
+.group:focus-visible .headline-underline {
+  background-size: 100% 1px;
+}
+
+.link-arrow {
+  transition: transform 200ms ease-out;
+}
+
+.group:hover .link-arrow,
+.group:focus-visible .link-arrow {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .headline-underline {
+    background-size: 100% 1px;
+    background-image: linear-gradient(
+      color-mix(in srgb, currentColor 40%, transparent),
+      color-mix(in srgb, currentColor 40%, transparent)
+    );
+    transition: none;
+  }
+
+  .link-arrow,
+  .group:hover .link-arrow,
+  .group:focus-visible .link-arrow {
+    transform: none;
+    transition: none;
+  }
+}
+
+/*
   "What we build" section layout. Three pieces — the heading, the "Explore
   all services" link and the card grid — need to swap positions between
   breakpoints (link after the heading on desktop, after the cards on mobile)
