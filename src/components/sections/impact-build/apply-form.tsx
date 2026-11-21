@@ -156,13 +156,18 @@ export function ImpactBuildApplyForm() {
     const stepId = steps[currentStep]!.id;
     if (stepId === "review") return;
     if (!validateStep(stepId)) {
+      // The summary only renders in the "error" state, so set it before
+      // moving focus there — otherwise focus has nowhere to go.
+      setSubmit({ status: "error", message: "Please fix the highlighted fields to continue." });
       requestAnimationFrame(() => errorSummaryRef.current?.focus());
       return;
     }
+    if (submit.status === "error") setSubmit({ status: "idle" });
     setCurrentStep((i) => Math.min(i + 1, steps.length - 1));
   }
 
   function goBack() {
+    if (submit.status === "error") setSubmit({ status: "idle" });
     setCurrentStep((i) => Math.max(i - 1, 0));
   }
 
@@ -498,7 +503,11 @@ export function ImpactBuildApplyForm() {
                   </Link>
                 </label>
               </div>
-              {fieldErrors.privacyAcknowledged && <p className={errorClasses}>{fieldErrors.privacyAcknowledged}</p>}
+              {fieldErrors.privacyAcknowledged && (
+                <p id={`${idPrefix}-privacyAcknowledged-error`} className={errorClasses}>
+                  {fieldErrors.privacyAcknowledged}
+                </p>
+              )}
 
               <div className="flex items-start gap-3">
                 <input
@@ -518,7 +527,11 @@ export function ImpactBuildApplyForm() {
                   .
                 </label>
               </div>
-              {fieldErrors.termsAccepted && <p className={errorClasses}>{fieldErrors.termsAccepted}</p>}
+              {fieldErrors.termsAccepted && (
+                <p id={`${idPrefix}-termsAccepted-error`} className={errorClasses}>
+                  {fieldErrors.termsAccepted}
+                </p>
+              )}
 
               <div className="flex items-start gap-3">
                 <input
@@ -534,7 +547,11 @@ export function ImpactBuildApplyForm() {
                   I confirm that the information provided is accurate to the best of my knowledge.
                 </label>
               </div>
-              {fieldErrors.accuracyDeclared && <p className={errorClasses}>{fieldErrors.accuracyDeclared}</p>}
+              {fieldErrors.accuracyDeclared && (
+                <p id={`${idPrefix}-accuracyDeclared-error`} className={errorClasses}>
+                  {fieldErrors.accuracyDeclared}
+                </p>
+              )}
             </div>
           </div>
         )}

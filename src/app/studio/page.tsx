@@ -4,25 +4,24 @@ import type { LucideIcon } from "lucide-react";
 import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
+import { Headline } from "@/components/ui/headline";
 import { Reveal } from "@/components/motion/reveal";
 import { StudioTeaserVisual } from "@/components/motion/studio-teaser-visual";
 import { StudioWorkspace } from "@/components/motion/studio-workspace";
-import { StudioJourney } from "@/components/motion/studio-journey";
 import { ServiceTabs } from "@/components/motion/service-tabs";
-import { TrustPath } from "@/components/motion/trust-path";
 import {
   studioWorkspaceHotspots,
   studioJourneyStages,
   studioLayers,
   studioCapabilitySelector,
   type StudioLayer,
+  type StudioJourneyStage,
 } from "@/content/studio";
-import { trustCommitments } from "@/content/trust";
 import { buildMetadata } from "@/lib/metadata";
 
-const studioTitle = "Kipeo Studio";
+const studioTitle = "How We Work";
 const studioDescription =
-  "A guided look inside how Kipeo Digital builds: strategy, interfaces, application logic, data, HSE and operational workflows, integrations, deployment and support.";
+  "How a Kipeo Digital project runs, stage by stage: what we do, what we'll need from you and what you get to review, from the first conversation to launch and support.";
 
 export const metadata: Metadata = buildMetadata({
   title: studioTitle,
@@ -40,6 +39,58 @@ const layerIcons: Record<StudioLayer["id"], LucideIcon> = {
   infrastructure: Server,
 };
 
+const stageColumns: { key: keyof Pick<StudioJourneyStage, "kipeo" | "client" | "review">; label: string }[] = [
+  { key: "kipeo", label: "What we do" },
+  { key: "client", label: "What we need from you" },
+  { key: "review", label: "What you review" },
+];
+
+/**
+ * The detail behind the homepage's three-step summary: every stage, with
+ * Kipeo's work, the client's part and the output to review side by side on
+ * desktop, and in that reading order on phones.
+ */
+function StageList({ stages }: { stages: StudioJourneyStage[] }) {
+  return (
+    <ol className="mt-10">
+      {stages.map((stage, index) => (
+        <li
+          key={stage.id}
+          className="grid gap-5 border-t border-neutral-200 py-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,9fr)] lg:gap-10"
+        >
+          <div>
+            <p aria-hidden className="font-mono text-xs text-teal-strong">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <h3 className="mt-1.5 font-display text-xl font-semibold text-paper-foreground">{stage.label}</h3>
+            <p className="mt-1 text-sm leading-relaxed text-slate-muted">{stage.summary}</p>
+          </div>
+          <dl className="grid gap-5 sm:grid-cols-3 sm:gap-6 lg:gap-8">
+            {stageColumns.map((column) => (
+              <div key={column.key}>
+                <dt
+                  className={`font-mono text-[0.6875rem] uppercase tracking-[0.16em] ${
+                    column.key === "review" ? "text-teal-strong" : "text-slate-muted"
+                  }`}
+                >
+                  {column.label}
+                </dt>
+                <dd
+                  className={`mt-1.5 text-sm leading-relaxed sm:text-base ${
+                    column.key === "review" ? "text-paper-foreground" : "text-slate"
+                  }`}
+                >
+                  {stage[column.key]}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 export default function StudioPage() {
   return (
     <>
@@ -52,18 +103,26 @@ export default function StudioPage() {
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12">
             <div>
               <Reveal immediate>
-                <Eyebrow>Inside Kipeo</Eyebrow>
+                <Eyebrow>How we work</Eyebrow>
               </Reveal>
               <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-6 text-paper-foreground">
-                  One studio. Every layer of the product.
+                <h1 className="hero-headline mt-5">
+                  <Headline stacked lead="What we’ll need from you," accent="and what you’ll review" />
                 </h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
-                  Kipeo handles strategy, interfaces, application logic, data, HSE and operational workflows,
-                  integrations, deployment and support, not just the frontend.
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-slate sm:text-lg">
+                  Every project moves through the same eight stages, from the first conversation to support after
+                  launch. For each one, here&rsquo;s what we do, what we&rsquo;ll ask of you and what you get to see
+                  before we move on.
                 </p>
+              </Reveal>
+              <Reveal immediate delay={0.16}>
+                <div className="mt-8">
+                  <Button enquiry variant="primary" size="md">
+                    Start a project
+                  </Button>
+                </div>
               </Reveal>
             </div>
             <Reveal immediate delay={0.1}>
@@ -77,6 +136,25 @@ export default function StudioPage() {
         </div>
       </section>
 
+      <Section id="stages" tone="paper">
+        <div className="max-w-2xl">
+          <Reveal>
+            <h2 className="section-headline">
+              <Headline lead="What happens" accent="at each stage" />
+            </h2>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <p className="mt-3 text-base leading-relaxed text-slate sm:text-lg">
+              Work outside the agreed scope is quoted and approved before it&rsquo;s built, and after final payment you
+              own the custom deliverables made for your project.
+            </p>
+          </Reveal>
+        </div>
+        <Reveal delay={0.1}>
+          <StageList stages={studioJourneyStages} />
+        </Reveal>
+      </Section>
+
       <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
         <div
           aria-hidden
@@ -84,12 +162,11 @@ export default function StudioPage() {
         />
         <div className="relative max-w-2xl">
           <Reveal>
-            <Eyebrow tone="ink">The workspace</Eyebrow>
+            <h2 className="section-headline">
+              <Headline tone="ink" lead="Six areas," accent="one connected build" />
+            </h2>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="text-display-2 mt-4 text-ink-foreground">Six areas, one connected build.</h2>
-          </Reveal>
-          <Reveal delay={0.12}>
             <p className="mt-3 text-base text-ink-muted sm:text-lg">
               Select a numbered point to see what each area covers.
             </p>
@@ -104,7 +181,7 @@ export default function StudioPage() {
         </p>
 
         <div className="relative mt-8">
-          <Reveal delay={0.16}>
+          <Reveal delay={0.1}>
             <StudioWorkspace
               hotspots={studioWorkspaceHotspots}
               src="/images/projects/studio/kipeo-studio-isometric.webp"
@@ -114,30 +191,11 @@ export default function StudioPage() {
         </div>
       </Section>
 
-      <Section tone="paper">
-        <div className="max-w-2xl">
-          <Reveal>
-            <Eyebrow>Project journey</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="text-display-2 mt-4 text-paper-foreground">From first conversation to support.</h2>
-          </Reveal>
-        </div>
-        <div className="mt-10">
-          <Reveal delay={0.1}>
-            <StudioJourney stages={studioJourneyStages} />
-          </Reveal>
-        </div>
-      </Section>
-
       <Section tone="elevated">
         <div className="max-w-2xl">
           <Reveal>
-            <Eyebrow>Behind the interface</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="text-display-2 mt-4 text-paper-foreground">
-              What holds up what people actually see.
+            <h2 className="section-headline">
+              <Headline lead="What holds up" accent="what people see" />
             </h2>
           </Reveal>
         </div>
@@ -172,10 +230,9 @@ export default function StudioPage() {
       <Section tone="paper">
         <div className="max-w-2xl">
           <Reveal>
-            <Eyebrow>Choose where to start</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="text-display-2 mt-4 text-paper-foreground">Every build starts somewhere specific.</h2>
+            <h2 className="section-headline">
+              <Headline lead="Every build starts" accent="somewhere specific" />
+            </h2>
           </Reveal>
         </div>
         <div className="mt-10">
@@ -193,28 +250,6 @@ export default function StudioPage() {
         </div>
       </Section>
 
-      <Section tone="ink" className="py-10 sm:py-14">
-        <div className="max-w-xl">
-          <Reveal>
-            <Eyebrow tone="ink">Collaboration model</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="text-display-3 mt-3 text-ink-foreground">Working with us.</h2>
-          </Reveal>
-        </div>
-        <div className="mt-8">
-          <Reveal delay={0.1}>
-            <TrustPath
-              items={trustCommitments.map((commitment) => ({
-                title: commitment.title,
-                description: commitment.description,
-                icon: <commitment.icon className="h-5 w-5" aria-hidden />,
-              }))}
-            />
-          </Reveal>
-        </div>
-      </Section>
-
       <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
         <div
           aria-hidden
@@ -222,9 +257,17 @@ export default function StudioPage() {
         />
         <div className="relative mx-auto max-w-2xl text-center">
           <Reveal>
-            <h2 className="text-display-1 text-ink-foreground">Bring a real problem into the studio.</h2>
+            <h2 className="section-headline">
+              <Headline tone="ink" lead="Bring a real problem" accent="into the studio" />
+            </h2>
           </Reveal>
-          <Reveal delay={0.08}>
+          <Reveal delay={0.06}>
+            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-lg">
+              The first consultation is free. Where the project is a good fit, a written proposal follows with no
+              obligation to proceed.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Button enquiry variant="accent" size="lg" tone="ink">
                 Start a project

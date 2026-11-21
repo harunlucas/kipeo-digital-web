@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
+import { Headline } from "@/components/ui/headline";
+import { StatusLabel } from "@/components/sections/impact-build/status-label";
 import { organizationSchema, webPageSchema, breadcrumbListSchema, faqSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/content/site-config";
@@ -15,15 +17,13 @@ import {
   possibleIncludedWork,
   separateCostItems,
   eligibleApplicantTypes,
-  applicantRequirements,
   selectionCriteria,
-  selectionStages,
   impactBuildFaq,
 } from "@/content/impact-build";
 
 const title = "Kipeo Impact Build | Apply for a Supported Digital Project";
 const description =
-  "Learn about the Kipeo Impact Build, an annual initiative through which one suitable organisation or purpose-led initiative may receive a clearly scoped digital project with Kipeo's development fee waived.";
+  "Each year, Kipeo Digital may choose one organisation or purpose-led initiative and build a website or small system with our development fee waived. See who can apply, what it costs and how selection works.";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -33,97 +33,185 @@ export const metadata: Metadata = buildMetadata({
   twitter: { title, description },
 });
 
-function BulletList({ items }: { items: readonly string[] }) {
+const APPLY_HREF = "/impact-build/apply";
+const TERMS_HREF = "/impact-build/terms";
+const FIT_ID = "is-this-a-fit";
+
+/**
+ * Every other FAQ entry is answered in the page body above it, so only these
+ * remain. Kept as a filter (not a trimmed array) so the full set in
+ * `impactBuildFaq` stays the copy reference for the programme.
+ */
+const remainingFaqQuestions = new Set([
+  "Can an existing Kipeo client apply?",
+  "Will applicant information be published?",
+]);
+const pageFaq = impactBuildFaq.filter((item) => remainingFaqQuestions.has(item.question));
+
+const buildExamples = [
+  {
+    title: "A website for a community organisation",
+    body: "Where people can find your services, opening hours and who to contact.",
+  },
+  {
+    title: "A campaign landing page",
+    body: "One page with one clear action, such as signing up, volunteering or coming to an event.",
+  },
+  {
+    title: "A small system for tracking requests",
+    body: "A shared list showing each request, who is handling it and what happens next.",
+  },
+];
+
+const readiness = [
+  {
+    title: "Someone who can make decisions",
+    body: "One person who can approve choices for the project and join discovery and review sessions.",
+  },
+  {
+    title: "The content",
+    body: "The words, photos and information the site or system needs, which you own or have permission to use.",
+  },
+  {
+    title: "Someone to look after it",
+    body: "A person or team who will keep it running after handover.",
+  },
+];
+
+const selectionSteps = [
+  {
+    title: "Send your idea",
+    body: "Use the application form to explain the problem, who it affects and what you’d like to build.",
+  },
+  {
+    title: "We review it and may ask questions",
+    body: "We assess each application against the criteria below and may contact shortlisted applicants for more detail.",
+  },
+  {
+    title: "If selected, we agree the scope in writing",
+    body: "Responsibilities, deliverables, third-party costs, timeline and content are agreed in writing. Work begins only after that agreement is accepted.",
+  },
+];
+
+const listClass = "mt-4 flex flex-col gap-2 text-sm leading-relaxed text-slate sm:text-base";
+const bulletClass = "relative pl-4 before:absolute before:left-0 before:top-[0.6em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-teal-strong";
+const h3Class = "text-lg font-semibold text-paper-foreground";
+const textLinkClass =
+  "inline-flex min-h-11 items-center gap-1.5 rounded-sm text-sm font-medium text-teal-strong underline decoration-teal-strong/40 underline-offset-4 transition-colors hover:text-link-hover hover:decoration-current";
+
+function BulletList({ items, className = "" }: { items: readonly string[]; className?: string }) {
   return (
-    <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+    <ul className={`${listClass} ${className}`}>
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate sm:text-base">
-          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-strong" aria-hidden />
-          <span>{item}</span>
+        <li key={item} className={bulletClass}>
+          {item}
         </li>
       ))}
     </ul>
   );
 }
 
-function StatusPanel() {
-  const status = impactBuildConfig.status;
+/** Hero status line and actions. The non-open states keep the programme's existing closed-state messages. */
+function HeroActions() {
+  const { status, expectedProjectStart } = impactBuildConfig;
+  const checkEligibility = (
+    <a href={`#${FIT_ID}`} className={textLinkClass}>
+      Check eligibility
+    </a>
+  );
 
   if (status === "open") {
-    const { openingDate, closingDate, expectedProjectStart } = impactBuildConfig;
     return (
       <>
-        <p className="text-sm font-medium text-teal-strong">Applications are currently open.</p>
-        {(openingDate || closingDate || expectedProjectStart) && (
-          <ul className="mt-2 flex flex-col gap-1 text-sm leading-relaxed text-slate">
-            {openingDate && <li>Opened {openingDate}.</li>}
-            {closingDate && <li>Applications close {closingDate}.</li>}
-            {expectedProjectStart && <li>The selected project is expected to start {expectedProjectStart}.</li>}
-          </ul>
+        <StatusLabel />
+        {expectedProjectStart && (
+          <p className="mt-1 text-sm text-slate">The selected project is expected to start {expectedProjectStart}.</p>
         )}
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Button href="/impact-build/apply" variant="accent" size="md">
-            Apply now
+        <div className="mt-4 flex flex-col gap-x-6 gap-y-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <Button href={APPLY_HREF} variant="accent" size="lg" className="self-start">
+            Apply for Impact Build
+            <ArrowRight className="h-4 w-4" aria-hidden />
           </Button>
-          <Button href="#what-is-included" variant="outline" size="md">
-            Learn about the initiative
-          </Button>
+          {checkEligibility}
         </div>
       </>
     );
   }
 
-  if (status === "reviewing") {
-    return (
-      <>
-        <p className="text-sm font-medium text-paper-foreground">
-          Applications for the current Impact Build are being reviewed.
-        </p>
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate">
-          The application form is closed while review is underway. Shortlisted applicants may be contacted directly.
-        </p>
-      </>
-    );
-  }
+  const showRecipient =
+    status === "selected" &&
+    impactBuildConfig.selectedApplicantPublished &&
+    impactBuildConfig.selectedApplicantConsent &&
+    impactBuildConfig.selectedApplicantName;
 
-  if (status === "selected") {
-    const showRecipient = impactBuildConfig.selectedApplicantPublished && impactBuildConfig.selectedApplicantConsent;
-    return (
-      <>
-        <p className="text-sm font-medium text-paper-foreground">A project has been selected for the current Impact Build.</p>
-        {showRecipient && impactBuildConfig.selectedApplicantName && (
-          <p className="mt-2 text-sm leading-relaxed text-slate">
-            This cycle&rsquo;s selected recipient: {impactBuildConfig.selectedApplicantName}.
-          </p>
-        )}
-        <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate">
-          Kipeo does not publish applicant or recipient details without separate written consent.
-        </p>
-      </>
-    );
-  }
+  const message: Record<Exclude<typeof status, "open">, string> = {
+    draft: "Details for the next Impact Build cycle will be published here once confirmed.",
+    reviewing: "The application form is closed while review is underway. Shortlisted applicants may be contacted directly.",
+    closed: "The application form is closed. You can still read how the programme works below.",
+    selected: "This cycle’s application window has closed.",
+  };
 
-  if (status === "closed") {
-    return (
-      <>
-        <p className="text-sm font-medium text-paper-foreground">Applications are currently closed.</p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Button href="#what-is-included" variant="outline" size="md">
-            Learn about the initiative
-          </Button>
-          <Button enquiry variant="outline" size="md">
+  return (
+    <>
+      <StatusLabel />
+      <p className="mt-2 max-w-md text-sm leading-relaxed text-slate">
+        {message[status]}
+        {showRecipient && <> Selected recipient: {impactBuildConfig.selectedApplicantName}.</>}
+      </p>
+      <div className="mt-4 flex flex-col gap-x-6 gap-y-3 sm:flex-row sm:flex-wrap sm:items-center">
+        {status === "closed" && (
+          <Button enquiry variant="outline" size="md" className="self-start">
             Discuss a normally scoped project
           </Button>
-        </div>
-      </>
-    );
-  }
+        )}
+        {checkEligibility}
+      </div>
+    </>
+  );
+}
 
-  // draft — kept private: no public status claim while the cycle isn't announced.
+/** An illustrative brief, so a visitor can see the level of detail the application asks for. */
+function ExampleBrief() {
+  const rows = [
+    {
+      term: "The problem",
+      detail: "Volunteer requests come in by phone and email. Two coordinators often follow up with the same person.",
+    },
+    {
+      term: "Who would use it",
+      detail: "The coordinators who receive requests and assign volunteers.",
+    },
+    {
+      term: "What a small build could do",
+      detail: "Give them one shared list showing each request, who owns it and whether anyone has replied.",
+    },
+  ];
+
   return (
-    <p className="text-sm leading-relaxed text-slate">
-      Details for the next Impact Build cycle will be published here once confirmed.
-    </p>
+    <figure
+      id="example-brief"
+      aria-labelledby="example-brief-title"
+      className="scroll-mt-6 rounded-2xl border border-neutral-300/80 bg-ivory p-6 shadow-card sm:p-8"
+    >
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <p id="example-brief-title" className="font-display text-2xl font-semibold leading-tight tracking-[-0.01em] text-paper-foreground">
+          Example project brief
+        </p>
+        <p className="font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-slate-muted">Illustrative</p>
+      </div>
+      <dl className="mt-6 flex flex-col gap-5">
+        {rows.map((row) => (
+          <div key={row.term}>
+            <dt className="font-mono text-xs uppercase tracking-[0.16em] text-teal-strong">{row.term}</dt>
+            <dd className="mt-1.5 text-base leading-relaxed text-paper-foreground">{row.detail}</dd>
+          </div>
+        ))}
+      </dl>
+      <figcaption className="mt-6 text-sm leading-relaxed text-slate-muted">
+        An example, not a real application. Your own answers go in the form&rsquo;s project step, under the problem,
+        who will use it and the result you want.
+      </figcaption>
+    </figure>
   );
 }
 
@@ -136,9 +224,7 @@ export default function ImpactBuildPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            webPageSchema({ name: title, url: `${siteConfig.url}/impact-build`, description }),
-          ),
+          __html: JSON.stringify(webPageSchema({ name: title, url: `${siteConfig.url}/impact-build`, description })),
         }}
       />
       <script
@@ -152,283 +238,265 @@ export default function ImpactBuildPage() {
           ),
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(impactBuildFaq)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(pageFaq)) }} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-paper py-14 sm:py-16 lg:py-20">
-        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-50" />
+      <section className="relative overflow-hidden bg-paper">
+        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-40" />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_55%_at_82%_20%,var(--color-teal-tint),transparent)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_45%_50%_at_85%_30%,var(--color-teal-tint),transparent)]"
         />
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <Reveal immediate>
-              <Eyebrow className="text-center">Kipeo Impact Build</Eyebrow>
-            </Reveal>
-            <Reveal immediate delay={0.06}>
-              <h1 className="text-display-1 mt-5 text-paper-foreground [text-wrap:balance]">
-                One useful digital project, built to support meaningful work.
-              </h1>
-            </Reveal>
-            <Reveal immediate delay={0.12}>
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate">
-                Kipeo Digital invites applications from organisations and purpose-led initiatives that need a
-                practical website, platform or small operational system. One suitable application may be selected
-                for a clearly scoped project with Kipeo&rsquo;s development fee waived.
-              </p>
-            </Reveal>
-            <Reveal immediate delay={0.18}>
-              <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                {isOpen && (
-                  <Button href="/impact-build/apply" variant="accent" size="lg">
-                    Apply for the Impact Build
-                    <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  </Button>
-                )}
-                <Button href="#what-is-included" variant="outline" size="lg">
-                  Review what is included
-                </Button>
-              </div>
-            </Reveal>
-            <Reveal immediate delay={0.22}>
-              <p className="mt-6 text-xs font-medium uppercase tracking-wide text-slate-muted">
-                Third-party costs remain separate. Selection is based on suitability, not chance.
-              </p>
+        <Container className="relative py-12 sm:py-16 lg:py-24">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-center lg:gap-16 xl:gap-24">
+            <div>
+              <Reveal immediate>
+                <Eyebrow>Kipeo Impact Build</Eyebrow>
+              </Reveal>
+              <Reveal immediate delay={0.06}>
+                <h1 className="hero-headline mt-5">
+                  <Headline stacked lead="A website or small system" accent="for your community project" />
+                </h1>
+              </Reveal>
+              <Reveal immediate delay={0.12}>
+                <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate">
+                  Each year, we may choose one organisation or purpose-led initiative to work with. If your project is
+                  selected, we&rsquo;ll agree on what to build together and waive our development fee for that agreed
+                  scope. You cover any third-party costs you approve, such as hosting or a domain.
+                </p>
+              </Reveal>
+              <Reveal immediate delay={0.18}>
+                <div className="mt-8">
+                  <HeroActions />
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal immediate delay={0.14}>
+              <ExampleBrief />
             </Reveal>
           </div>
         </Container>
       </section>
 
-      {/* Why it exists */}
-      <Section tone="paper">
-        <div className="mx-auto max-w-3xl">
+      {/* Is this a fit? */}
+      <Section tone="elevated">
+        <div className="max-w-2xl">
           <Reveal>
-            <Eyebrow>Why it exists</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="text-display-2 mt-4 text-paper-foreground">
-              Digital capability should help useful ideas move forward.
+            <h2 id={FIT_ID} tabIndex={-1} className="section-headline scroll-mt-6 focus:outline-none">
+              <Headline lead="Is this" accent="a fit?" />
             </h2>
           </Reveal>
+          <Reveal delay={0.06}>
+            <p className="mt-3 text-base leading-relaxed text-slate sm:text-lg">
+              The Impact Build is for people doing useful work who need a digital project but can&rsquo;t currently
+              fund one commercially.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal delay={0.08}>
+            <h3 className={h3Class}>Who can apply</h3>
+            <BulletList items={eligibleApplicantTypes} />
+            <p className="mt-4 text-sm leading-relaxed text-slate-muted">
+              We can consider another kind of applicant where it&rsquo;s a good fit.
+            </p>
+          </Reveal>
+
           <Reveal delay={0.12}>
-            <p className="mt-4 text-base leading-relaxed text-slate sm:text-lg">
-              Some organisations have a genuine operational or community need but cannot currently fund a
-              professionally developed digital solution. The Kipeo Impact Build reserves part of our development
-              capacity for one project where thoughtful technology could make a practical difference.
+            <h3 className={h3Class}>What you&rsquo;d need to bring</h3>
+            <dl className="mt-4 flex flex-col gap-4">
+              {readiness.map((item) => (
+                <div key={item.title}>
+                  <dt className="text-base font-medium text-paper-foreground">{item.title}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-slate sm:text-base">{item.body}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-4 text-sm leading-relaxed text-slate-muted">
+              You&rsquo;ll also be asked to give accurate information, explain the problem and who it&rsquo;s for, and
+              accept the programme terms.
             </p>
           </Reveal>
         </div>
       </Section>
 
-      {/* What may be built */}
-      <Section tone="elevated">
-        <Reveal>
-          <Eyebrow>What may be built</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="text-display-3 mt-4 max-w-2xl text-paper-foreground">
-            Applications may be considered for a focused, achievable project.
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <BulletList items={eligibleProjectTypes} />
-        </Reveal>
-        <Reveal delay={0.14}>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-muted">
-            The final solution and scope depend on the applicant&rsquo;s needs, Kipeo&rsquo;s capabilities and what
-            can be delivered responsibly through the initiative. The Impact Build does not fund a large custom
-            application, unlimited functionality, a large e-commerce catalogue, a complete enterprise system,
-            unlimited integrations, or ongoing development.
-          </p>
-        </Reveal>
-      </Section>
-
-      {/* What is included */}
-      <Section id="what-is-included" tone="paper">
-        <Reveal>
-          <Eyebrow>What is included</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="text-display-3 mt-4 max-w-2xl text-paper-foreground">
-            Depending on the agreed scope, the selected project may include:
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <BulletList items={possibleIncludedWork} />
-        </Reveal>
-      </Section>
-
-      {/* What remains separate */}
-      <Section tone="elevated">
-        <Reveal>
-          <Eyebrow>What remains separate</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <p className="mt-4 max-w-2xl text-base font-medium leading-relaxed text-paper-foreground sm:text-lg">
-            Kipeo&rsquo;s development fee for the final agreed scope will be waived. The recipient remains
-            responsible for approved third-party expenses.
-          </p>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate">Commonly separate items include:</p>
-          <BulletList items={separateCostItems} />
-        </Reveal>
-        <Reveal delay={0.14}>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-muted">
-            No third-party cost may be incurred without the recipient&rsquo;s prior written approval.
-          </p>
-        </Reveal>
-      </Section>
-
-      {/* Who may apply */}
+      {/* What could we build? */}
       <Section tone="paper">
-        <div className="grid gap-10 lg:grid-cols-2">
-          <div>
-            <Reveal>
-              <Eyebrow>Who may apply</Eyebrow>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <h2 className="text-display-3 mt-4 text-paper-foreground">Eligible applicants</h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <ul className="mt-5 flex flex-col gap-2.5">
-                {eligibleApplicantTypes.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate sm:text-base">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-strong" aria-hidden />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-          <div>
-            <Reveal delay={0.06}>
-              <h2 className="text-display-3 mt-4 text-paper-foreground lg:mt-[2.6rem]">Applicants must</h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <ul className="mt-5 flex flex-col gap-2.5">
-                {applicantRequirements.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate sm:text-base">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-strong" aria-hidden />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
+        <div className="max-w-2xl">
+          <Reveal>
+            <h2 className="section-headline"><Headline lead="What could" accent="we build?" /></h2>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <p className="mt-3 text-base leading-relaxed text-slate sm:text-lg">
+              Something focused that can be finished properly. For example:
+            </p>
+          </Reveal>
         </div>
+
+        <ol className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-10">
+          {buildExamples.map((example, index) => (
+            <Reveal key={example.title} delay={0.08 + index * 0.05}>
+              <li>
+                <p aria-hidden className="font-mono text-xs text-teal-strong">
+                  0{index + 1}
+                </p>
+                <h3 className={`${h3Class} mt-2`}>{example.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate sm:text-base">{example.body}</p>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+
+        <Reveal delay={0.1}>
+          <p className="mt-10 max-w-2xl text-sm leading-relaxed text-slate">
+            The Impact Build doesn&rsquo;t cover a large custom application, unlimited features, a large e-commerce
+            catalogue, a complete enterprise system, unlimited integrations or ongoing development. The final scope
+            depends on what you need and what we can deliver responsibly.
+          </p>
+          <details className="group mt-4 max-w-2xl">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-medium text-teal-strong [&::-webkit-details-marker]:hidden">
+              <Plus className="h-4 w-4 shrink-0 transition-transform duration-200 group-open:rotate-45" aria-hidden />
+              Every project type we consider
+            </summary>
+            <BulletList items={eligibleProjectTypes} className="mt-2 pb-2" />
+          </details>
+        </Reveal>
       </Section>
 
-      {/* Selection criteria */}
+      {/* What does it cost? */}
       <Section tone="elevated">
-        <Reveal>
-          <Eyebrow>Selection criteria</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="text-display-3 mt-4 max-w-2xl text-paper-foreground">
-            Applications are assessed against these criteria.
-          </h2>
-        </Reveal>
+        <div className="max-w-2xl">
+          <Reveal>
+            <h2 className="section-headline"><Headline lead="What does" accent="it cost?" /></h2>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <p className="mt-3 text-base leading-relaxed text-slate sm:text-lg">
+              Kipeo&rsquo;s development fee for the final agreed scope is waived. Third-party costs stay with you, and
+              only once you&rsquo;ve approved them in writing.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal delay={0.08}>
+            <h3 className={h3Class}>What Kipeo covers</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate sm:text-base">
+              Our development fee. Depending on the agreed scope, the work can include:
+            </p>
+            <BulletList items={possibleIncludedWork} />
+          </Reveal>
+          <Reveal delay={0.12}>
+            <h3 className={h3Class}>What you cover</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate sm:text-base">
+              Third-party expenses you approve. These commonly include:
+            </p>
+            <BulletList items={separateCostItems} />
+          </Reveal>
+        </div>
+
         <Reveal delay={0.1}>
-          <BulletList items={selectionCriteria} />
-        </Reveal>
-        <Reveal delay={0.14}>
-          <p className="mt-6 max-w-2xl text-sm font-medium leading-relaxed text-paper-foreground">
-            Selection is based on suitability and potential practical impact. It is not random, and submitting an
-            application does not guarantee selection.
-          </p>
+          <div className="mt-10 max-w-2xl">
+            <h3 className={h3Class}>How approval works</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate sm:text-base">
+              Expected third-party costs are listed in the written agreement before work begins, and no third-party cost
+              is incurred without your prior written approval. Defect support lasts 30 days after launch where it&rsquo;s
+              part of the agreed scope; maintenance after that is yours unless separately agreed. Work outside the agreed
+              scope isn&rsquo;t covered by the waiver and would be costed separately. There&rsquo;s no cash alternative
+              to the waiver.
+            </p>
+          </div>
         </Reveal>
       </Section>
 
       {/* How selection works */}
       <Section tone="paper">
-        <Reveal>
-          <Eyebrow>How selection works</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="text-display-3 mt-4 max-w-2xl text-paper-foreground">The process, stage by stage.</h2>
-        </Reveal>
-        <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {selectionStages.map((stage, index) => (
-            <Reveal key={stage.title} delay={0.08 + index * 0.05}>
-              <li className="h-full rounded-2xl border border-neutral-200 bg-paper-elevated p-5">
-                <p className="font-mono text-xs text-teal-strong">0{index + 1}</p>
-                <p className="mt-2 text-base font-medium text-paper-foreground">{stage.title}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-slate">{stage.description}</p>
+        <div className="max-w-2xl">
+          <Reveal>
+            <h2 className="section-headline"><Headline lead="How selection" accent="works" /></h2>
+          </Reveal>
+        </div>
+
+        <ol className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-10">
+          {selectionSteps.map((step, index) => (
+            <Reveal key={step.title} delay={0.06 + index * 0.05}>
+              <li>
+                <p aria-hidden className="font-mono text-xs text-teal-strong">
+                  Step {index + 1}
+                </p>
+                <h3 className={`${h3Class} mt-2`}>{step.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate sm:text-base">{step.body}</p>
               </li>
             </Reveal>
           ))}
         </ol>
-        <Reveal delay={0.4}>
-          <p className="mt-8 max-w-2xl text-sm leading-relaxed text-slate-muted">
-            Kipeo may choose not to select a project if no application is suitable, sufficiently prepared or
-            responsibly deliverable. Kipeo does not publicly identify applicants or the selected recipient without
-            separate written consent.
-          </p>
-        </Reveal>
-      </Section>
 
-      {/* Current application status */}
-      <Section id="status" tone="elevated">
-        <Reveal>
-          <Eyebrow>Current application status</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <div className="mt-4 max-w-2xl">
-            <StatusPanel />
+        <Reveal delay={0.1}>
+          <div className="mt-12 max-w-3xl">
+            <h3 className={h3Class}>What we look for</h3>
+            <BulletList items={selectionCriteria} className="sm:grid sm:grid-cols-2 sm:gap-x-8" />
+            <p className="mt-6 text-sm leading-relaxed text-slate sm:text-base">
+              Selection is based on suitability, not chance, and applying doesn&rsquo;t guarantee selection. We may
+              decide not to select a project if no application is suitable, ready or responsibly deliverable.
+            </p>
           </div>
         </Reveal>
       </Section>
 
-      {/* FAQ */}
-      <Section tone="paper">
-        <Reveal>
-          <Eyebrow>FAQ</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <h2 className="text-display-3 mt-4 text-paper-foreground">Frequently asked questions</h2>
-        </Reveal>
-        <div className="mt-8 grid gap-3 lg:grid-cols-2">
-          {impactBuildFaq.map((item, index) => (
-            <Reveal key={item.question} delay={0.08 + index * 0.03}>
-              <details className="group rounded-xl border border-neutral-200 bg-paper-elevated">
-                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5 text-sm font-medium text-paper-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-strong [&::-webkit-details-marker]:hidden">
-                  {item.question}
-                </summary>
-                <div className="border-t border-neutral-200 px-4 py-4">
-                  <p className="text-sm leading-relaxed text-slate">{item.answer}</p>
-                </div>
-              </details>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      {/* Apply CTA */}
-      <Section tone="ink" className="bg-grid-ink relative overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_20%,color-mix(in_srgb,var(--color-teal)_14%,transparent),transparent)]"
-        />
-        <div className="relative mx-auto max-w-2xl text-center">
+      {/* FAQ — only questions the page hasn't already answered */}
+      {pageFaq.length > 0 && (
+        <Section tone="elevated">
           <Reveal>
-            <h2 className="text-display-2 text-ink-foreground">
-              {isOpen ? "Ready to apply for the Kipeo Impact Build?" : "Want to be ready for the next cycle?"}
+            <h2 className="section-headline"><Headline lead="Other" accent="questions" /></h2>
+          </Reveal>
+          <div className="mt-6 max-w-3xl divide-y divide-neutral-200">
+            {pageFaq.map((item) => (
+              <details key={item.question} className="group py-4">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
+                  <span className="text-base font-medium text-paper-foreground">{item.question}</span>
+                  <Plus
+                    className="h-5 w-5 shrink-0 text-teal-strong transition-transform duration-200 group-open:rotate-45"
+                    aria-hidden
+                  />
+                </summary>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* Apply */}
+      <Section id="status" tone="ink">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <h2 className="section-headline">
+              {isOpen ? (
+                <Headline tone="ink" lead="Ready to describe" accent="your project?" />
+              ) : (
+                <Headline tone="ink" lead="Want to be ready" accent="for the next cycle?" />
+              )}
             </h2>
           </Reveal>
-          <Reveal delay={0.08}>
+          <Reveal delay={0.06}>
+            <div className="mt-4 flex justify-center">
+              <StatusLabel tone="ink" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
             <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-lg">
               {isOpen
-                ? "Explain the problem, who it affects and what you'd like to build. Kipeo will assess it against the published criteria."
+                ? "The form has six short steps: about you, your organisation, the project, readiness, consent and a final review. You can go back and change any answer before you submit."
                 : "Applications open periodically. Check back here, or get in touch about a normally scoped commercial project in the meantime."}
             </p>
           </Reveal>
-          <Reveal delay={0.16}>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Reveal delay={0.14}>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
               {isOpen ? (
-                <Button href="/impact-build/apply" variant="accent" size="lg" tone="ink">
-                  Apply for the Impact Build
+                <Button href={APPLY_HREF} variant="accent" size="lg" tone="ink">
+                  Apply for Impact Build
+                  <ArrowRight className="h-4 w-4" aria-hidden />
                 </Button>
               ) : (
                 <Button enquiry variant="accent" size="lg" tone="ink">
@@ -436,8 +504,8 @@ export default function ImpactBuildPage() {
                 </Button>
               )}
               <Link
-                href="/impact-build/terms"
-                className="text-sm font-medium text-ink-muted underline underline-offset-2 hover:text-ink-foreground"
+                href={TERMS_HREF}
+                className="inline-flex min-h-11 items-center text-sm font-medium text-ink-muted underline underline-offset-4 hover:text-ink-foreground"
               >
                 Read the Impact Build Terms
               </Link>

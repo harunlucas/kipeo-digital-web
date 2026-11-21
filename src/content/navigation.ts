@@ -68,6 +68,7 @@ export const footerServiceLinks: NavItem[] = serviceGroups.map((group) => ({
 export const footerCompanyLinks: NavItem[] = [
   { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
+  { label: "How we work", href: "/studio" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
   { label: "Impact Build", href: "/impact-build" },

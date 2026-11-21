@@ -63,6 +63,19 @@ export const impactBuildConfig: ImpactBuildConfig = {
   applicationEmail: siteConfig.email,
 };
 
+/**
+ * Short public label for each status, shown beside the primary action on
+ * /impact-build. `draft` stays deliberately vague — no public claim about a
+ * cycle that hasn't been announced.
+ */
+export const impactBuildStatusLabels: Record<ImpactBuildStatus, string> = {
+  draft: "Next cycle not yet announced",
+  open: "Applications open",
+  reviewing: "Applications under review",
+  closed: "Applications closed",
+  selected: "Project selected for this cycle",
+};
+
 export const eligibleProjectTypes = [
   "A focused organisational website",
   "A business or service website of up to five core pages",

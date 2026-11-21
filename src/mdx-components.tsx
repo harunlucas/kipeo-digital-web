@@ -8,7 +8,10 @@ import { ArticleCta } from "@/components/sections/insights/article-cta";
  */
 const components: MDXComponents = {
   h2: ({ children, ...props }) => (
-    <h2 className="text-display-3 mt-12 scroll-mt-28 text-paper-foreground first:mt-0" {...props}>
+    <h2
+      className="mt-12 scroll-mt-28 font-display text-[1.5rem] font-semibold leading-tight tracking-[-0.01em] text-paper-foreground first:mt-0 sm:text-[1.75rem]"
+      {...props}
+    >
       {children}
     </h2>
   ),

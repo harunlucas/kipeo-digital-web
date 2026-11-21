@@ -63,21 +63,89 @@ export const studioWorkspaceHotspots: StudioWorkspaceHotspot[] = [
   },
 ];
 
+/**
+ * The eight project stages on /studio, each answering "what will you do, what
+ * do you need from me, and what will I get to review?". Every review item is
+ * grounded in a commitment Kipeo already publishes: the free consultation and
+ * written proposal (`scopeTerms` in services-page.ts), the written scope,
+ * working version and handover from the homepage "How we work" summary, and
+ * the change-approval rule. Don't add a deliverable here that isn't offered.
+ */
 export type StudioJourneyStage = {
   id: string;
   label: string;
-  description: string;
+  summary: string;
+  kipeo: string;
+  client: string;
+  review: string;
 };
 
 export const studioJourneyStages: StudioJourneyStage[] = [
-  { id: "discover", label: "Discover", description: "Understand the problem and what success should change." },
-  { id: "define", label: "Define", description: "Turn discovery into a clear, written scope." },
-  { id: "design", label: "Design", description: "Shape structure, workflows and interface before code." },
-  { id: "build", label: "Build", description: "Develop the interface, application logic and data layer." },
-  { id: "connect", label: "Connect", description: "Wire up integrations, APIs and third-party services." },
-  { id: "test", label: "Test", description: "Verify functionality, accessibility and edge cases." },
-  { id: "launch", label: "Launch", description: "Deploy to production with domains, SSL and monitoring." },
-  { id: "support", label: "Support", description: "Ongoing maintenance, updates and technical support." },
+  {
+    id: "discover",
+    label: "Discover",
+    summary: "Understand the problem and what success should change.",
+    kipeo: "Learn how the work happens today, who is involved and where it gets stuck.",
+    client: "Time for a first conversation, and examples of the spreadsheets, forms or tools you use now.",
+    review: "A free first consultation and a straight answer on whether the project is a good fit.",
+  },
+  {
+    id: "define",
+    label: "Define",
+    summary: "Turn discovery into a clear, written scope.",
+    kipeo: "Write up what will be built, in what order and why.",
+    client: "Agree the priorities and name the person who makes decisions on your side.",
+    review:
+      "A written proposal covering deliverables, milestones, timeline and investment, agreed before anything is built.",
+  },
+  {
+    id: "design",
+    label: "Design",
+    summary: "Shape structure, workflows and interface before code.",
+    kipeo: "Plan the structure, the workflow and the key screens.",
+    client: "Feedback on whether the flow matches how your team really works.",
+    review: "The planned structure and screens, while changes are still cheap to make.",
+  },
+  {
+    id: "build",
+    label: "Build",
+    summary: "Develop the interface, application logic and data layer.",
+    kipeo: "Build milestone by milestone, so progress is visible as it happens.",
+    client: "Content, sample data and quick answers when questions come up.",
+    review: "A working version you can try with a real task. Your feedback guides the next revision.",
+  },
+  {
+    id: "connect",
+    label: "Connect",
+    summary: "Wire up integrations, APIs and third-party services.",
+    kipeo: "Connect the services and tools included in the scope.",
+    client: "Access to the accounts and services that need connecting.",
+    review: "The connected services working together in the test version.",
+  },
+  {
+    id: "test",
+    label: "Test",
+    summary: "Verify functionality, accessibility and edge cases.",
+    kipeo: "Check how it behaves, including accessibility and the awkward cases.",
+    client: "Try your own everyday tasks and tell us what doesn't fit.",
+    review: "Fixes for what you and we found, before anything goes live.",
+  },
+  {
+    id: "launch",
+    label: "Launch",
+    summary: "Deploy to production with domains, SSL and monitoring.",
+    kipeo: "Deploy to production with the domain, SSL and monitoring in place.",
+    client: "Domain and hosting accounts (third-party costs are usually separate) and final sign-off.",
+    review: "The live system, checked together, and a documented handover guide for your team.",
+  },
+  {
+    id: "support",
+    label: "Support",
+    summary: "Ongoing maintenance, updates and technical support.",
+    kipeo: "Maintenance, updates and technical support, as agreed.",
+    client: "Tell us about issues and plan changes with us.",
+    review: "A quote to approve before any work outside the agreed scope is built.",
+  },
 ];
 
 export type StudioLayer = {

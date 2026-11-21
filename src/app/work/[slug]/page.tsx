@@ -278,14 +278,16 @@ function LegacyCaseStudy({ study }: { study: CaseStudy }) {
                 className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-slate hover:text-paper-foreground"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
-                All work
+                Selected work
               </Link>
             </Reveal>
             <Reveal immediate delay={0.06}>
               <Eyebrow className="mt-6">{study.category}</Eyebrow>
             </Reveal>
             <Reveal immediate delay={0.1}>
-              <h1 className="text-display-1 mt-4 text-paper-foreground">{study.title}</h1>
+              <h1 className="mt-4 font-display text-[clamp(2.375rem,1.6rem+2.8vw,3.75rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-paper-foreground [overflow-wrap:anywhere]">
+                {study.title}
+              </h1>
             </Reveal>
             <Reveal immediate delay={0.14}>
               <p className="mt-5 text-lg leading-relaxed text-slate">{study.outcomeHeadline}</p>

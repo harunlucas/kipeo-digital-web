@@ -33,13 +33,17 @@ export function Reveal({ children, delay = 0, className, immediate = false }: Re
     );
   }
 
+  // The server can't know the visitor's motion preference, so it always
+  // renders the hidden `initial` state. Reduced motion must therefore still
+  // run the reveal (instantly, without movement) — dropping `whileInView`
+  // would leave the server's `opacity: 0` in place and hide the content.
   return (
     <motion.div
       className={className}
-      initial={shouldReduceMotion ? undefined : { opacity: 0, y: 16 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
