@@ -1,4 +1,5 @@
 import type { ServiceGroupId } from "@/content/service-groups";
+import type { EnquiryServiceId } from "@/content/enquiry";
 import { serviceNavLabels } from "@/content/navigation";
 
 /**
@@ -111,7 +112,7 @@ export type ServiceFamily = {
   scope: string[];
   scopeNote?: string;
   scopeLinks?: { label: string; href: string; host: string }[];
-  cta: { label: string; href: string };
+  cta: { label: string; service: EnquiryServiceId };
 };
 
 export const serviceFamilies: ServiceFamily[] = [
@@ -193,7 +194,7 @@ export const serviceFamilies: ServiceFamily[] = [
     ],
     scopeNote:
       "Product and interface design is planned alongside the system architecture, so user flows, permissions, data and application behaviour are designed as one product.",
-    cta: { label: "Discuss a business system", href: "/contact" },
+    cta: { label: "Discuss a business system", service: "software-and-business-systems" },
   },
   {
     id: "operational-and-technical-software",
@@ -292,7 +293,7 @@ export const serviceFamilies: ServiceFamily[] = [
         host: "harunlucas.com",
       },
     ],
-    cta: { label: "Discuss an operational system", href: "/contact" },
+    cta: { label: "Discuss an operational system", service: "operational-and-technical-software" },
   },
   {
     id: "websites-and-commerce",
@@ -349,7 +350,7 @@ export const serviceFamilies: ServiceFamily[] = [
     ],
     scopeNote:
       "Search visibility and growth work is scoped separately under SEO & digital growth, so it can be added when useful rather than bundled into every build.",
-    cta: { label: "Discuss a website project", href: "/contact" },
+    cta: { label: "Discuss a website project", service: "websites-and-commerce" },
   },
   {
     id: "seo-and-digital-growth",
@@ -420,7 +421,7 @@ export const serviceFamilies: ServiceFamily[] = [
     ],
     scopeNote:
       "Kipeo does not promise rankings, traffic, leads, sales or advertising performance. Recommendations are based on your website, audience, competition, available content and the agreed scope.",
-    cta: { label: "Discuss SEO and measurement", href: "/contact" },
+    cta: { label: "Discuss SEO and measurement", service: "seo-and-digital-growth" },
   },
   {
     id: "integration-deployment-and-support",
@@ -490,7 +491,7 @@ export const serviceFamilies: ServiceFamily[] = [
       "Analytics integrations",
       "Documentation and handover",
     ],
-    cta: { label: "Discuss integration or support", href: "/contact" },
+    cta: { label: "Discuss integration or support", service: "integration-deployment-and-support" },
   },
 ];
 

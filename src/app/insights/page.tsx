@@ -83,7 +83,7 @@ export default async function InsightsPage() {
               </p>
             </div>
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
               <AnimatedLink href="/services">Explore services</AnimatedLink>

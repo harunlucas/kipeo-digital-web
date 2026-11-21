@@ -246,7 +246,7 @@ function ProjectStory({ study }: { study: StoryStudy }) {
               <span className="font-serif-display text-[1.08em] font-normal italic text-teal-strong">Let’s talk it through.</span>
             </p>
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-7">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
               <AnimatedLink href="/work">More work</AnimatedLink>
@@ -332,7 +332,7 @@ function LegacyCaseStudy({ study }: { study: CaseStudy }) {
                 <ExternalLink className="h-4 w-4" aria-hidden />
               </Button>
             ) : null}
-            <Button href="/contact" variant="primary" size="md">
+            <Button enquiry variant="primary" size="md">
               Start a project
               <ArrowUpRight className="h-4 w-4" aria-hidden />
             </Button>

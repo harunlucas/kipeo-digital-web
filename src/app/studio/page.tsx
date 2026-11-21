@@ -229,7 +229,7 @@ export default function StudioPage() {
           </Reveal>
           <Reveal delay={0.08}>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button href="/contact" variant="accent" size="lg" tone="ink">
+              <Button enquiry variant="accent" size="lg" tone="ink">
                 Start a project
               </Button>
               <Button href="/work" variant="outline" size="lg" tone="ink">

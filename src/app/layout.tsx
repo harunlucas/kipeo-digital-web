@@ -2,6 +2,8 @@ import { Inter, Space_Grotesk, JetBrains_Mono, Instrument_Serif } from "next/fon
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { EnquiryProvider } from "@/components/enquiry/enquiry-provider";
+import { ProjectEnquiryPanel } from "@/components/enquiry/project-enquiry-panel";
 import { defaultMetadata } from "@/lib/metadata";
 import "./globals.css";
 
@@ -56,12 +58,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to main content
         </a>
-        <AnnouncementBar />
-        <Header />
-        <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
-          {children}
-        </main>
-        <Footer />
+        <EnquiryProvider>
+          <AnnouncementBar />
+          <Header />
+          <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+            {children}
+          </main>
+          <Footer />
+          <ProjectEnquiryPanel />
+        </EnquiryProvider>
       </body>
     </html>
   );

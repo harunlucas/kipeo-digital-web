@@ -56,7 +56,7 @@ export function Header() {
         <Link
           href="/"
           aria-label="Kipeo Digital — Home"
-          className="flex items-center gap-2.5 justify-self-start rounded-md"
+          className="flex min-w-0 items-center gap-2.5 justify-self-start overflow-hidden rounded-md"
         >
           <BrandMark className="h-8 w-8" />
           <Wordmark />
@@ -85,7 +85,7 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-5 justify-self-end">
+        <div className="flex shrink-0 items-center gap-5 justify-self-end">
           <a
             href={siteConfig.phoneHref}
             aria-label={`Call ${siteConfig.name} on ${siteConfig.phone}`}
@@ -94,7 +94,7 @@ export function Header() {
             <Phone className="h-4 w-4 shrink-0" aria-hidden />
             {siteConfig.phone}
           </a>
-          <Button href="/contact" variant="primary" className="hidden whitespace-nowrap shadow-sm sm:inline-flex">
+          <Button enquiry variant="primary" className="hidden whitespace-nowrap shadow-sm sm:inline-flex">
             Start a project
           </Button>
           <MobileMenu items={mainNav} phoneHref={siteConfig.phoneHref} phoneLabel={siteConfig.phone} />

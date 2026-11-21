@@ -1,57 +1,33 @@
 import { z } from "zod";
-import {
-  budgetOptions,
-  preferredContactOptions,
-  projectStageOptions,
-  projectTypeOptions,
-  timelineOptions,
-} from "@/content/contact";
-import { normalizeWebsiteUrl } from "@/lib/normalize-url";
+import { enquiryServiceIds, type EnquiryServiceId } from "@/content/enquiry";
 
 /**
- * Single source of truth for the enquiry form, used by both the client
- * component (for the TypeScript shape of its state) and the `/api/contact`
- * route (for real validation — the client only does lightweight HTML5
- * checks, since the requirement is server-side validation).
+ * Single source of truth for the project enquiry form — the site-wide panel
+ * and the inline form on /contact share it. The client runs it for instant
+ * field-level feedback; `/api/contact` runs it again as the real check.
  *
- * `.strict()` rejects any field not listed here, honeypot included — a
- * request carrying an unexpected key fails validation the same way a bot
- * filling every visible input plus a scripted extra field would.
+ * Deliberately short: name, email, an optional service and the project
+ * details. Visitors can describe an early idea without knowing their
+ * requirements, budget or timeline.
+ *
+ * `.strict()` rejects any field not listed here — a request carrying an
+ * unexpected key fails validation the same way a scripted extra field would.
  */
 export const contactFormSchema = z
   .object({
-    fullName: z.string().trim().min(2, "Enter your full name.").max(120, "Full name is too long."),
-    email: z.email("Enter a valid email address.").max(254, "Email address is too long."),
-    company: z.string().trim().max(160, "Company name is too long.").optional().or(z.literal("")),
-    phone: z
+    fullName: z.string().trim().min(2, "Enter your name.").max(120, "Name is too long — 120 characters at most."),
+    email: z
       .string()
       .trim()
-      .max(40, "Phone number is too long.")
-      .regex(/^[0-9+()\-\s]*$/, "Enter a valid phone number.")
-      .optional()
-      .or(z.literal("")),
-    countryOrTimezone: z.string().trim().max(120, "This field is too long.").optional().or(z.literal("")),
-    websiteUrl: z
-      .string()
-      .trim()
-      .max(200, "URL is too long.")
-      .optional()
-      .or(z.literal(""))
-      .transform((value) => normalizeWebsiteUrl(value ?? ""))
-      .refine((value): value is string => value !== null, {
-        message: "Enter a valid website URL, e.g. example.com.",
-      }),
-    preferredContact: z.enum(preferredContactOptions).optional().or(z.literal("")),
-    projectType: z.enum(projectTypeOptions).optional().or(z.literal("")),
-    projectStage: z.enum(projectStageOptions).optional().or(z.literal("")),
-    timeline: z.enum(timelineOptions).optional().or(z.literal("")),
-    budget: z.enum(budgetOptions).optional().or(z.literal("")),
+      .min(1, "Enter your email address.")
+      .max(254, "Email address is too long.")
+      .pipe(z.email("Enter a valid email address, like name@example.com.")),
+    service: z.enum(enquiryServiceIds).optional().or(z.literal("")),
     projectSummary: z
       .string()
       .trim()
-      .min(20, "Add a little more detail about the project.")
-      .max(4000, "Project summary is too long."),
-    privacyAcknowledged: z.literal(true, { error: "You must acknowledge the privacy notice." }),
+      .min(20, "Tell us a little more — a sentence or two is enough.")
+      .max(4000, "Project details are too long — 4,000 characters at most."),
     honeypot: z.string().max(0).optional().or(z.literal("")),
     turnstileToken: z.string().max(4000).optional().or(z.literal("")),
   })
@@ -59,30 +35,20 @@ export const contactFormSchema = z
 
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
 
-/**
- * The client form's state shape. Distinct from `ContactFormValues` only in
- * `privacyAcknowledged`: the schema requires the literal `true` for a
- * request to validate, but the checkbox starts unchecked (per "do not use a
- * preselected checkbox") and state must be able to represent that.
- */
-export type ContactFormState = Omit<ContactFormValues, "privacyAcknowledged"> & {
-  privacyAcknowledged: boolean;
+/** The visitor-entered part of the form — what the in-memory draft holds. */
+export type EnquiryDraft = {
+  fullName: string;
+  email: string;
+  service: EnquiryServiceId | "";
+  projectSummary: string;
 };
 
-export const contactFormDefaults: ContactFormState = {
+export const emptyEnquiryDraft: EnquiryDraft = {
   fullName: "",
   email: "",
-  company: "",
-  phone: "",
-  countryOrTimezone: "",
-  websiteUrl: "",
-  preferredContact: "",
-  projectType: projectTypeOptions[0],
-  projectStage: "",
-  timeline: "",
-  budget: budgetOptions[0],
+  service: "",
   projectSummary: "",
-  privacyAcknowledged: false,
-  honeypot: "",
-  turnstileToken: "",
 };
+
+/** Field order on screen — used to move focus to the first invalid field. */
+export const enquiryFieldOrder = ["fullName", "email", "service", "projectSummary"] as const;

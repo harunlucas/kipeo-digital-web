@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import { Mail } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/reveal";
-import { ContactIntakePanel } from "@/components/motion/contact-intake-panel";
-import { StartEnquiryButton } from "@/components/sections/contact/start-enquiry-button";
-import { ContactPathways } from "@/components/sections/contact/contact-pathways";
-import { ContactProcess } from "@/components/sections/contact/contact-process";
-import { ContactTrustStrip } from "@/components/sections/contact/contact-trust-strip";
-import { ContactForm } from "@/components/sections/contact/contact-form";
+import { EnquiryForm } from "@/components/enquiry/enquiry-form";
+import { ENQUIRY_FORM_ANCHOR } from "@/components/enquiry/project-enquiry-link";
 import { ContactFaq } from "@/components/sections/contact/contact-faq";
 import { siteConfig } from "@/content/site-config";
+import { contactFaq, whatsappHref } from "@/content/contact";
+import { enquiryCopy } from "@/content/enquiry";
 import { organizationSchema, contactPageSchema, faqSchema } from "@/lib/schema";
-import { contactFaq } from "@/content/contact";
 import { buildMetadata } from "@/lib/metadata";
 
 const title = "Contact Kipeo Digital | Start a Software Project";
@@ -29,6 +26,27 @@ export const metadata: Metadata = buildMetadata({
   twitter: { title, description },
 });
 
+type ContactDetail = {
+  label: string;
+  value: string;
+  icon: LucideIcon;
+  href?: string;
+  external?: boolean;
+};
+
+const contactDetails: ContactDetail[] = [
+  { label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}`, icon: Mail },
+  { label: "Phone", value: siteConfig.phone, href: siteConfig.phoneHref, icon: Phone },
+  { label: "WhatsApp", value: "Message Kipeo", href: whatsappHref, icon: MessageCircle, external: true },
+  { label: "Studio", value: `${siteConfig.location} · Working worldwide`, icon: MapPin },
+];
+
+/**
+ * General contact page: direct details on the left, the shared project
+ * enquiry form inline on the right (stacked in that order on phones).
+ * Project CTAs elsewhere open the same form in the site-wide panel; here
+ * they scroll to this inline copy instead (see `ProjectEnquiryLink`).
+ */
 export default function ContactPage() {
   return (
     <>
@@ -36,86 +54,87 @@ export default function ContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(contactFaq)) }} />
 
-      <section className="relative overflow-hidden bg-paper py-10 sm:py-12 lg:flex lg:min-h-[580px] lg:items-center lg:py-0">
-        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-50" />
+      <section className="relative overflow-hidden bg-paper">
+        <div aria-hidden className="bg-grid-paper absolute inset-0 opacity-40" />
         <div
           aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_50%_55%_at_82%_38%,var(--color-teal-tint),transparent)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_45%_50%_at_85%_30%,var(--color-teal-tint),transparent)]"
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_35%_40%_at_18%_88%,color-mix(in_srgb,var(--color-highlight)_9%,transparent),transparent)]"
-        />
-        <Container className="relative w-full">
-          <div className="grid items-center gap-10 min-[900px]:grid-cols-[11fr_9fr] min-[900px]:gap-14">
-            <div>
+        <Container className="relative py-12 sm:py-16 lg:py-24">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16 xl:gap-24">
+            <div className="lg:sticky lg:top-28 lg:self-start">
               <Reveal immediate>
-                <Eyebrow>Start a conversation</Eyebrow>
+                <Eyebrow>Contact</Eyebrow>
               </Reveal>
               <Reveal immediate delay={0.06}>
-                <h1 className="mt-5 font-display leading-[1.05] tracking-[-0.02em] text-paper-foreground [text-wrap:balance] text-[clamp(2.625rem,2.05rem+3vw,5.125rem)]">
-                  Tell us what needs to work better.
+                <h1 className="mt-4 font-display text-[clamp(2.5rem,2rem+2.4vw,4.25rem)] leading-[1.04] tracking-[-0.02em] text-paper-foreground">
+                  Contact Kipeo
                 </h1>
               </Reveal>
               <Reveal immediate delay={0.12}>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate">
-                  Share the problem, idea or system you need to build. We&apos;ll review it and recommend a practical
-                  next step.
+                <p className="mt-5 max-w-md text-lg leading-relaxed text-slate">
+                  Have a project in mind, a question about our work or something you&rsquo;d like to discuss? Get in
+                  touch with the studio.
                 </p>
               </Reveal>
               <Reveal immediate delay={0.18}>
-                <div className="mt-7 flex flex-col gap-4 sm:flex-row">
-                  <StartEnquiryButton />
-                  <Button href={`mailto:${siteConfig.email}`} variant="outline" size="lg">
-                    <Mail className="h-4 w-4" aria-hidden />
-                    Email Kipeo
-                  </Button>
-                </div>
-              </Reveal>
-              <Reveal immediate delay={0.22}>
-                <p className="mt-5 text-xs font-medium uppercase tracking-wide text-slate-muted">
-                  Based in Nairobi · Working remotely worldwide
-                </p>
+                <dl className="mt-8 max-w-md divide-y divide-neutral-200 border-y border-neutral-200">
+                  {contactDetails.map((detail) => {
+                    const Icon = detail.icon;
+                    return (
+                      <div key={detail.label} className="flex items-center gap-4 py-3.5">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-paper-elevated/60 text-teal-strong">
+                          <Icon className="h-4 w-4" aria-hidden />
+                        </span>
+                        <div className="min-w-0">
+                          <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-slate-muted">
+                            {detail.label}
+                          </dt>
+                          <dd className="mt-0.5">
+                            {detail.href ? (
+                              <a
+                                href={detail.href}
+                                {...(detail.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                                className="inline-flex items-center gap-1 rounded-sm text-base font-medium text-paper-foreground underline decoration-neutral-300 underline-offset-4 transition-colors [overflow-wrap:anywhere] hover:text-teal-strong hover:decoration-teal-strong"
+                              >
+                                {detail.value}
+                                {detail.external && (
+                                  <>
+                                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                                    <span className="sr-only">(opens WhatsApp in a new tab)</span>
+                                  </>
+                                )}
+                              </a>
+                            ) : (
+                              <span className="text-base text-paper-foreground">{detail.value}</span>
+                            )}
+                          </dd>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </dl>
               </Reveal>
             </div>
+
             <Reveal immediate delay={0.1}>
-              <ContactIntakePanel />
+              <div className="rounded-2xl border border-neutral-300/80 bg-ivory p-6 shadow-card sm:p-8 lg:p-10">
+                <h2
+                  id={ENQUIRY_FORM_ANCHOR}
+                  tabIndex={-1}
+                  className="scroll-mt-28 font-display text-[1.75rem] leading-tight tracking-[-0.015em] text-paper-foreground focus:outline-none sm:text-[2rem]"
+                >
+                  {enquiryCopy.heading}
+                </h2>
+                <p className="mt-2 text-base leading-relaxed text-slate">{enquiryCopy.intro}</p>
+                <div className="mt-6">
+                  <EnquiryForm context="page" />
+                </div>
+              </div>
             </Reveal>
           </div>
         </Container>
       </section>
-
-      <Container className="border-t border-neutral-200/80 pb-16 pt-14 sm:pb-20 sm:pt-16">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
-          <div className="lg:col-start-1 lg:row-start-1">
-            <h2 className="text-display-3 text-paper-foreground">Choose the easiest way to reach us.</h2>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-slate sm:text-base">
-              Email, call or message us directly, or fill in the project enquiry form with as much or as little
-              detail as you have.
-            </p>
-            <div className="mt-6">
-              <ContactPathways />
-            </div>
-          </div>
-
-          <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
-            <h2 id="enquiry-form" tabIndex={-1} className="text-display-3 text-paper-foreground focus:outline-none">
-              Tell us about your project.
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate sm:text-base">
-              Fields marked required help us understand the project; everything else is optional context.
-            </p>
-            <div className="mt-6">
-              <ContactForm />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-10 lg:col-start-1 lg:row-start-2">
-            <ContactProcess />
-            <ContactTrustStrip />
-          </div>
-        </div>
-      </Container>
 
       <ContactFaq />
     </>

@@ -47,7 +47,7 @@ export function Hero() {
             </p>
 
             <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
               <Link
