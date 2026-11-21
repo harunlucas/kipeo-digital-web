@@ -112,7 +112,7 @@ export function ServiceFamilySection({ family }: { family: ServiceFamily }) {
           ) : null}
 
           <div className="svc-family-cta">
-            <AnimatedLink href={family.cta.href}>{family.cta.label}</AnimatedLink>
+            <AnimatedLink enquiry={family.cta.service}>{family.cta.label}</AnimatedLink>
           </div>
         </div>
       </Container>

@@ -78,3 +78,45 @@ currently configured.
       variables are read at request time in serverless functions, but a
       redeploy ensures build-time output (if any) picks up
       `NEXT_PUBLIC_TURNSTILE_SITE_KEY` too.
+
+## Project enquiry panel and form fields (November 2026)
+
+The enquiry form is now one shared component
+(`src/components/enquiry/enquiry-form.tsx`) used in two places: inline on
+`/contact`, and in the site-wide right-side panel
+(`src/components/enquiry/project-enquiry-panel.tsx`) opened by every
+"Start a project" and service-specific "Discuss …" CTA. Both post to the
+same `/api/contact` route with the same spam protection.
+
+- **Fields:** name, email, service of interest (optional; the five service
+  families plus "I'm not sure yet") and project details. The schema in
+  `src/lib/contact-schema.ts` is `.strict()` and was trimmed to match; the
+  old optional company/phone/stage/timeline/budget fields and the required
+  privacy checkbox were removed (a privacy notice and link sit under the
+  submit button instead).
+- **CTAs** are real links to `/contact#enquiry-form` (with `?service=<id>`
+  for service-specific CTAs), so new-tab and no-JS use land on the full
+  form with the service preselected. A plain click opens the panel; on
+  `/contact` it scrolls to the inline form instead.
+- **Draft:** held in React state only (`EnquiryProvider`), never in browser
+  storage; cleared after a successful send.
+- **Success copy** mentions an emailed copy only when the API reports
+  `confirmationSent: true`. No response time is promised.
+- **Analytics:** none exist on the site, so none were added.
+- **Chat:** no provider is configured. The bottom-left corner is reserved
+  for a future launcher. While either overlay (the mobile menu or the
+  enquiry panel) is open, `<html data-overlay-open>` is set by the shared
+  scroll lock (`src/lib/scroll-lock.ts`), so a launcher can hide itself with
+  CSS and reappears once both are closed.
+
+## Mobile navigation (November 2026)
+
+`src/components/layout/mobile-menu.tsx` is a full-height modal `<dialog>`
+below the 1200px desktop breakpoint. Its top row redraws the header in
+place (logo left, close button where the hamburger was). Services is an
+inline disclosure ("Explore all services", the five families, then "How we
+work"); it opens automatically on `/services` and `/studio`, and the family
+matching the URL hash is marked `aria-current="location"`. The footer's
+"Start a project" closes the menu first, then uses the shared enquiry
+trigger, and the panel returns focus to the hamburger. Both overlays share
+one counted scroll lock, so the handoff never unlocks the page.

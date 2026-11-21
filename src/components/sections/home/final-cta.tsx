@@ -115,7 +115,7 @@ export function FinalCta() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
             <div ref={buttonWrapRef} className="flex">
               <Button
-                href="/contact"
+                enquiry
                 variant="accent"
                 size="lg"
                 tone="ink"

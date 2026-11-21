@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { Container } from "./container";
+import { ProjectEnquiryLink } from "@/components/enquiry/project-enquiry-link";
 import { impactBuildConfig } from "@/content/impact-build";
 
 const isImpactBuildOpen = impactBuildConfig.status === "open";
@@ -94,10 +95,10 @@ export function AnnouncementBar() {
             <p className="hidden sm:block">
               Planning software, a business system or a new website? Your initial consultation is free.
             </p>
-            <Link href="/contact" className={barLinkClass}>
+            <ProjectEnquiryLink className={barLinkClass}>
               Start your enquiry
               <span aria-hidden>→</span>
-            </Link>
+            </ProjectEnquiryLink>
           </>
         )}
       </Container>

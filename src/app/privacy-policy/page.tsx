@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Privacy Policy | Kipeo Digital";
 const description = "How Kipeo Digital collects, uses and protects information from visitors and enquiries.";
-const lastUpdated = "25 August 2026";
+const lastUpdated = "21 November 2026";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -55,13 +55,14 @@ export default function PrivacyPolicyPage() {
       <LegalSection id="information-you-provide" heading="Information you provide">
         <p>The enquiry form on the Contact page asks for:</p>
         <ul className="list-disc space-y-1.5 pl-5">
-          <li>Your full name and email address</li>
-          <li>Optionally, your company, phone number, country or timezone, and website URL</li>
-          <li>Your project type, stage, timeline, budget range and a written project summary</li>
-          <li>Your preferred way to be contacted</li>
+          <li>Your name and email address</li>
+          <li>Optionally, the service you&rsquo;re interested in</li>
+          <li>A written description of your project</li>
         </ul>
         <p>
-          You choose what optional fields to complete. If you email or call us directly instead, we receive whatever
+          The same form appears on the Contact page and in the project enquiry panel opened by &ldquo;Start a
+          project&rdquo; links across the site. What you type is held only in the open page while you write it
+          &mdash; it is not saved to your browser&rsquo;s storage &mdash; and is cleared once the enquiry is sent. If you email or call us directly instead, we receive whatever
           information that message contains. The &ldquo;Notify me&rdquo; link on the Insights page simply opens your
           own email app addressed to us &mdash; it does not add you to a mailing list, and Kipeo does not operate a
           newsletter or marketing email list.

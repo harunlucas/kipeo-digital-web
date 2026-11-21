@@ -94,7 +94,7 @@ export default function WorkPage() {
               version.
             </p>
             <div className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
               <AnimatedLink href="/services">Explore services</AnimatedLink>

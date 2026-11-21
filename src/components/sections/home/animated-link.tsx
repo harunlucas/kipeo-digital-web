@@ -2,13 +2,18 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { ProjectEnquiryLink } from "@/components/enquiry/project-enquiry-link";
+import type { EnquiryServiceId } from "@/content/enquiry";
 
 type AnimatedLinkProps = {
-  href: string;
+  /** Ignored when `enquiry` is set. */
+  href?: string;
   children: ReactNode;
   className?: string;
   /** For an off-site link: opens in a new tab and names the host to screen readers. */
   externalHost?: string;
+  /** A project CTA: opens the enquiry panel (`true`) or preselects a service, over a real `/contact` link. */
+  enquiry?: true | EnquiryServiceId;
 };
 
 /**
@@ -21,7 +26,7 @@ type AnimatedLinkProps = {
  * With `externalHost` it renders a plain anchor that opens in a new tab
  * (the Work pages link out to each project's original write-up).
  */
-export function AnimatedLink({ href, children, className, externalHost }: AnimatedLinkProps) {
+export function AnimatedLink({ href = "/contact", children, className, externalHost, enquiry }: AnimatedLinkProps) {
   const classes = cn(
     "group inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-paper-foreground transition-colors hover:text-teal-strong motion-reduce:underline motion-reduce:decoration-paper-foreground/40 motion-reduce:underline-offset-4 sm:text-base",
     className,
@@ -42,6 +47,14 @@ export function AnimatedLink({ href, children, className, externalHost }: Animat
       />
     </>
   );
+
+  if (enquiry) {
+    return (
+      <ProjectEnquiryLink service={enquiry === true ? undefined : enquiry} className={classes}>
+        {content}
+      </ProjectEnquiryLink>
+    );
+  }
 
   if (externalHost) {
     return (

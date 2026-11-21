@@ -169,7 +169,7 @@ export default function AboutPage() {
               <span className="font-serif-display italic text-teal-strong">to do better?</span>
             </h2>
             <div className="mt-8">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
             </div>

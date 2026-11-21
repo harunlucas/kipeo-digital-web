@@ -80,7 +80,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="lg:col-start-1 lg:row-start-2">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
             </div>
@@ -131,7 +131,7 @@ export default function ServicesPage() {
               Tell us what needs to change and who it’s for. We’ll recommend a practical place to start.
             </p>
             <div className="mt-8">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button enquiry variant="primary" size="lg">
                 Start a project
               </Button>
             </div>

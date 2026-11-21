@@ -64,7 +64,7 @@ export default function ImpactBuildApplyPage() {
                 <Button href="/impact-build" variant="primary" size="md">
                   Learn about the initiative
                 </Button>
-                <Button href="/contact" variant="outline" size="md">
+                <Button enquiry variant="outline" size="md">
                   Discuss a normally scoped project
                 </Button>
               </div>

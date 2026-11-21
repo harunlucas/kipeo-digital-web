@@ -111,7 +111,7 @@ function StatusPanel() {
           <Button href="#what-is-included" variant="outline" size="md">
             Learn about the initiative
           </Button>
-          <Button href="/contact" variant="outline" size="md">
+          <Button enquiry variant="outline" size="md">
             Discuss a normally scoped project
           </Button>
         </div>
@@ -437,7 +437,7 @@ export default function ImpactBuildPage() {
                   Apply for the Impact Build
                 </Button>
               ) : (
-                <Button href="/contact" variant="accent" size="lg" tone="ink">
+                <Button enquiry variant="accent" size="lg" tone="ink">
                   Discuss a commercial project
                 </Button>
               )}

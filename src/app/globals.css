@@ -1216,3 +1216,15 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/*
+  Project enquiry panel (src/components/enquiry/project-enquiry-panel.tsx).
+  The sheet follows the visual viewport, which the panel tracks in
+  --enquiry-vh / --enquiry-vt: on phones it shrinks when the on-screen
+  keyboard opens, so the close button and the focused field stay visible.
+  100dvh is the fallback before the first measurement.
+*/
+.enquiry-sheet {
+  top: var(--enquiry-vt, 0px);
+  height: var(--enquiry-vh, 100dvh);
+}

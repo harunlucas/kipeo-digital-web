@@ -1,6 +1,8 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { ProjectEnquiryLink } from "@/components/enquiry/project-enquiry-link";
+import type { EnquiryServiceId } from "@/content/enquiry";
 
 type ButtonVariant = "primary" | "accent" | "outline" | "ghost";
 type ButtonTone = "paper" | "ink";
@@ -49,7 +51,28 @@ type ButtonAsLink = CommonProps &
     href: string;
   };
 
-type ButtonProps = ButtonAsButton | ButtonAsLink;
+/**
+ * A project CTA: opens the site-wide enquiry panel, with a real `/contact`
+ * link underneath (see `ProjectEnquiryLink`). `true` leaves the service
+ * open; a service id preselects that service.
+ */
+type ButtonAsEnquiry = CommonProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof CommonProps | "href"> & {
+    enquiry: true | EnquiryServiceId;
+    href?: undefined;
+  };
+
+type ButtonProps = ButtonAsButton | ButtonAsLink | ButtonAsEnquiry;
+
+/** The button's classes, for elements that need the look without `<Button>` (e.g. a `ProjectEnquiryLink` with extra props). */
+export function buttonClassName({
+  variant = "primary",
+  tone = "paper",
+  size = "md",
+  className = "",
+}: { variant?: ButtonVariant; tone?: ButtonTone; size?: ButtonSize; className?: string } = {}) {
+  return cn(baseClasses, sizeClasses[size], variantClasses(variant, tone), className);
+}
 
 export function Button({
   variant = "primary",
@@ -59,7 +82,16 @@ export function Button({
   children,
   ...rest
 }: ButtonProps) {
-  const classes = cn(baseClasses, sizeClasses[size], variantClasses(variant, tone), className);
+  const classes = buttonClassName({ variant, tone, size, className });
+
+  if ("enquiry" in rest && rest.enquiry) {
+    const { enquiry, ...anchorRest } = rest as ButtonAsEnquiry;
+    return (
+      <ProjectEnquiryLink service={enquiry === true ? undefined : enquiry} className={classes} {...anchorRest}>
+        {children}
+      </ProjectEnquiryLink>
+    );
+  }
 
   if ("href" in rest && rest.href) {
     const { href, ...anchorRest } = rest as AnchorHTMLAttributes<HTMLAnchorElement> & {
