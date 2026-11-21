@@ -14,8 +14,35 @@ license or store as a binary file.
 
 | Component | Used on | Depicts |
 |---|---|---|
-| `src/components/motion/insights-hero-visual.tsx` | /insights hero | An idea moving through a decision point into a built system, connected by a drawn path — a compact composition distinct from Services' `EcosystemVisual` |
-| `src/components/motion/insight-visual.tsx` | /insights featured article, grid cards, article pages | `custom-vs-off-the-shelf` (balance scale) / `plan-business-system` (discovery-node branches) / `website-vs-web-application` (rising complexity spectrum) — one per launch article, reused at featured/grid/article scale by the same component |
+| `src/components/motion/insight-visual.tsx` | Article pages and their related-article cards | `custom-vs-off-the-shelf` (balance scale) / `plan-business-system` (discovery-node branches) / `website-vs-web-application` (rising complexity spectrum) — one per launch article |
+
+### /insights landing page editorial illustrations (2026-11-21)
+
+Three user-supplied editorial illustrations (pencil sketches on paper with
+a hand and pencil). They are illustrations, not product screenshots or
+client work, and carry no on-page credit. The landing page no longer uses
+`InsightVisual`. An article shows an image on the landing page only when
+its `meta.listingImage` is set and the image genuinely illustrates it.
+
+Each web file is lossless WebP (sharp, `lossless: true, effort: 6, exact:
+true`), compared against a maximum-compression PNG (`compressionLevel: 9,
+adaptiveFiltering: true, palette: false`). Lossless WebP was smaller every
+time and was kept; each was decoded and checked pixel-identical to its
+source. The source PNGs in `public/images/` are left untouched and are not
+referenced by any page. The page serves resized `next/image` variants at
+quality 90 (fine pencil lines and handwriting): the hero is 78 KB at
+1080w (a 3× phone and 1440px desktop) and 47 KB at 828w (1024px desktop);
+the row image is 14 KB at 384w (desktop).
+
+| Web asset (`public/images/insights/`) | Source (`public/images/`) | Original | Max PNG | Lossless WebP (kept) | Used |
+|---|---|---|---|---|---|
+| `insights-sketchbook-hero.webp` (1672×941) | `Sketching Ideas in Warm Light.png` | 2,454,294 B | 2,221,771 B | 1,599,644 B | /insights hero, `alt=""` (decorative behind the live heading), preloaded |
+| `replacement-part-design-sketch.webp` (1672×941) | `Sketching the Right Replacement Part.png` | 2,514,546 B | 2,281,684 B | 1,628,216 B | `listingImage` of `website-vs-web-application` (index row, lazy-loaded): a product page leading to a confirmed request, matching the article's store → portal → internal system spectrum |
+| `fieldwork-verification-sketch.webp` (1672×941) | `From fieldwork to working software.png` | 2,663,368 B | 2,387,328 B | 1,698,552 B | Not used yet. No published article is about inspections, corrective actions or verification. Reserve it for the first Engineering & safety systems article. |
+
+The SafetyOS field-inspection photo briefly used as the featured article's
+image in an uncommitted pass was removed: the featured article mentions
+inspection steps only in passing, so it is now text-led.
 
 Each article's `featuredImage` frontmatter field is a visual-variant key
 (e.g. `"custom-vs-off-the-shelf"`), not a file path — `InsightVisual`
