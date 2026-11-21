@@ -5,6 +5,7 @@ import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { Headline } from "@/components/ui/headline";
 import { Reveal } from "@/components/motion/reveal";
 import { InsightVisual } from "@/components/motion/insight-visual";
 import { InsightCard } from "@/components/sections/insights/insight-card";
@@ -77,7 +78,7 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
           className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
         />
         <Container className="relative">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-[720px]">
           <Reveal immediate>
             <Link
               href="/insights"
@@ -91,7 +92,9 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
             <Eyebrow className="mt-6">{insight.category}</Eyebrow>
           </Reveal>
           <Reveal immediate delay={0.1}>
-            <h1 className="text-display-1 mt-4 text-paper-foreground">{insight.title}</h1>
+            <h1 className="mt-4 font-display text-[clamp(2.25rem,1.6rem+2.4vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.02em] text-paper-foreground [text-wrap:balance]">
+              {insight.title}
+            </h1>
           </Reveal>
           <Reveal immediate delay={0.14}>
             <p className="mt-5 text-lg leading-relaxed text-slate">{insight.description}</p>
@@ -114,7 +117,7 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
       </section>
 
       <Container>
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-[720px]">
           <Reveal immediate delay={0.1}>
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-neutral-200 bg-ink shadow-panel sm:aspect-[2.2/1]">
               <div aria-hidden className="bg-grid-ink pointer-events-none absolute inset-0 opacity-40" />
@@ -127,7 +130,7 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
       </Container>
 
       <Section tone="paper">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-[720px]">
           <article>
             <Content />
           </article>
@@ -136,8 +139,17 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
 
       {related.length > 0 && (
         <Section tone="elevated">
-          <Eyebrow>More insights</Eyebrow>
-          <h2 className="text-display-3 mt-2 text-paper-foreground">Continue reading.</h2>
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+            <h2 className="section-headline">
+              <Headline lead="Keep" accent="reading" />
+            </h2>
+            <Link
+              href="/insights"
+              className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-teal-strong underline underline-offset-4 hover:text-link-hover"
+            >
+              All insights
+            </Link>
+          </div>
           <div className="mt-8 grid gap-5 sm:grid-cols-2">
             {related.map((item) => (
               <InsightCard key={item.slug} insight={item} />

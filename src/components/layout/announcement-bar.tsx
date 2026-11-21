@@ -81,10 +81,11 @@ export function AnnouncementBar() {
             <p className="sm:hidden">Impact Build applications open</p>
             <p className="hidden sm:block lg:hidden">Applications open · Kipeo Impact Build</p>
             <p className="hidden lg:block">
-              Applications open · Kipeo Impact Build — one clearly scoped digital project supported this year.
+              Applications open · Kipeo Impact Build — each year we may build one community project with our
+              development fee waived.
             </p>
             <Link href="/impact-build" className={barLinkClass}>
-              <span className="sm:hidden">Apply</span>
+              <span className="sm:hidden">Learn more</span>
               <span className="hidden sm:inline">Learn more and apply</span>
               <span aria-hidden>→</span>
             </Link>

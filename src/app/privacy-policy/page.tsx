@@ -34,7 +34,7 @@ const toc: LegalTocItem[] = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalLayout title="Privacy Policy" lastUpdated={lastUpdated} toc={toc}>
+    <LegalLayout title="Privacy Policy" currentHref="/privacy-policy" lastUpdated={lastUpdated} toc={toc}>
       <LegalSection id="overview" heading="Overview">
         <p>
           This policy explains what information Kipeo Digital (&ldquo;Kipeo&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;)
@@ -63,9 +63,7 @@ export default function PrivacyPolicyPage() {
           The same form appears on the Contact page and in the project enquiry panel opened by &ldquo;Start a
           project&rdquo; links across the site. What you type is held only in the open page while you write it
           &mdash; it is not saved to your browser&rsquo;s storage &mdash; and is cleared once the enquiry is sent. If you email or call us directly instead, we receive whatever
-          information that message contains. The &ldquo;Notify me&rdquo; link on the Insights page simply opens your
-          own email app addressed to us &mdash; it does not add you to a mailing list, and Kipeo does not operate a
-          newsletter or marketing email list.
+          information that message contains. Kipeo does not operate a newsletter or marketing email list.
         </p>
         <p>
           The application form on the{" "}
@@ -82,7 +80,7 @@ export default function PrivacyPolicyPage() {
 
       <LegalSection id="technical-information" heading="Technical information">
         <p>
-          When you submit the enquiry form, our server briefly reads your IP address to apply spam and abuse
+          When you submit the enquiry form or an Impact Build application, our server briefly reads your IP address to apply spam and abuse
           protection (rate limiting, and Cloudflare Turnstile verification where enabled &mdash; see{" "}
           <a href="#cookies-and-storage" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Cookies and browser storage
@@ -97,14 +95,15 @@ export default function PrivacyPolicyPage() {
         <p>
           Kipeo Digital does not set tracking or advertising cookies. The site uses your browser&rsquo;s
           <code className="mx-1 rounded bg-mist px-1.5 py-0.5 font-mono text-[0.85em]">localStorage</code>
-          for one purpose only: remembering that you dismissed the announcement banner, so it doesn&rsquo;t reappear
-          on your next visit. These values stay on your device, are never sent to us or any third party, and
+          for two purposes only: remembering that you dismissed the announcement banner, so it doesn&rsquo;t reappear
+          for the next three days, and remembering your Light or Dark appearance choice if you make one. These values
+          stay on your device, are never sent to us or any third party, and
           aren&rsquo;t cookies. See the{" "}
           <Link href="/cookie-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Cookie Policy
           </Link>{" "}
-          for full detail, including the one third-party exception (Cloudflare Turnstile, when active on the contact
-          form).
+          for full detail, including the one third-party exception (Cloudflare Turnstile, when active on the enquiry and Impact
+          Build application forms).
         </p>
       </LegalSection>
 
@@ -128,7 +127,7 @@ export default function PrivacyPolicyPage() {
         <ul className="list-disc space-y-1.5 pl-5">
           <li>
             <span className="font-medium text-paper-foreground">Brevo</span> &mdash; delivers the email notification
-            and confirmation generated when you submit the enquiry form.
+            and confirmation generated when you submit the enquiry form or an Impact Build application.
           </li>
           <li>
             <span className="font-medium text-paper-foreground">Cloudflare (Turnstile)</span> &mdash; where enabled,

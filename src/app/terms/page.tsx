@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Terms of Use | Kipeo Digital";
 const description = "The terms that govern use of the Kipeo Digital website and enquiry form.";
-const lastUpdated = "25 August 2026";
+const lastUpdated = "21 November 2026";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -34,7 +34,7 @@ const toc: LegalTocItem[] = [
 
 export default function TermsPage() {
   return (
-    <LegalLayout title="Terms of Use" lastUpdated={lastUpdated} toc={toc}>
+    <LegalLayout title="Terms of Use" currentHref="/terms" lastUpdated={lastUpdated} toc={toc}>
       <LegalSection id="acceptance" heading="Acceptance of these terms">
         <p>
           These terms govern your use of the Kipeo Digital website at{" "}
@@ -52,7 +52,11 @@ export default function TermsPage() {
         <p>
           This website is provided for informational purposes: to describe Kipeo Digital&rsquo;s services, past
           work and approach, and to let visitors get in touch. You may browse it and submit the enquiry form for
-          genuine business purposes.
+          genuine business purposes. Applications to the Kipeo Impact Build are also governed by the{" "}
+          <Link href="/impact-build/terms" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
+            Kipeo Impact Build Terms
+          </Link>
+          .
         </p>
       </LegalSection>
 
@@ -78,7 +82,7 @@ export default function TermsPage() {
 
       <LegalSection id="third-party-services" heading="Third-party services">
         <p>
-          The enquiry form is processed with the help of third-party services described in the{" "}
+          The enquiry form and the Impact Build application form are processed with the help of third-party services described in the{" "}
           <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Privacy Policy
           </Link>

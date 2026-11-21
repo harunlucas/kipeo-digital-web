@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Cookie Policy | Kipeo Digital";
 const description = "What Kipeo Digital does and does not store in your browser, and why.";
-const lastUpdated = "25 August 2026";
+const lastUpdated = "21 November 2026";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -29,12 +29,12 @@ const toc: LegalTocItem[] = [
 
 export default function CookiePolicyPage() {
   return (
-    <LegalLayout title="Cookie Policy" lastUpdated={lastUpdated} toc={toc}>
+    <LegalLayout title="Cookie Policy" currentHref="/cookie-policy" lastUpdated={lastUpdated} toc={toc}>
       <LegalSection id="summary" heading="Summary">
         <p>
           Kipeo Digital does not set advertising or tracking cookies, and does not run analytics on this website. The
-          only thing stored in your browser is a small local preference (not a cookie) that remembers whether
-          you&rsquo;ve dismissed the announcement banner. Because the site uses no non-essential cookies, it does not
+          only things stored in your browser are two small local preferences (not cookies): whether you&rsquo;ve
+          dismissed the announcement banner, and your Light or Dark appearance choice if you make one. Because the site uses no non-essential cookies, it does not
           show a cookie-consent banner &mdash; there is nothing non-essential to ask consent for.
         </p>
       </LegalSection>
@@ -47,21 +47,25 @@ export default function CookiePolicyPage() {
         <p>
           The website uses your browser&rsquo;s{" "}
           <code className="rounded bg-mist px-1.5 py-0.5 font-mono text-[0.85em]">localStorage</code> &mdash; a
-          different mechanism from a cookie, and one that is never sent to our server &mdash; for one purpose: once
+          different mechanism from a cookie, and one that is never sent to our server &mdash; for two purposes: once
           you close the announcement banner at the top of the site, that preference is saved on your device so the
-          banner doesn&rsquo;t reopen every time you visit. It:
+          banner doesn&rsquo;t reopen every time you visit; and if you choose Light or Dark under Appearance, that
+          choice is saved so the site opens in it next time. Both:
         </p>
         <ul className="list-disc space-y-1.5 pl-5">
           <li>Stays only on your device and browser</li>
           <li>Is never transmitted to Kipeo or any third party</li>
           <li>Is not used to identify or track you</li>
-          <li>Persists until you clear your browser&rsquo;s site data, or until it is reset by a policy update</li>
+          <li>
+            Last only as long as they&rsquo;re useful: the banner preference expires after three days, and the
+            appearance choice stays until you switch back to System or clear your browser&rsquo;s site data
+          </li>
         </ul>
       </LegalSection>
 
       <LegalSection id="third-party-cookies" heading="Third-party cookies">
         <p>
-          Where Cloudflare Turnstile is active on the contact form, Cloudflare may set its own technical cookies as
+          Where Cloudflare Turnstile is active on the enquiry form or the Impact Build application form, Cloudflare may set its own technical cookies as
           part of verifying that a submission is not automated. This is a functional/security cookie needed for the
           form&rsquo;s spam protection to work, not an advertising or tracking cookie, and it is set by Cloudflare
           under its own policy rather than by Kipeo directly.
@@ -70,10 +74,10 @@ export default function CookiePolicyPage() {
 
       <LegalSection id="managing-storage" heading="Managing or clearing this">
         <p>
-          You can clear the announcement-banner preference (or any Turnstile cookie) at any time through your
+          You can clear the announcement-banner and appearance preferences (or any Turnstile cookie) at any time through your
           browser&rsquo;s site-data or privacy settings, typically under &ldquo;Clear browsing data&rdquo; or
-          &ldquo;Site settings&rdquo; for this domain. Clearing it simply means the announcement banner may show
-          again on your next visit.
+          &ldquo;Site settings&rdquo; for this domain. Clearing them simply means the announcement banner may show
+          again and the site follows your device&rsquo;s light or dark setting.
         </p>
       </LegalSection>
 

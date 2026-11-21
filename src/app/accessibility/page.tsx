@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Accessibility Statement | Kipeo Digital";
 const description = "Kipeo Digital's accessibility commitment, current measures and how to report an issue.";
-const lastUpdated = "25 August 2026";
+const lastUpdated = "21 November 2026";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -26,7 +26,7 @@ const toc: LegalTocItem[] = [
 
 export default function AccessibilityPage() {
   return (
-    <LegalLayout title="Accessibility Statement" lastUpdated={lastUpdated} toc={toc}>
+    <LegalLayout title="Accessibility Statement" currentHref="/accessibility" lastUpdated={lastUpdated} toc={toc}>
       <LegalSection id="commitment" heading="Our commitment">
         <p>
           Kipeo Digital wants this website to be usable by as many people as possible, including people navigating by
@@ -46,6 +46,7 @@ export default function AccessibilityPage() {
           <li>Visible focus indicators on interactive elements</li>
           <li>Descriptive accessible labels on icon-only controls and on external links that open a new tab</li>
           <li>A colour palette chosen with contrast in mind between text and background surfaces</li>
+          <li>Light, Dark and System appearance options, with System following your device&rsquo;s setting</li>
           <li>Responsive layout that works down to small mobile screens without horizontal scrolling</li>
           <li>Reduced-motion support: animations are shortened or removed when a visitor&rsquo;s system requests less motion</li>
           <li>Descriptive alternative text on meaningful images</li>
