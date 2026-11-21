@@ -90,7 +90,7 @@ export function ServiceTabs({ items }: { items: TabItem[] }) {
                 </span>
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
-                    isActive ? "bg-teal-strong text-white" : "bg-mist text-slate"
+                    isActive ? "bg-teal-strong text-on-accent" : "bg-mist text-slate"
                   }`}
                 >
                   {item.icon}

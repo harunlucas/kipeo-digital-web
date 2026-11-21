@@ -64,7 +64,7 @@ export default function AccessibilityPage() {
       <LegalSection id="feedback" heading="Feedback and contact">
         <p>
           If you experience an accessibility barrier on this website, email{" "}
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>{" "}
           with the page you were on, what you were trying to do, and the browser or assistive technology you were

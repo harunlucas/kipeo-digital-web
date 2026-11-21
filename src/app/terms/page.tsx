@@ -41,7 +41,7 @@ export default function TermsPage() {
           <span className="font-medium text-paper-foreground">{siteConfig.url}</span>. By using this website, you
           agree to them. They apply to the website itself &mdash; not to any specific client project, which is
           governed by its own separate written agreement (see{" "}
-          <a href="#enquiries-and-proposals" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href="#enquiries-and-proposals" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Enquiries and proposals
           </a>
           ).
@@ -79,7 +79,7 @@ export default function TermsPage() {
       <LegalSection id="third-party-services" heading="Third-party services">
         <p>
           The enquiry form is processed with the help of third-party services described in the{" "}
-          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Privacy Policy
           </Link>
           , and the website is hosted on Vercel&rsquo;s infrastructure. Use of those services is subject to their own
@@ -139,11 +139,11 @@ export default function TermsPage() {
           <br />
           Nairobi, Kenya
           <br />
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>
           <br />
-          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.phone}
           </a>
         </p>

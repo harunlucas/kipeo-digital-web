@@ -57,7 +57,7 @@ export default function ImpactBuildTermsPage() {
           &ldquo;we&rdquo;) may select one suitable organisation or purpose-led initiative for a clearly scoped
           digital project, with Kipeo&rsquo;s development fee waived for the agreed scope. It is separate from
           Kipeo&rsquo;s ordinary commercial services, described on the{" "}
-          <Link href="/impact-build" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/impact-build" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Impact Build
           </Link>{" "}
           information page.
@@ -99,7 +99,7 @@ export default function ImpactBuildTermsPage() {
       <LegalSection id="selection-criteria" heading="Selection is based on published criteria">
         <p>
           Applications are assessed against the criteria published on the{" "}
-          <Link href="/impact-build" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/impact-build" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Impact Build
           </Link>{" "}
           page &mdash; including problem clarity, potential practical benefit, digital suitability, achievable scope
@@ -173,7 +173,7 @@ export default function ImpactBuildTermsPage() {
         <p>
           Where the project depends on third-party software, platforms or licences, those remain subject to their own
           providers&rsquo; terms, and any recurring cost is a third-party expense under{" "}
-          <a href="#third-party-costs" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href="#third-party-costs" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Third-party expenses
           </a>
           .
@@ -183,7 +183,7 @@ export default function ImpactBuildTermsPage() {
       <LegalSection id="confidentiality-and-publicity" heading="Confidentiality and publicity">
         <p>
           Kipeo treats application information as confidential for the purposes of assessment, subject to the{" "}
-          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Privacy Policy
           </Link>
           . Kipeo does not publicly identify applicants or the selected recipient, and does not make any public
@@ -229,7 +229,7 @@ export default function ImpactBuildTermsPage() {
           <br />
           Nairobi, Kenya
           <br />
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>
         </p>

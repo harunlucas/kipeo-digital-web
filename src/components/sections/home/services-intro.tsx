@@ -57,7 +57,7 @@ function ServicePanel({ group, size }: { group: ServiceGroupIdentity; size: "pri
 
       <Link
         href={group.href}
-        className="group/cta mt-5 inline-flex min-h-11 w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-ink"
+        className="group/cta mt-5 inline-flex min-h-11 w-fit items-center gap-1.5 text-sm font-medium text-teal-strong hover:text-link-hover"
       >
         Explore {group.shortTitle}
         <ArrowUpRight

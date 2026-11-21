@@ -37,9 +37,9 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 /** Top-vertex Y for each plate, and the plate centre as a percentage of the
  *  viewBox height — the hook the HTML labels align themselves to. */
 export const PLATES = [
-  { y: 30, label: "Web platform", material: "glass", centre: 16.25, swatch: "#cfe0dc" },
-  { y: 265, label: "API services", material: "graphite", centre: 45.625, swatch: "#363d45" },
-  { y: 500, label: "Data layer", material: "graphite-deep", centre: 75, swatch: "#2b3138" },
+  { y: 30, label: "Web platform", material: "glass", centre: 16.25, swatch: "var(--plate-glass-top)" },
+  { y: 265, label: "API services", material: "graphite", centre: 45.625, swatch: "var(--plate-graphite-top)" },
+  { y: 500, label: "Data layer", material: "graphite-deep", centre: 75, swatch: "var(--plate-deep-top)" },
 ] as const;
 
 const THICKNESS = 18;
@@ -47,10 +47,36 @@ const THICKNESS = 18;
 /** Peak-shaped aperture, in local plate coordinates, straddling the trunk. */
 const PEAK = "M150,95 L205,190 L95,190 Z";
 
+/*
+ * Plate colours are CSS custom properties from `globals.css` (`--plate-*`),
+ * so the diagram follows the site appearance: Light keeps the approved glass
+ * and graphite; Dark lifts the graphite a step, gives it light rims instead
+ * of black ones and turns the glass into a teal-tinted translucent layer, so
+ * all three plates stay distinct from each other and from the graphite page.
+ * The signal colours below are the same in both themes.
+ */
 const MATERIALS = {
-  glass: { top: "#cfe0dc", topOpacity: 0.62, left: "#b3c8c3", right: "#a3bbb6", edge: "#0f766e" },
-  graphite: { top: "#363d45", topOpacity: 1, left: "#262c33", right: "#1e242a", edge: "#0b1014" },
-  "graphite-deep": { top: "#2b3138", topOpacity: 1, left: "#1d2227", right: "#171c21", edge: "#0b1014" },
+  glass: {
+    top: "var(--plate-glass-top)",
+    topOpacity: "var(--plate-glass-opacity)",
+    left: "var(--plate-glass-left)",
+    right: "var(--plate-glass-right)",
+    edge: "var(--plate-glass-edge)",
+  },
+  graphite: {
+    top: "var(--plate-graphite-top)",
+    topOpacity: 1,
+    left: "var(--plate-graphite-left)",
+    right: "var(--plate-graphite-right)",
+    edge: "var(--plate-edge)",
+  },
+  "graphite-deep": {
+    top: "var(--plate-deep-top)",
+    topOpacity: 1,
+    left: "var(--plate-deep-left)",
+    right: "var(--plate-deep-right)",
+    edge: "var(--plate-edge)",
+  },
 } as const;
 
 const SIGNAL = "#0f9b8e";
@@ -58,9 +84,10 @@ const SIGNAL_NODE = "#14b8a6";
 const SIGNAL_LIT = "#5eead4";
 /** Pale-mint core at the heart of each lit node. */
 const CORE = "#ccfbf1";
-/** Deep teal: the glass plate's node and halo, so its light still reads
- *  against the ivory showing through the translucent surface. */
-const DEEP = "#0f766e";
+/** The glass plate's node and halo: deep teal in Light, so its light still
+ *  reads against the ivory showing through the translucent surface; the
+ *  standard node teal in Dark, where the page behind is graphite. */
+const DEEP = "var(--plate-glass-node)";
 
 /** Screen-space centre of a plate whose top vertex is at `y`. */
 const centreY = (y: number) => y + 100;
@@ -252,6 +279,9 @@ function LightFilters() {
       <filter id="kp-blur-pulse" {...region}>
         <feGaussianBlur stdDeviation="6" />
       </filter>
+      <filter id="kp-blur-trail" {...region}>
+        <feGaussianBlur stdDeviation="5" />
+      </filter>
       <radialGradient id="kp-pool">
         <stop offset="0%" stopColor={SIGNAL_LIT} stopOpacity="0.6" />
         <stop offset="45%" stopColor={SIGNAL_NODE} stopOpacity="0.25" />
@@ -308,6 +338,19 @@ export function SystemStack({ className = "" }: { className?: string }) {
       {/* Signal trunk, behind every plate: visible through the cutouts and in
           the gaps between layers. Its travelling pulse rides here too, so the
           plates hide it the same way. */}
+      {/* Dark only (`--plate-trail-opacity` is 0 in Light): a restrained teal
+          glow along the signal path, so it reads on the graphite page. */}
+      <line
+        x1="360"
+        y1="100"
+        x2="360"
+        y2={baseCentre}
+        stroke={SIGNAL_NODE}
+        strokeWidth="12"
+        strokeLinecap="round"
+        filter="url(#kp-blur-trail)"
+        style={{ opacity: "var(--plate-trail-opacity)" }}
+      />
       <line
         x1="360"
         y1="100"
@@ -351,12 +394,12 @@ export function SystemStack({ className = "" }: { className?: string }) {
               <path
                 d={`M360,${y} L660,${cy} L360,${y + 200} L60,${cy} Z`}
                 fill={m.top}
-                fillOpacity={m.topOpacity}
+                style={{ fillOpacity: m.topOpacity }}
               />
               <g transform={plateTransform(y)}>
                 <path
                   d="M0,75 H300 M0,150 H300 M0,225 H300 M75,0 V300 M150,0 V300 M225,0 V300"
-                  stroke={isGlass ? "#0f766e" : "#8f9aa5"}
+                  stroke={isGlass ? "var(--plate-glass-grid)" : "var(--plate-grid)"}
                   strokeWidth="1"
                   strokeOpacity="0.2"
                   vectorEffect="non-scaling-stroke"
@@ -483,6 +526,16 @@ export function SystemStack({ className = "" }: { className?: string }) {
           plate, so their pulses are drawn above it. */}
       {branches.map(({ x, d }) => (
         <g key={x}>
+          <path
+            d={d}
+            fill="none"
+            stroke={SIGNAL_NODE}
+            strokeWidth="12"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter="url(#kp-blur-trail)"
+            style={{ opacity: "var(--plate-trail-opacity)" }}
+          />
           <path
             d={d}
             fill="none"

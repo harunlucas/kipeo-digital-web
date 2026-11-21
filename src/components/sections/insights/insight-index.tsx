@@ -76,13 +76,13 @@ export function InsightIndex({
                   className={cn(
                     "inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-150 motion-reduce:transition-none",
                     selected
-                      ? "border-teal-strong bg-teal-strong text-white"
+                      ? "border-teal-strong bg-teal-strong text-on-accent"
                       : "border-neutral-300 bg-transparent text-paper-foreground hover:border-teal-strong hover:text-teal-strong",
                   )}
                 >
                   {option.label}
                   <span
-                    className={cn("tabular-nums text-xs", selected ? "text-white/80" : "text-slate-muted")}
+                    className={cn("tabular-nums text-xs", selected ? "text-on-accent/80" : "text-slate-muted")}
                     aria-hidden
                   >
                     {option.count}

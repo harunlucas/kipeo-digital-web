@@ -19,7 +19,7 @@ const baseClasses =
 function variantClasses(variant: ButtonVariant, tone: ButtonTone): string {
   switch (variant) {
     case "primary":
-      return "bg-teal-strong text-white hover:bg-ink";
+      return "bg-button text-button-fg hover:bg-button-hover";
     case "accent":
       return "bg-teal text-teal-foreground hover:brightness-95";
     case "outline":
@@ -29,7 +29,7 @@ function variantClasses(variant: ButtonVariant, tone: ButtonTone): string {
     case "ghost":
       return tone === "ink"
         ? "text-teal hover:text-white"
-        : "text-teal-strong hover:text-ink";
+        : "text-teal-strong hover:text-link-hover";
   }
 }
 

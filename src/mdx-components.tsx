@@ -43,7 +43,7 @@ const components: MDXComponents = {
     return (
       <a
         href={href}
-        className="font-medium text-teal-strong underline decoration-neutral-300 underline-offset-2 hover:text-ink"
+        className="font-medium text-teal-strong underline decoration-neutral-300 underline-offset-2 hover:text-link-hover"
         {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         {...props}
       >

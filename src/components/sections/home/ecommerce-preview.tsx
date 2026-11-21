@@ -32,7 +32,7 @@ export function EcommercePreview() {
               className={cn(
                 "min-h-11 cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
                 isSelected
-                  ? "border-teal-strong bg-teal-strong text-white"
+                  ? "border-teal-strong bg-teal-strong text-on-accent"
                   : "border-neutral-300 text-slate hover:border-neutral-400 hover:text-paper-foreground",
               )}
             >
@@ -75,7 +75,7 @@ export function EcommercePreview() {
               <button
                 type="button"
                 onClick={() => setBagCount((count) => count + 1)}
-                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-teal-strong px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:brightness-95"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-button px-5 py-2.5 text-sm font-medium text-button-fg transition-colors duration-200 hover:bg-button-hover"
               >
                 <ShoppingBag className="h-4 w-4" aria-hidden />
                 Add to bag

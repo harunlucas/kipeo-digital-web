@@ -9,6 +9,7 @@ import type { NavItem } from "@/content/navigation";
 import { allServicesLink, howWeWorkLink, serviceFamilyLinks } from "@/content/navigation";
 import { buttonClassName } from "@/components/ui/button";
 import { ProjectEnquiryLink } from "@/components/enquiry/project-enquiry-link";
+import { AppearanceOptions } from "@/components/theme/appearance-control";
 import { cn } from "@/lib/cn";
 import { useIsClient } from "@/lib/use-is-client";
 import { acquireScrollLock } from "@/lib/scroll-lock";
@@ -68,7 +69,7 @@ function RowLabel({ children, active }: { children: React.ReactNode; active: boo
  * Phone and tablet navigation (below the 1200px desktop breakpoint).
  *
  * Two states of one component. Closed, it is the hamburger in the header.
- * Open, it is a full-height warm-ivory modal <dialog> whose top row redraws
+ * Open, it is a full-height modal <dialog> on the overlay surface whose top row redraws
  * the header at exactly the same position — same container, same 72px row,
  * logo left — with a close button where the hamburger was, so nothing jumps
  * when switching states. The page above the header (the announcement bar)
@@ -79,7 +80,8 @@ function RowLabel({ children, active }: { children: React.ReactNode; active: boo
  * button on open and back to the hamburger on dismissal.
  *
  * The link list scrolls on its own between the header row and a footer that
- * holds the one "Start a project" button, so every service stays reachable
+ * holds the one "Start a project" button, and the Appearance choice sits
+ * after the links, usable without closing the menu, so every service stays reachable
  * on short screens. "Start a project" closes the menu *before* the shared
  * enquiry trigger runs (one overlay at a time), and the enquiry panel then
  * returns focus to this hamburger when it closes. The scroll lock is the
@@ -252,7 +254,7 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
                 </Container>
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col bg-ivory opacity-0 transition-opacity duration-200 ease-out group-data-[state=open]/menu:opacity-100 motion-reduce:transition-none">
+              <div className="flex min-h-0 flex-1 flex-col bg-overlay opacity-0 transition-opacity duration-200 ease-out group-data-[state=open]/menu:opacity-100 motion-reduce:transition-none">
                 <nav
                   aria-label="Mobile"
                   className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
@@ -290,7 +292,7 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
                                     aria-current={allServicesCurrent ? "page" : undefined}
                                     className={cn(
                                       childClass,
-                                      "group font-medium text-teal-strong hover:text-ink focus-visible:text-ink",
+                                      "group font-medium text-teal-strong hover:text-link-hover focus-visible:text-link-hover",
                                       allServicesCurrent ? "border-teal-strong" : "border-transparent",
                                     )}
                                   >
@@ -353,10 +355,15 @@ export function MobileMenu({ items, phoneHref, phoneLabel }: MobileMenuProps) {
                         ),
                       )}
                     </ul>
+
+                    {/* Applies immediately; the menu stays open so the change can be seen and undone. */}
+                    <div className="mt-7">
+                      <AppearanceOptions layout="row" />
+                    </div>
                   </Container>
                 </nav>
 
-                <div className="shrink-0 border-t border-neutral-200 bg-ivory shadow-[0_-12px_24px_-20px_rgba(13,17,23,0.25)]">
+                <div className="shrink-0 border-t border-neutral-200 bg-overlay shadow-[0_-12px_24px_-20px_rgba(13,17,23,0.25)] dark:shadow-[0_-12px_24px_-20px_rgba(0,0,0,0.7)]">
                   <Container className="flex flex-col gap-1 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
                     <ProjectEnquiryLink
                       onBeforeOpen={() => closeMenu({ restoreFocus: false, animate: false })}

@@ -7,7 +7,8 @@ import type { ReactNode } from "react";
  * w x h rect onto a flattened isometric parallelogram, plus two hand-built
  * polygons for the extruded thickness.
  *
- * Palette copied from `system-stack-artwork.tsx` rather than imported: that
+ * Palette shared with `system-stack-artwork.tsx` through the `--plate-*` CSS
+ * custom properties rather than imported: that
  * module is a client component, and these are static server-rendered SVGs
  * with no interactivity. If the hero's materials change, change them here
  * too — the two sets are meant to stay identical.
@@ -23,13 +24,30 @@ import type { ReactNode } from "react";
  * beside it already say what it depicts.
  */
 
-const GRAPHITE = { top: "#363d45", left: "#262c33", right: "#1e242a", edge: "#0b1014" };
-const GRAPHITE_DEEP = { top: "#2b3138", left: "#1d2227", right: "#171c21", edge: "#0b1014" };
-const GLASS = { top: "#cfe0dc", left: "#b3c8c3", right: "#a3bbb6", edge: "#0f766e" };
+/* The `--plate-*` custom properties in `globals.css`, shared with the hero
+   diagram so both follow the site appearance. */
+const GRAPHITE = {
+  top: "var(--plate-graphite-top)",
+  left: "var(--plate-graphite-left)",
+  right: "var(--plate-graphite-right)",
+  edge: "var(--plate-edge)",
+};
+const GRAPHITE_DEEP = {
+  top: "var(--plate-deep-top)",
+  left: "var(--plate-deep-left)",
+  right: "var(--plate-deep-right)",
+  edge: "var(--plate-edge)",
+};
+const GLASS = {
+  top: "var(--plate-glass-top)",
+  left: "var(--plate-glass-left)",
+  right: "var(--plate-glass-right)",
+  edge: "var(--plate-glass-edge)",
+};
 
 const SIGNAL = "#0f9b8e";
 const SIGNAL_NODE = "#14b8a6";
-const GRID = "#8f9aa5";
+const GRID = "var(--plate-grid)";
 
 const ISO = "matrix(1, 0.33333, -1, 0.33333, 0, 0)";
 
@@ -179,7 +197,7 @@ export function CommerceIllustration() {
     <Frame viewBox="0 42 240 66">
       <Slab {...browser} t={9} material={GRAPHITE}>
         {/* Chrome bar, then the viewport and two product tiles. */}
-        <rect x="5" y="5" width="50" height="9" fill="#1e242a" />
+        <rect x="5" y="5" width="50" height="9" fill="var(--plate-graphite-right)" />
         {[10, 16, 22].map((cx) => (
           <circle key={cx} cx={cx} cy="9.5" r="1.9" fill={SIGNAL} fillOpacity="0.8" />
         ))}

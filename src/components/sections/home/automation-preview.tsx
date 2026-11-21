@@ -91,7 +91,7 @@ export function AutomationPreview() {
               onClick={() => setProjectId(p.id)}
               className={cn(
                 "min-h-11 flex-1 cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
-                isSelected ? "bg-teal-strong text-white" : "text-slate hover:text-paper-foreground",
+                isSelected ? "bg-teal-strong text-on-accent" : "text-slate hover:text-paper-foreground",
               )}
             >
               {p.label}

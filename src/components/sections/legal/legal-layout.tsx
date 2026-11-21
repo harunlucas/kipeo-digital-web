@@ -48,7 +48,7 @@ export function LegalLayout({
                     <li key={item.id}>
                       <a
                         href={`#${item.id}`}
-                        className="text-sm font-medium text-teal-strong underline underline-offset-2 hover:text-ink"
+                        className="text-sm font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover"
                       >
                         {item.label}
                       </a>
@@ -61,7 +61,7 @@ export function LegalLayout({
             <div className="flex flex-col gap-10">{children}</div>
 
             <div className="mt-14 border-t border-neutral-200 pt-6">
-              <a href="#top" className="text-sm font-medium text-teal-strong underline underline-offset-2 hover:text-ink">
+              <a href="#top" className="text-sm font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover">
                 Back to top
               </a>
             </div>

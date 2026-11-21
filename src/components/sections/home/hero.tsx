@@ -22,7 +22,7 @@ import { ReleaseEnvironment } from "./release-environment";
  */
 export function Hero() {
   return (
-    <section className="bg-ivory pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="bg-ivory pb-16 pt-4 sm:pb-20 sm:pt-4 lg:pb-24 lg:pt-4">
       <Container>
         <div className="grid gap-14 lg:grid-cols-[40fr_60fr] lg:items-center lg:gap-16">
           <div>

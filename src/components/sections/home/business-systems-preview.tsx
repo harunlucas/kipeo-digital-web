@@ -61,7 +61,7 @@ export function BusinessSystemsPreview() {
               className={cn(
                 "min-h-11 cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200",
                 isSelected
-                  ? "border-teal-strong bg-teal-strong text-white"
+                  ? "border-teal-strong bg-teal-strong text-on-accent"
                   : "border-neutral-300 text-slate hover:border-neutral-400 hover:text-paper-foreground",
               )}
             >

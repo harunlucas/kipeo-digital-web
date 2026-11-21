@@ -82,7 +82,7 @@ export default function CookiePolicyPage() {
           If Kipeo Digital ever introduces cookies or storage that require consent, this page will be updated to
           describe them accurately, and appropriate consent controls will be added at that time &mdash; not before.
           See also the{" "}
-          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/privacy-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Privacy Policy
           </Link>
           .
@@ -95,11 +95,11 @@ export default function CookiePolicyPage() {
           <br />
           Nairobi, Kenya
           <br />
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>
           <br />
-          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.phone}
           </a>
         </p>
