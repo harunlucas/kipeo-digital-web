@@ -1,5 +1,40 @@
 # Homepage visual assets
 
+## /services hub images (2026-11-20)
+
+Six user-supplied, generated interface images, one or two per service
+section. None is a product screenshot or client work; each carries a
+visible label on the page ("Interface concept", "Illustrative engineering
+interface", "Storefront concept", "Illustrative audit page", "Illustrative
+trace"). The source PNGs in `public/images/` are left untouched.
+
+Each web file is lossless WebP (sharp, `lossless: true, effort: 6, exact:
+true`), compared against a maximum-compression lossless PNG
+(`compressionLevel: 9, adaptiveFiltering: true, palette: false`); lossless
+WebP was smaller every time and was kept. Every saved file was decoded and
+checked to be pixel-identical to its (cropped) source. Full resolution is
+kept; these files are the "Open full size" targets. The page itself serves
+resized variants through `next/image` at quality 90 (`images.qualities` in
+`next.config.ts`), measured at 21–52 KB (purchase request) to 51–128 KB
+(SafetyOS) for the 640px and 1200px variants.
+
+| Web asset (`public/images/services/`) | Source (`public/images/`) | Crop | Original | Max PNG | Lossless WebP (kept) |
+|---|---|---|---|---|---|
+| `purchase-request-approval-workspace.webp` (1536×944) | `Purchase request approval workspace-1.png` | top 80px: removes an unofficial Kipeo mark in the app bar | 1,635,694 B | 1,155,493 B | 890,890 B |
+| `safetyos-pallet-walkway-corrective-action.webp` (1536×1024) | `Pallet walkway corrective action review-2.png` | none | 2,012,114 B | 1,750,614 B | 1,372,558 B |
+| `p-204-transfer-pump-maintenance-record.webp` (1536×1024) | `Transfer pump bearing maintenance record-2.png` | none | 1,937,998 B | 1,661,047 B | 1,203,420 B |
+| `forma-storefront-desktop-and-mobile.webp` (1536×1024) | `Responsive Brass Lamp Shop Showcase-1.png` | none | 2,224,400 B | 1,992,613 B | 1,436,242 B |
+| `search-measurement-audit-missing-enquiry-event.webp` (1536×914) | `SEO audit_ missing enquiry tracking-2.png` | top 110px: removes an unofficial "Kipeo Digital" wordmark row | 2,064,976 B | 1,562,964 B | 1,197,224 B |
+| `enquiry-delivery-trace.webp` (1536×1024) | `Enquiry delivery trace console-1.png` | none | 1,633,750 B | 1,251,615 B | 975,556 B |
+
+The enquiry-trace copy was checked against `lib/email/brevo-client.ts`: a
+2xx from Brevo means the provider accepted the message, not that it reached
+the inbox, so the page describes acceptance only.
+
+An earlier crop of the /work SafetyOS concept
+(`services/safetyos-corrective-action-record.webp`) was removed; the
+supplied full record replaces it.
+
 ## /work "Selected work" redesign (2026-11-20)
 
 The Work index now shows only genuine project evidence, with no capability
@@ -22,8 +57,12 @@ WebP (sharp, `lossless: true, effort: 6, exact: true`) and compared against
 the original PNG and a max-compression PNG. In every case lossless WebP was
 the smallest, so it was kept. Each saved file was decoded and checked to be
 pixel-identical to its source (1536×1024, RGB, no alpha, no ICC profile).
-They are rendered with `next/image` `unoptimized`, so they are served as-is
-and never re-encoded by the lossy image optimiser.
+The lossless files stay the full-resolution masters. Since 2026-11-20 the
+page serves resized variants through `next/image` at quality 90 (sized to
+each slot in `project-image-pair.tsx`) instead of the masters as-is: the six
+images on /work went from 7,715,990 B to about 196 KB at a 1440px viewport
+and 87 KB at 390px (measured at 1× pixel density; high-density screens
+fetch larger variants).
 
 | Web asset | Source | Original | Lossless WebP |
 |---|---|---|---|

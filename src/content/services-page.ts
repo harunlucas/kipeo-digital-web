@@ -1,58 +1,183 @@
-import type { LucideIcon } from "lucide-react";
-import { Cloud, Cpu, Globe2, ShieldCheck, TrendingUp } from "lucide-react";
-import type { ServiceGroupVisualVariant } from "@/components/motion/service-group-visual";
+import type { ServiceGroupId } from "@/content/service-groups";
+import { serviceNavLabels } from "@/content/navigation";
 
 /**
- * /services-only content. Deliberately independent of `service-groups.ts`
- * (the compact canonical identity used by nav/footer/homepage/Studio) and
- * `services.ts` (the flat service list) — neither is shaped for five full
- * editorial groups with their own outcomes and expandable detail, and
- * editing either would change those surfaces. Ids and visible titles are
- * kept in sync with `service-groups.ts` by hand rather than imported, so
- * this page's richer shape isn't forced through a generic one. The
- * "websites-and-commerce" group id intentionally stays unchanged even
- * though its visible title is now "Websites, Commerce and Digital
- * Experience", so existing anchors (`problemPairs`, `footerServiceLinks`,
- * search engines) keep resolving.
+ * /services content: five service families, each written around the
+ * question a buyer arrives with, plus the short scoping terms.
+ *
+ * Ids are the anchors the header Services menu, the footer and the Insights
+ * articles link to (`service-groups.ts` `href`s), so they must not change.
+ * Each `title` is the family's label in the Services menu
+ * (`serviceNavLabels` in `navigation.ts`), so a visitor lands on the heading
+ * they just clicked. Service 02 is the exception: the page names it
+ * "Operational software & engineering systems" to give engineering work a
+ * visible place, while the menu label and anchor are unchanged. `scope`
+ * keeps the full catalogue from the previous /services page, shown behind
+ * each section's "Full service scope" disclosure.
+ *
+ * Every factual claim here comes from the existing catalogue, the Work case
+ * studies (`case-studies.ts`) or this site's own code (the enquiry-form
+ * flow in `app/api/contact/route.ts` and `lib/email/`). Images are generated
+ * interface concepts, each labelled as such on the page; the audit rows and
+ * the purchase-request workflow are labelled as illustrative. Image files
+ * and their provenance: `docs/asset-sources.md`.
  */
 
-export type ExpertiseStripLink = { label: string; href: string; sourceName: string };
-
-export type ExpertiseStrip = {
+/**
+ * One supplied interface image. Files are lossless WebP at full resolution
+ * (the "Open full size" target); the page serves resized, compressed
+ * variants through `next/image`. `label` is the visible provenance tag.
+ */
+export type ServiceImage = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
   label: string;
-  links: ExpertiseStripLink[];
+  caption: string;
 };
 
-export type ServiceGroup = {
-  id: string;
+export type Deliverable = { title: string; detail: string };
+
+export type WorkflowStep = { stage: string; actor: "person" | "automated"; action: string };
+
+export type WebsiteRoute = {
+  name: string;
+  suits: string;
+  includes: string[];
+  builtWith: string;
+  image?: ServiceImage;
+};
+
+export type AuditRow = { priority: "High" | "Medium" | "Low"; finding: string; fix: string };
+
+export type FlowStep = { label: string; detail: string };
+
+export type ProjectLink = {
+  name: string;
+  status: string;
+  summary: string;
+  href: string;
+  linkLabel: string;
+};
+
+export type OperationalExample = { heading: string; image: ServiceImage; project: ProjectLink };
+
+export type ServiceSample =
+  | {
+      kind: "workflow";
+      title: string;
+      steps: WorkflowStep[];
+      /** Shown inside the workflow, directly after the step named here. */
+      figure: ServiceImage;
+      figureAfterStage: string;
+      note: string;
+    }
+  | { kind: "operational-pair"; examples: [OperationalExample, OperationalExample] }
+  | { kind: "routes"; routes: WebsiteRoute[]; common: string }
+  | {
+      kind: "audit";
+      title: string;
+      figure: ServiceImage;
+      rowsTitle: string;
+      rows: AuditRow[];
+      note: string;
+    }
+  | {
+      kind: "build-and-support";
+      build: string[];
+      support: string[];
+      supportNote: string;
+      flowTitle: string;
+      flowFigure: ServiceImage;
+      flow: FlowStep[];
+      flowNote: string;
+    };
+
+export type ServiceFamily = {
+  id: ServiceGroupId;
   number: string;
-  navLabel: string;
-  icon: LucideIcon;
-  eyebrow: string;
-  heading: string;
+  /** The section heading and opening-index label (the menu label, except for 02). */
+  title: string;
+  /** The buyer's question the section answers. */
+  question: string;
   intro: string;
-  capabilities: string[];
-  typicalOutcomes: string[];
-  expertiseStrip?: ExpertiseStrip;
-  expandableDetails: string;
-  workLink: { label: string; href: string };
-  visual: ServiceGroupVisualVariant;
-  tone: "paper" | "ink" | "elevated";
-  imageSide: "left" | "right";
-  supporting?: boolean;
+  /** Representative deliverables; the Websites family uses `sample.routes` instead. */
+  deliverables?: Deliverable[];
+  sample: ServiceSample;
+  /** Run the example across both columns on desktop (detailed paired images). */
+  wideSample?: boolean;
+  /** Full catalogue for this family, behind the "Full service scope" disclosure. */
+  scope: string[];
+  scopeNote?: string;
+  scopeLinks?: { label: string; href: string; host: string }[];
+  cta: { label: string; href: string };
 };
 
-export const serviceGroups: ServiceGroup[] = [
+export const serviceFamilies: ServiceFamily[] = [
   {
     id: "software-and-business-systems",
     number: "01",
-    navLabel: "Software & systems",
-    icon: Cpu,
-    eyebrow: "Software and business systems",
-    heading: "For manual processes and disconnected tools that slow the business down.",
+    title: serviceNavLabels["software-and-business-systems"],
+    question: "Can you bring our spreadsheets, requests and approvals into one place?",
     intro:
-      "Custom web applications, internal systems and workflow automation — frontend, backend and data handled as one connected build, not the interface alone.",
-    capabilities: [
+      "We build custom web applications and internal systems that replace scattered spreadsheets, email threads and paper forms with one place where work is requested, owned and tracked.",
+    deliverables: [
+      {
+        title: "Requests and records",
+        detail: "Structured forms, and one record for each request, job or order with its full history attached.",
+      },
+      {
+        title: "Owners and approvals",
+        detail: "Every item has a named owner, moves through agreed stages and is approved by the right role.",
+      },
+      {
+        title: "Access by role",
+        detail: "Sign-in with role-based permissions, so each person sees and changes only what they should.",
+      },
+      {
+        title: "Progress reporting",
+        detail: "Dashboards and exports that show what is open, overdue or complete, and where work is waiting.",
+      },
+    ],
+    sample: {
+      kind: "workflow",
+      title: "A purchase request, from form to report",
+      steps: [
+        {
+          stage: "Submit",
+          actor: "person",
+          action: "A technician requests two pump seal kits and attaches the supplier’s quote.",
+        },
+        {
+          stage: "Route",
+          actor: "automated",
+          action: "The system checks required fields and assigns the request to the maintenance lead.",
+        },
+        {
+          stage: "Decide",
+          actor: "person",
+          action: "The maintenance lead reviews the request and quote, then approves it, rejects it or asks for detail.",
+        },
+        {
+          stage: "Record",
+          actor: "automated",
+          action: "The decision, approver and time are logged, and the requester is notified.",
+        },
+        { stage: "Report", actor: "automated", action: "Managers see open, approved and overdue requests on one dashboard." },
+      ],
+      figureAfterStage: "Decide",
+      figure: {
+        src: "/images/services/purchase-request-approval-workspace.webp",
+        width: 1536,
+        height: 944,
+        alt: "Purchase request PR-0248 awaiting the maintenance lead’s approval: two pump replacement seal kits totalling KES 18,400, with the attached Field Supply Ltd quote open below and an Approve request button.",
+        label: "Interface concept",
+        caption: "The maintenance lead can review the request and supplier quote before approving the purchase.",
+      },
+      note: "Where AI-assisted automation helps, such as reading an attached invoice to pre-fill the form, it prepares the record. A person still checks and approves it.",
+    },
+    scope: [
       "Custom web applications",
       "Internal business systems",
       "Operational dashboards",
@@ -66,28 +191,82 @@ export const serviceGroups: ServiceGroup[] = [
       "User flows and wireframing",
       "Interactive prototyping and design systems",
     ],
-    typicalOutcomes: [
-      "One connected system instead of scattered spreadsheets and tools",
-      "Faster, less error-prone day-to-day operations",
-      "A platform your team can extend as the business grows",
-    ],
-    expandableDetails:
-      "This group also covers AI-assisted automation where it genuinely removes manual work. Product and interface design is planned alongside the system architecture, so user flows, permissions, data and application behaviour work as one connected product. Where required, systems include authentication, role-based permissions, structured data and operational reporting.",
-    workLink: { label: "See related software work", href: "/work" },
-    visual: "systems",
-    tone: "paper",
-    imageSide: "right",
+    scopeNote:
+      "Product and interface design is planned alongside the system architecture, so user flows, permissions, data and application behaviour are designed as one product.",
+    cta: { label: "Discuss a business system", href: "/contact" },
   },
   {
     id: "operational-and-technical-software",
     number: "02",
-    navLabel: "Operational & technical",
-    icon: ShieldCheck,
-    eyebrow: "Operational and technical software",
-    heading: "For safety, compliance and technical operations still tracked on paper or spreadsheets.",
+    // Page-only heading; the header menu keeps its label and this anchor.
+    title: "Operational software & engineering systems",
+    question: "Can you build software around how our field teams and engineers actually work?",
     intro:
-      "Software for two specialist operational workflows — HSE and compliance, and engineering and technical operations. Both are software-development capabilities, not consultancy, education or certification.",
-    capabilities: [
+      "We build software for the people inspecting sites, maintaining equipment and solving engineering problems. A field finding can become a verified corrective action. An equipment inspection can lead to a maintenance work order. A technical calculation can show the inputs and assumptions behind its result.",
+    deliverables: [
+      {
+        title: "Inspection findings",
+        detail: "Findings recorded on a phone or tablet at the location, with photo evidence attached.",
+      },
+      {
+        title: "Corrective-action tracking",
+        detail: "Each action has an owner, a due date and evidence, and cannot close until it is verified.",
+      },
+      {
+        title: "Equipment records and work orders",
+        detail: "An inspection finding on an asset can raise a maintenance work order for the responsible team.",
+      },
+      {
+        title: "Technical calculations",
+        detail: "Engineering logic turned into software that shows its inputs, assumptions and results.",
+      },
+    ],
+    wideSample: true,
+    sample: {
+      kind: "operational-pair",
+      examples: [
+        {
+          heading: "Safety operations",
+          image: {
+            src: "/images/services/safetyos-pallet-walkway-corrective-action.webp",
+            width: 1536,
+            height: 1024,
+            alt: "SafetyOS corrective action for pallets in a marked walkway at Loading bay 02, awaiting verification: a Finding photo with pallets blocking the walkway beside an After action photo with it clear, and a Verify closure button.",
+            label: "Interface concept",
+            caption: "The safety officer compares the loading-bay photos before verifying that the walkway has been cleared.",
+          },
+          project: {
+            name: "SafetyOS",
+            status: "In development",
+            summary:
+              "A finding becomes a corrective action with an owner and due date, then moves through evidence and verification to closure. Built by the Kipeo Digital team, with the workflow shaped around occupational safety and EHS practice.",
+            href: "/work/hse-management-system",
+            linkLabel: "Read how SafetyOS tracks a corrective action",
+          },
+        },
+        {
+          heading: "Engineering systems",
+          image: {
+            src: "/images/services/p-204-transfer-pump-maintenance-record.webp",
+            width: 1536,
+            height: 1024,
+            alt: "Equipment register record for the P-204 transfer pump: a drawing with the bearing housing called out, an inspection finding of early bearing wear, the next task to inspect the bearing assembly, assigned to mechanical maintenance, with a link to work order WO-218.",
+            label: "Illustrative engineering interface",
+            caption:
+              "An inspection finding on the pump’s bearing housing links to work order WO-218 and the team responsible for the next inspection.",
+          },
+          project: {
+            name: "CNC learning system",
+            status: "Research prototype",
+            summary:
+              "Turns a simple milling task into a toolpath, with the spindle speed, feed rate and G-code explained step by step. Research and engineering by the Kipeo Digital team.",
+            href: "/work/cnc-learning-system",
+            linkLabel: "Read the CNC learning system case study",
+          },
+        },
+      ],
+    },
+    scope: [
       "HSE and compliance software",
       "Inspection workflows",
       "Hazard and incident reporting",
@@ -99,43 +278,62 @@ export const serviceGroups: ServiceGroup[] = [
       "Technical calculations",
       "Operational reporting",
     ],
-    typicalOutcomes: [
-      "A structured, auditable record instead of scattered paperwork",
-      "Role-based access for officers, supervisors and technical staff",
-      "Reporting built around your existing workflow, not a generic template",
+    scopeNote:
+      "These are software-development services for specialist workflows. Kipeo does not offer HSE consultancy, engineering consultancy, engineering education, academic research or regulatory certification.",
+    scopeLinks: [
+      {
+        label: "Workplace-safety and HSE workflow expertise",
+        href: "https://cynthiamueni.com/",
+        host: "cynthiamueni.com",
+      },
+      {
+        label: "Applied engineering and technical-systems expertise",
+        href: "https://harunlucas.com/projects",
+        host: "harunlucas.com",
+      },
     ],
-    expertiseStrip: {
-      label: "Related specialist expertise",
-      links: [
-        {
-          label: "Workplace-safety and HSE workflow expertise",
-          href: "https://cynthiamueni.com/",
-          sourceName: "CynthiaMueni.com",
-        },
-        {
-          label: "Applied engineering and technical-systems expertise",
-          href: "https://harunlucas.com/projects",
-          sourceName: "HarunLucas.com",
-        },
-      ],
-    },
-    expandableDetails:
-      "These are software-development capabilities for specialist workflows. Kipeo does not offer HSE consultancy, engineering consultancy, engineering education, academic research or regulatory certification.",
-    workLink: { label: "See the HSE system in development", href: "/work" },
-    visual: "operational",
-    tone: "ink",
-    imageSide: "left",
+    cta: { label: "Discuss an operational system", href: "/contact" },
   },
   {
     id: "websites-and-commerce",
     number: "03",
-    navLabel: "Websites & commerce",
-    icon: Globe2,
-    eyebrow: "Websites, Commerce and Digital Experience",
-    heading: "For a site or store that undersells the business, or is hard to find and manage.",
+    title: serviceNavLabels["websites-and-commerce"],
+    question: "Do we need an enquiry website, a content platform or an online store?",
     intro:
-      "Websites and commerce platforms are designed around clear content, useful journeys and day-to-day management—not appearance alone.",
-    capabilities: [
+      "We design and build websites and online stores around the next thing a visitor needs to do: get in touch, read and come back, or buy.",
+    sample: {
+      kind: "routes",
+      routes: [
+        {
+          name: "Enquiry website",
+          suits: "A service business whose next step is a call, a quote or a booking.",
+          includes: ["Service-page structure", "Enquiry and quote forms", "A clear next step on every page"],
+          builtWith: "Custom-built or WordPress",
+        },
+        {
+          name: "Content platform",
+          suits: "An organisation that publishes regularly and needs its own team to edit and add pages.",
+          includes: ["Information architecture", "Editable page and article templates", "Content-led redesigns"],
+          builtWith: "WordPress or custom-built",
+        },
+        {
+          name: "Online store",
+          suits: "A business selling products directly, with stock and orders to manage day to day.",
+          includes: ["Product catalogue", "Checkout and payment integration", "Store administration for your team"],
+          builtWith: "WooCommerce, Shopify or custom-built",
+          image: {
+            src: "/images/services/forma-storefront-desktop-and-mobile.webp",
+            width: 1536,
+            height: 1024,
+            alt: "Forma product page for a brushed-brass arc table lamp at KES 12,800, shown on a desktop browser and a phone, each with a material selector, a quantity control and an Add to bag button.",
+            label: "Storefront concept",
+            caption: "One product page on desktop and phone: choose the material and quantity, then add the lamp to the bag.",
+          },
+        },
+      ],
+      common: "Every route includes responsive design, accessibility foundations and analytics.",
+    },
+    scope: [
       "Business and corporate websites",
       "Agency and professional websites",
       "Landing pages",
@@ -149,34 +347,68 @@ export const serviceGroups: ServiceGroup[] = [
       "Analytics",
       "Conversion-focused enquiry paths",
     ],
-    typicalOutcomes: [
-      "A site people trust and can navigate to a decision",
-      "A store your team can manage without developer help",
-      "A structure ready to extend with SEO and analytics when needed",
-    ],
-    expandableDetails:
-      "Search visibility and growth support are covered by the separate SEO and Digital Growth group below, so they can be added when useful without being bundled into every website build.",
-    workLink: { label: "See related website work", href: "/work" },
-    visual: "commerce",
-    tone: "elevated",
-    imageSide: "right",
+    scopeNote:
+      "Search visibility and growth work is scoped separately under SEO & digital growth, so it can be added when useful rather than bundled into every build.",
+    cta: { label: "Discuss a website project", href: "/contact" },
   },
   {
     id: "seo-and-digital-growth",
     number: "04",
-    navLabel: "SEO & growth",
-    icon: TrendingUp,
-    eyebrow: "SEO and Digital Growth",
-    heading: "For businesses with a useful website or platform that is still difficult to find, measure or improve.",
+    title: serviceNavLabels["seo-and-digital-growth"],
+    question: "Can customers find the right pages, and can we see which visits lead to enquiries?",
     intro:
-      "SEO and digital-growth support connects technical visibility, useful content, measurement and conversion paths to the website or platform itself.",
-    capabilities: [
+      "We make an existing website easier to find and easier to measure, starting with what is holding it back and fixing the highest-impact problems first.",
+    deliverables: [
+      {
+        title: "Technical audit with prioritised fixes",
+        detail: "Indexing, speed, metadata and structured-data issues, ranked by impact and effort.",
+      },
+      {
+        title: "Search-intent mapping",
+        detail: "Each important search matched to the one page that should answer it.",
+      },
+      {
+        title: "Clearer page structure",
+        detail: "Headings, titles, descriptions and internal links improved on the pages that matter most.",
+      },
+      {
+        title: "Conversion measurement",
+        detail: "Analytics events for enquiries, calls and purchases, so you can see which visits lead somewhere.",
+      },
+    ],
+    sample: {
+      kind: "audit",
+      title: "Extract from an audit",
+      figure: {
+        src: "/images/services/search-measurement-audit-missing-enquiry-event.webp",
+        width: 1536,
+        height: 914,
+        alt: "Sample audit finding, high priority: enquiries are missing from analytics. On /contact, submitting one valid enquiry produced no conversion event. Acceptance test: one successful submission records one enquiry event, and validation errors record none.",
+        label: "Illustrative audit page",
+        caption: "The lead finding, written as a test anyone can repeat once the fix is in place.",
+      },
+      rowsTitle: "Further findings",
+      rows: [
+        {
+          priority: "High",
+          finding: "Two service pages answer the same search and compete with each other.",
+          fix: "Keep the stronger page, redirect the other and update internal links.",
+        },
+        {
+          priority: "Medium",
+          finding: "Every product page shares one generic title and description.",
+          fix: "Generate unique titles and descriptions from each product’s own data.",
+        },
+      ],
+      note: "Illustrative example of the format, not a client result.",
+    },
+    scope: [
       "Technical SEO audits",
       "Search-intent and keyword planning",
       "On-page SEO, titles and metadata",
       "Structured data, sitemap and robots.txt configuration",
       "Google Search Console and indexing support",
-      "Content optimization",
+      "Content optimisation",
       "Local SEO where appropriate",
       "Analytics, measurement and Core Web Vitals",
       "Conversion-path improvements",
@@ -186,29 +418,63 @@ export const serviceGroups: ServiceGroup[] = [
       "Paid-campaign landing-page and tracking support",
       "Social-platform setup where required",
     ],
-    typicalOutcomes: [
-      "A website or platform people can actually find",
-      "Clear measurement of what's working and what isn't",
-      "Conversion paths that turn visits into enquiries",
-    ],
-    expandableDetails:
-      "Kipeo does not promise rankings, traffic, leads, sales or advertising performance. Recommendations and implementation are based on the website, audience, competition, available content and agreed scope.",
-    workLink: { label: "See how our websites are built", href: "/work" },
-    visual: "seo",
-    tone: "paper",
-    imageSide: "left",
-    supporting: true,
+    scopeNote:
+      "Kipeo does not promise rankings, traffic, leads, sales or advertising performance. Recommendations are based on your website, audience, competition, available content and the agreed scope.",
+    cta: { label: "Discuss SEO and measurement", href: "/contact" },
   },
   {
     id: "integration-deployment-and-support",
     number: "05",
-    navLabel: "Integration & support",
-    icon: Cloud,
-    eyebrow: "Integration, deployment and support",
-    heading: "For everything that has to connect, deploy and keep working after launch.",
+    title: serviceNavLabels["integration-deployment-and-support"],
+    question: "Can you connect our tools and help us run the system after launch?",
     intro:
-      "API integrations and automation, plus the production hosting, monitoring and support that keeps a launched system secure and current.",
-    capabilities: [
+      "We connect the services a system depends on and deploy it to production. If you want us to, we can then keep it running under a separate support agreement.",
+    sample: {
+      kind: "build-and-support",
+      build: [
+        "API and payment integrations",
+        "Email and communication delivery",
+        "Production deployment, domain, DNS and SSL",
+        "Documentation and handover",
+      ],
+      support: [
+        "Uptime and performance monitoring",
+        "Backups and platform updates",
+        "Security updates and maintenance",
+        "Technical support",
+      ],
+      supportNote:
+        "Support is agreed as a defined arrangement, not open-ended. Hosting, licences and other third-party charges are usually kept separate from it.",
+      flowTitle: "This site’s enquiry form, from trigger to result",
+      flowFigure: {
+        src: "/images/services/enquiry-delivery-trace.webp",
+        width: 1536,
+        height: 1024,
+        alt: "Enquiry delivery trace for an example run: form submitted, fields validated, team email accepted and confirmation shown, with a delivery receipt recording that Brevo accepted the team notification.",
+        label: "Illustrative trace",
+        caption:
+          "An example enquiry passes validation, the email provider accepts the team notification, and the visitor sees a confirmation.",
+      },
+      flow: [
+        { label: "Trigger", detail: "A visitor submits the project enquiry form." },
+        {
+          label: "Check",
+          detail: "The server confirms the request came from this site, limits repeat submissions, filters spam and validates every field.",
+        },
+        {
+          label: "Hand over",
+          detail:
+            "The team notification is sent through Brevo’s transactional email API, and Brevo accepts it for delivery.",
+        },
+        {
+          label: "Result",
+          detail: "Only once Brevo has accepted it does the visitor see a confirmation. A copy is also emailed to them.",
+        },
+      ],
+      flowNote:
+        "Provider acceptance is the last event the site records. Arrival in the team’s inbox is a separate step it can’t see. If Brevo doesn’t accept the notification, the form says so and offers the email address instead.",
+    },
+    scope: [
       "API and payment integrations",
       "Communication and email-delivery integrations",
       "Workflow connections and automation",
@@ -224,106 +490,32 @@ export const serviceGroups: ServiceGroup[] = [
       "Analytics integrations",
       "Documentation and handover",
     ],
-    typicalOutcomes: [
-      "Systems that stay connected instead of breaking silently",
-      "A monitored, backed-up production environment",
-      "An agreed maintenance arrangement, not a site left to go stale",
-    ],
-    expandableDetails:
-      "Deployment and ongoing support cover the infrastructure, integrations, monitoring and maintenance required to keep a digital product working after launch. Maintenance agreements are scoped clearly rather than open-ended, and hosting, licences and other third-party charges are typically kept separate from the agreement itself.",
-    workLink: { label: "See our deployment approach", href: "/studio" },
-    visual: "integration",
-    tone: "ink",
-    imageSide: "left",
-    supporting: true,
+    cta: { label: "Discuss integration or support", href: "/contact" },
   },
 ];
 
-export type ProcessPhase = { id: string; number: string; label: string; description: string };
+export type ScopeTerm = { title: string; detail: string };
 
-export const processPhases: ProcessPhase[] = [
+/** Confirmed business terms, condensed from the previous pricing, FAQ and investment copy. */
+export const scopeTerms: ScopeTerm[] = [
   {
-    id: "discover-define",
-    number: "01",
-    label: "Discover and define",
-    description: "Understand the problem, users, requirements, constraints and measures of success.",
+    title: "A free first conversation",
+    detail:
+      "The initial consultation is free. Where the project is a good fit, a written proposal follows at no cost and with no obligation to proceed.",
   },
   {
-    id: "design-plan",
-    number: "02",
-    label: "Design and plan",
-    description: "Shape the experience, architecture, scope, delivery stages and responsibilities.",
+    title: "What the proposal covers",
+    detail:
+      "Deliverables, milestones, timeline and investment, with delivery tracked against those milestones. Each project is priced on its own scope.",
   },
   {
-    id: "build-integrate",
-    number: "03",
-    label: "Build and integrate",
-    description: "Develop frontend, backend, data, integrations and automation through visible milestones.",
+    title: "Third-party costs",
+    detail:
+      "Hosting, licences, advertising spend and other third-party fees are usually separate from the development investment.",
   },
   {
-    id: "launch-support",
-    number: "04",
-    label: "Launch and support",
-    description: "Test, deploy, document, hand over and provide agreed maintenance or support.",
-  },
-];
-
-export type InvestmentPoint = { title: string; description: string };
-
-export const investmentPoints: InvestmentPoint[] = [
-  {
-    title: "Scoped individually",
-    description: "Every project is scoped on its own — a landing page and a multi-role operational system aren't priced the same way.",
-  },
-  {
-    title: "Free initial consultation",
-    description:
-      "The initial consultation is free. Where the project is a suitable fit, a written proposal is also provided at no cost, with no obligation to proceed.",
-  },
-  {
-    title: "Deliverables, milestones, timeline, investment",
-    description: "Your proposal sets all four out clearly, with delivery tracked against agreed milestones.",
-  },
-  {
-    title: "Budget ranges are guidance, not prices",
-    description: "The ranges in the enquiry form help us understand likely scale — they are not Kipeo Digital's published prices.",
-  },
-  {
-    title: "Some costs are commonly separate",
-    description: "Hosting, licences, advertising spend and other third-party fees are typically separate from the development investment.",
-  },
-  {
-    title: "Changes outside scope need approval",
-    description: "Work outside the agreed scope is quoted and approved before it's built — never assumed or added silently.",
-  },
-];
-
-export type ServicesFaqItem = { question: string; answer: string };
-
-export const servicesFaq: ServicesFaqItem[] = [
-  {
-    question: "Can we begin with one service?",
-    answer:
-      "Yes. Most engagements start with a single, clearly scoped service — a system, a website, or one specific problem. Additional services can follow later as their own clearly scoped phases.",
-  },
-  {
-    question: "Can you improve an existing website or system?",
-    answer:
-      "Yes. We regularly review, extend and rebuild existing websites and systems rather than starting from zero. Discovery covers what already exists before we recommend a direction.",
-  },
-  {
-    question: "Do you provide hosting and maintenance?",
-    answer:
-      "Yes. We offer production deployment across suitable cloud, hosting and platform environments, managed hosting, monitoring, backups and maintenance agreements, either as part of a build or for an existing site or system.",
-  },
-  {
-    question: "Who owns the finished work?",
-    answer:
-      "After final payment, clients receive ownership of the custom deliverables created specifically for their project. Third-party software, licensed assets, open-source components and pre-existing development tools remain subject to their respective licences. Your proposal lists exactly which components fall into each category.",
-  },
-  {
-    question: "Can you work with clients outside Kenya, or alongside our internal team?",
-    answer:
-      "Yes. Kipeo is based in Nairobi and works remotely with clients worldwide. Kipeo can work alongside internal teams and other contractors, with responsibilities defined clearly in the proposal.",
+    title: "Changes and ownership",
+    detail:
+      "Work outside the agreed scope is quoted and approved before it is built. After final payment you own the custom deliverables made for your project; third-party and open-source components stay under their own licences.",
   },
 ];

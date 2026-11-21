@@ -230,7 +230,8 @@ function ProjectStory({ study }: { study: StoryStudy }) {
                 alt=""
                 width={next.listing.pair.main.width}
                 height={next.listing.pair.main.height}
-                unoptimized
+                sizes="(min-width: 1024px) 288px, (min-width: 640px) 224px, calc(100vw - 48px)"
+                quality={90}
                 loading="lazy"
                 className="h-auto w-full rounded-xl shadow-[0_0_0_1px_rgb(13_17_23/0.06),0_16px_32px_-24px_rgb(13_17_23/0.45)] transition-transform duration-500 ease-out group-hover:scale-[1.01] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />

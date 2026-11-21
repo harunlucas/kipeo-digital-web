@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/layout/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/motion/reveal";
-import { EcosystemVisual } from "@/components/motion/ecosystem-visual";
-import { ServiceNav } from "@/components/sections/services/service-nav";
-import { ServiceSection } from "@/components/sections/services/service-section";
-import { InvestmentSection } from "@/components/sections/services/investment-section";
-import { ServicesProcess } from "@/components/sections/services/services-process";
-import { ServicesFaq } from "@/components/sections/services/services-faq";
-import { serviceGroups, servicesFaq } from "@/content/services-page";
-import { organizationSchema, professionalServiceSchema, faqSchema } from "@/lib/schema";
+import { AnimatedLink } from "@/components/sections/home/animated-link";
+import { ServiceIndex } from "@/components/sections/services/service-index";
+import { ServiceFamilySection } from "@/components/sections/services/service-family-section";
+import { serviceFamilies, scopeTerms } from "@/content/services-page";
+import { siteConfig } from "@/content/site-config";
+import { organizationSchema, professionalServiceSchema } from "@/lib/schema";
 import { buildMetadata } from "@/lib/metadata";
 
 const title = "Software Development Services | Kipeo Digital";
 const description =
-  "Kipeo Digital provides custom software, business systems, product and UI/UX design, operational platforms, websites, commerce, SEO, integrations, deployment and support.";
+  "Kipeo Digital builds business systems, operational and technical software, websites and online stores, with SEO, integrations, deployment and ongoing support.";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -24,11 +19,11 @@ export const metadata: Metadata = buildMetadata({
   keywords: [
     "software development agency",
     "business systems",
-    "product and UI/UX design",
     "workflow automation",
     "HSE software",
     "engineering software",
     "web application development",
+    "WordPress development",
     "e-commerce development",
     "SEO and digital growth",
     "API integrations",
@@ -45,9 +40,15 @@ export const metadata: Metadata = buildMetadata({
   },
 });
 
+/**
+ * The Services hub: a compact opening whose service index is the focus,
+ * five service families each organised around a buyer's question, a short
+ * scoping section and one closing action. Content lives in
+ * `src/content/services-page.ts`.
+ */
 export default function ServicesPage() {
   return (
-    <>
+    <div className="bg-ivory">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
@@ -56,95 +57,96 @@ export default function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema()) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(servicesFaq)) }}
-      />
 
-      <section className="bg-grid-paper relative overflow-hidden bg-paper pb-14 pt-12 sm:pb-16 sm:pt-14">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_80%_0%,var(--color-teal-tint),transparent)]"
-        />
-        <Container className="relative">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-            <div>
-              <Reveal immediate>
-                <Eyebrow>Services</Eyebrow>
-              </Reveal>
-              <Reveal immediate delay={0.06}>
-                <h1 className="text-display-1 mt-6 text-paper-foreground">
-                  Software and digital systems built around real operations.
-                </h1>
-              </Reveal>
-              <Reveal immediate delay={0.12}>
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
-                  From customer-facing platforms to internal workflows, we design, build, integrate and support
-                  the systems businesses rely on.
-                </p>
-              </Reveal>
-              <Reveal immediate delay={0.18}>
-                <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-                  <Button href="/contact" variant="primary" size="lg">
-                    Start a project
-                  </Button>
-                  <Button href="/work" variant="outline" size="lg">
-                    Explore our work
-                  </Button>
-                </div>
-              </Reveal>
+      <section aria-labelledby="services-title" className="pb-14 pt-8 sm:pb-16 sm:pt-10 lg:pb-20 lg:pt-14">
+        <Container>
+          {/* Mobile order: introduction → index → "Start a project", so the
+              five choices reach the first screen. From `lg` the introduction
+              and link share the left column and the index takes the right. */}
+          <div className="grid gap-y-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:grid-rows-[1fr_auto] lg:gap-x-20 lg:gap-y-8">
+            <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
+              <h1 id="services-title" className="hero-headline">
+                <span className="block font-display font-semibold text-paper-foreground">Digital services</span>{" "}
+                <span className="block pb-[0.08em] font-serif-display italic text-teal-strong">for your business</span>
+              </h1>
+              <p className="mt-5 max-w-md text-base leading-relaxed text-slate sm:text-lg">
+                Kipeo builds websites, operational software and the integrations behind them, then helps you run
+                what we launch.
+              </p>
             </div>
-            <Reveal immediate delay={0.1}>
-              <EcosystemVisual />
-            </Reveal>
+
+            <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+              <ServiceIndex families={serviceFamilies} />
+            </div>
+
+            <div className="lg:col-start-1 lg:row-start-2">
+              <Button href="/contact" variant="primary" size="lg">
+                Start a project
+              </Button>
+            </div>
           </div>
         </Container>
       </section>
 
-      <ServiceNav
-        sections={serviceGroups.map((group) => ({
-          id: group.id,
-          navLabel: group.navLabel,
-          icon: <group.icon className="h-3.5 w-3.5 shrink-0" aria-hidden />,
-        }))}
-      />
-
-      {serviceGroups.map((group) => (
-        <ServiceSection key={group.id} group={group} />
+      {serviceFamilies.map((family) => (
+        <ServiceFamilySection key={family.id} family={family} />
       ))}
 
-      <InvestmentSection />
-      <ServicesProcess />
-      <ServicesFaq />
-
-      <section className="bg-grid-ink relative overflow-hidden bg-ink py-14 sm:py-20">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_20%,color-mix(in_srgb,var(--color-teal)_14%,transparent),transparent)]"
-        />
-        <Container className="relative mx-auto max-w-2xl text-center">
-          <Reveal>
-            <h2 className="text-display-1 text-ink-foreground">Start with the problem&mdash;not a package.</h2>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="mt-4 text-lg text-ink-muted">
-              Tell us what is slowing the business down, what needs to connect or what needs to be built. We&apos;ll
-              recommend a practical next step.
-            </p>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button href="/contact" variant="accent" size="lg" tone="ink">
-                Start a project
-              </Button>
-              <Button href="/work" variant="outline" size="lg" tone="ink">
-                View selected work
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
-              </Button>
+      <section aria-labelledby="how-we-scope" className="border-t border-neutral-300">
+        <Container className="py-16 sm:py-20 lg:py-24">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)] lg:gap-16">
+            <div>
+              <h2 id="how-we-scope" className="section-headline">
+                <span className="font-display font-semibold text-paper-foreground">How we scope</span>{" "}
+                <span className="font-serif-display italic text-teal-strong">your project</span>
+              </h2>
+              <p className="mt-5 max-w-sm text-base leading-relaxed text-slate">
+                Every project is scoped on its own. A landing page and a multi-role operational system aren’t priced
+                the same way.
+              </p>
+              <AnimatedLink href="/studio" className="mt-5">
+                See how we work
+              </AnimatedLink>
             </div>
-          </Reveal>
+            <dl className="grid gap-x-10 sm:grid-cols-2">
+              {scopeTerms.map((term) => (
+                <div key={term.title} className="border-t border-neutral-300 pb-6 pt-4">
+                  <dt className="text-base font-semibold text-paper-foreground">{term.title}</dt>
+                  <dd className="mt-1.5 text-[0.9375rem] leading-relaxed text-slate">{term.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </Container>
       </section>
-    </>
+
+      <section aria-labelledby="services-next" className="border-t border-neutral-300 pb-24 pt-16 sm:pb-28 sm:pt-20">
+        <Container>
+          <div className="max-w-2xl">
+            <h2 id="services-next" className="section-headline">
+              <span className="font-display font-semibold text-paper-foreground">Not sure which service</span>{" "}
+              <span className="font-serif-display italic text-teal-strong">fits?</span>
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate sm:text-lg">
+              Tell us what needs to change and who it’s for. We’ll recommend a practical place to start.
+            </p>
+            <div className="mt-8">
+              <Button href="/contact" variant="primary" size="lg">
+                Start a project
+              </Button>
+            </div>
+            <p className="mt-8 text-sm text-slate-muted">
+              Or email{" "}
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="font-medium text-paper-foreground underline decoration-paper-foreground/30 underline-offset-4 transition-colors hover:text-teal-strong hover:decoration-teal-strong/50"
+              >
+                {siteConfig.email}
+              </a>
+            </p>
+          </div>
+        </Container>
+      </section>
+    </div>
   );
 }
