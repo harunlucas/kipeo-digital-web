@@ -57,6 +57,10 @@ export function Turnstile({ onVerify, onExpire }: { onVerify: (token: string) =>
         if (cancelled || !window.turnstile) return;
         widgetId.current = window.turnstile.render(node, {
           sitekey: siteKey,
+          // Matches the site's appearance when the widget renders. A later
+          // theme change leaves it as is rather than re-rendering it, which
+          // would throw away a completed challenge.
+          theme: document.documentElement.dataset.theme === "dark" ? "dark" : "light",
           callback: (token: string) => callbacksRef.current.onVerify(token),
           "expired-callback": () => callbacksRef.current.onExpire(),
         });

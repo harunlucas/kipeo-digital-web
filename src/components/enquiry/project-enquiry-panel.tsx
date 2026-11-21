@@ -137,10 +137,10 @@ export function ProjectEnquiryPanel() {
           <div
             aria-hidden
             onClick={closePanel}
-            className="absolute inset-0 bg-ink/35 opacity-0 transition-opacity duration-[260ms] ease-out group-data-[state=open]/panel:opacity-100 motion-reduce:transition-none"
+            className="absolute inset-0 bg-ink/35 opacity-0 dark:bg-black/60 transition-opacity duration-[260ms] ease-out group-data-[state=open]/panel:opacity-100 motion-reduce:transition-none"
           />
           <div
-            className="enquiry-sheet absolute right-0 flex w-full flex-col border-neutral-300 bg-ivory shadow-panel transition-transform duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:w-[500px] sm:border-l translate-x-full group-data-[state=open]/panel:translate-x-0 motion-reduce:transition-none"
+            className="enquiry-sheet absolute right-0 flex w-full flex-col border-neutral-300 bg-overlay shadow-panel transition-transform duration-[260ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:w-[500px] sm:border-l translate-x-full group-data-[state=open]/panel:translate-x-0 motion-reduce:transition-none"
           >
             <div className="flex shrink-0 items-start justify-between gap-4 border-b border-neutral-200 px-5 pb-4 pt-5 sm:px-8 sm:pt-7">
               <h2

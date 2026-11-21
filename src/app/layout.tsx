@@ -4,7 +4,9 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { EnquiryProvider } from "@/components/enquiry/enquiry-provider";
 import { ProjectEnquiryPanel } from "@/components/enquiry/project-enquiry-panel";
+import { ThemeSync } from "@/components/theme/theme-sync";
 import { defaultMetadata } from "@/lib/metadata";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const inter = Inter({
@@ -43,21 +45,30 @@ export const metadata = defaultMetadata;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // `suppressHydrationWarning`: the theme script below sets `data-theme`,
+    // `data-theme-preference` and `color-scheme` on <html> before React
+    // hydrates; the DOM is the source of truth for those (src/lib/theme.ts).
     <html
       lang="en"
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
+      <head>
+        {/* Applies the saved or system appearance during parsing, before first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body
         className="flex min-h-full flex-col bg-paper text-paper-foreground"
         suppressHydrationWarning
       >
         <a
           href="#main-content"
-          className="sr-only rounded-full bg-teal-strong px-5 py-2.5 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]"
+          className="sr-only rounded-full bg-button px-5 py-2.5 text-sm font-medium text-button-fg focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]"
         >
           Skip to main content
         </a>
+        <ThemeSync />
         <EnquiryProvider>
           <AnnouncementBar />
           <Header />

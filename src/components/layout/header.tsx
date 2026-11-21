@@ -6,6 +6,7 @@ import { Phone } from "lucide-react";
 import { mainNav } from "@/content/navigation";
 import { siteConfig } from "@/content/site-config";
 import { Button } from "@/components/ui/button";
+import { AppearanceMenu } from "@/components/theme/appearance-control";
 import { cn } from "@/lib/cn";
 import { BrandMark, Wordmark } from "./brand-mark";
 import { MobileMenu } from "./mobile-menu";
@@ -48,7 +49,7 @@ export function Header() {
       className={cn(
         "sticky top-0 z-50 h-[72px] border-b transition-colors duration-300",
         scrolled
-          ? "border-neutral-200 bg-ivory/95 shadow-[0_1px_0_rgba(13,17,23,0.04)] backdrop-blur-md"
+          ? "border-neutral-200 bg-ivory/95 shadow-[0_1px_0_rgba(13,17,23,0.04)] backdrop-blur-md dark:shadow-[0_1px_0_rgba(0,0,0,0.3)]"
           : "border-transparent bg-ivory/80 backdrop-blur-sm",
       )}
     >
@@ -94,6 +95,8 @@ export function Header() {
             <Phone className="h-4 w-4 shrink-0" aria-hidden />
             {siteConfig.phone}
           </a>
+          {/* Desktop only, like the phone link; below 1200px it lives in the menu. */}
+          <AppearanceMenu className="-mx-2 hidden min-[1200px]:block" />
           <Button enquiry variant="primary" className="hidden whitespace-nowrap shadow-sm sm:inline-flex">
             Start a project
           </Button>

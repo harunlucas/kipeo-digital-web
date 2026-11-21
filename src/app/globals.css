@@ -1,39 +1,128 @@
 @import "tailwindcss";
 
 /*
+  Dark styles apply under `html[data-theme="dark"]`, which the inline script
+  in `layout.tsx` sets before first paint (see `src/lib/theme.ts`). `dark:`
+  is for the few components art-directed per theme; everything else follows
+  the purpose tokens below.
+*/
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
   Kipeo Digital design tokens.
-  Ink (near-black), Paper (warm off-white) and Teal (signal accent) are the
-  three fixed brand colours. Ink is also used deliberately as a section
-  surface (not a system dark-mode toggle) to create editorial contrast.
-  Mist (cool neutral) and a restrained violet Highlight provide secondary,
-  low-frequency accents for alternate sections and dimensional lighting.
+
+  PURPOSE TOKENS (`--kd-*`) hold the two appearances. Light is the approved
+  ivory, charcoal and teal palette; Dark is a deep graphite page with
+  slightly lighter surfaces for menus and forms, warm-white headings,
+  readable secondary text and brighter teal accents.
+
+    page / page-alt    page background (`page-alt`: the warmer ivory field
+                       used by the homepage hero and the header)
+    surface            raised areas and hover fills
+    overlay            menus, dialogs and the enquiry panel
+    field              form inputs
+    fg / fg-secondary / fg-muted   text, by emphasis
+    line / line-subtle borders and dividers
+    link / link-hover  text links and teal accents
+    button / button-fg / button-hover   primary button
+    on-accent          text on a solid teal fill
+    focus              keyboard focus rings
+    error*, success    form feedback
+
+  BRAND TOKENS (`--color-*`) are what the components were written against
+  (Paper, Slate, Teal Strong…). The theme-dependent ones are aliases of the
+  purpose tokens, so existing utilities such as `text-paper-foreground` or
+  `border-neutral-300` follow the theme without each call site changing.
+
+  Ink (near-black) stays fixed in both themes: it is a deliberate editorial
+  section surface (announcement bar, closing CTA, footer, dark demo
+  panels), not the dark theme. Teal, Amber and Highlight are fixed brand
+  accents too.
 */
 :root {
+  color-scheme: light;
+
+  --kd-page: #f8f6f1;
+  --kd-page-alt: #f8f3ea;
+  --kd-surface: #f1ece2;
+  --kd-overlay: #f8f3ea;
+  --kd-field: rgb(255 255 255 / 0.7);
+  --kd-fg: #14171a;
+  --kd-fg-secondary: #3f4750;
+  --kd-fg-muted: #6b7580;
+  --kd-line: #d9d4c9;
+  --kd-line-subtle: #eae5da;
+  --kd-link: #0f766e;
+  --kd-link-hover: #0d1117;
+  --kd-button: #0f766e;
+  --kd-button-fg: #ffffff;
+  --kd-button-hover: #0d1117;
+  --kd-on-accent: #ffffff;
+  --kd-focus: #0f766e;
+  --kd-error: #b3261e;
+  --kd-error-fg: #8c1d17;
+  --kd-error-surface: #fbeceb;
+  --kd-success: #0f766e;
+
+  --kd-mist: #eef1f2;
+  --kd-mist-elevated: #e4e9eb;
+  --kd-teal-tint: #e3f3f0;
+  /* The lit crest of the homepage headline sweep. Light: as light as teal
+     gets while still clearing 3:1 against Ivory at display sizes (~3.7:1). */
+  --kd-teal-sheen: #0e8c80;
+  --kd-neutral-900: #1c2024;
+  --kd-neutral-700: #4b5157;
+  --kd-neutral-500: #767c82;
+
+  --kd-shadow-card: 0 1px 2px rgba(13, 17, 23, 0.04), 0 12px 32px -16px rgba(13, 17, 23, 0.18);
+  --kd-shadow-panel: 0 24px 60px -24px rgba(13, 17, 23, 0.45);
+
+  /*
+    Isometric plate materials, shared by the homepage hero diagram
+    (`system-stack-artwork.tsx`) and the What we build illustrations
+    (`service-illustrations.tsx`). Light keeps the approved glass and
+    graphite; `--plate-trail` is the soft glow under the signal paths,
+    off in Light.
+  */
+  --plate-glass-top: #cfe0dc;
+  --plate-glass-opacity: 0.62;
+  --plate-glass-left: #b3c8c3;
+  --plate-glass-right: #a3bbb6;
+  --plate-glass-edge: #0f766e;
+  --plate-glass-grid: #0f766e;
+  --plate-graphite-top: #363d45;
+  --plate-graphite-left: #262c33;
+  --plate-graphite-right: #1e242a;
+  --plate-deep-top: #2b3138;
+  --plate-deep-left: #1d2227;
+  --plate-deep-right: #171c21;
+  --plate-edge: #0b1014;
+  --plate-grid: #8f9aa5;
+  --plate-glass-node: #0f766e;
+  --plate-trail-opacity: 0;
+
+  /* Brand tokens. Theme-dependent ones alias the purpose tokens. */
   --color-ink: #0d1117;
   --color-ink-elevated: #161b22;
   --color-ink-foreground: #f5f2ea;
   --color-ink-muted: #b6b0a2;
 
-  --color-paper: #f8f6f1;
-  --color-paper-elevated: #f1ece2;
-  --color-paper-foreground: #14171a;
+  --color-paper: var(--kd-page);
+  --color-paper-elevated: var(--kd-surface);
+  --color-paper-foreground: var(--kd-fg);
 
   /* Warm ivory canvas, used by the homepage hero. A half-step warmer than
      Paper so the hero reads as its own field without a visible seam. */
-  --color-ivory: #f8f3ea;
+  --color-ivory: var(--kd-page-alt);
 
-  --color-mist: #eef1f2;
-  --color-mist-elevated: #e4e9eb;
+  --color-mist: var(--kd-mist);
+  --color-mist-elevated: var(--kd-mist-elevated);
 
   --color-teal: #14b8a6;
-  --color-teal-strong: #0f766e;
-  --color-teal-tint: #e3f3f0;
+  --color-teal-strong: var(--kd-link);
+  --color-teal-tint: var(--kd-teal-tint);
   --color-teal-foreground: #04201d;
-
-  /* The lit crest of the homepage hero's headline sweep. As light as teal
-     gets while still clearing 3:1 against Ivory at display sizes (~3.7:1),
-     so the phrase stays readable at every point in the animation. */
-  --color-teal-sheen: #0e8c80;
+  --color-teal-sheen: var(--kd-teal-sheen);
 
   --color-highlight: #6c63e0;
   --color-highlight-strong: #514ab3;
@@ -43,17 +132,79 @@
      order demo. Measured against --color-ink for contrast (~8:1). */
   --color-amber: #d9a441;
 
-  --color-slate: #3f4750;
-  --color-slate-muted: #6b7580;
+  --color-slate: var(--kd-fg-secondary);
+  --color-slate-muted: var(--kd-fg-muted);
 
-  --color-neutral-900: #1c2024;
-  --color-neutral-700: #4b5157;
-  --color-neutral-500: #767c82;
-  --color-neutral-300: #d9d4c9;
-  --color-neutral-200: #eae5da;
+  --color-neutral-900: var(--kd-neutral-900);
+  --color-neutral-700: var(--kd-neutral-700);
+  --color-neutral-500: var(--kd-neutral-500);
+  --color-neutral-300: var(--kd-line);
+  --color-neutral-200: var(--kd-line-subtle);
 
-  --shadow-card: 0 1px 2px rgba(13, 17, 23, 0.04), 0 12px 32px -16px rgba(13, 17, 23, 0.18);
-  --shadow-panel: 0 24px 60px -24px rgba(13, 17, 23, 0.45);
+  --shadow-card: var(--kd-shadow-card);
+  --shadow-panel: var(--kd-shadow-panel);
+}
+
+/*
+  Dark. Contrast on the page (#15181c): fg ~15:1, fg-secondary ~9.7:1,
+  fg-muted ~6.9:1, link ~10:1; fg-muted still ~6.2:1 on the overlay.
+  Without JavaScript no `data-theme` is set and the site renders Light.
+*/
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --kd-page: #15181c;
+  --kd-page-alt: #171a1e;
+  --kd-surface: #23282e;
+  --kd-overlay: #1d2126;
+  --kd-field: #262b31;
+  --kd-fg: #f3eee4;
+  --kd-fg-secondary: #c9c3b7;
+  --kd-fg-muted: #9ca3ab;
+  --kd-line: #3a4048;
+  --kd-line-subtle: #2a2f35;
+  --kd-link: #2dd4bf;
+  --kd-link-hover: #f3eee4;
+  --kd-button: #2dd4bf;
+  --kd-button-fg: #04201d;
+  --kd-button-hover: #7ee8d8;
+  --kd-on-accent: #04201d;
+  --kd-focus: #5eead4;
+  --kd-error: #f2867c;
+  --kd-error-fg: #ffb4ab;
+  --kd-error-surface: #3a1f1d;
+  --kd-success: #5eead4;
+
+  --kd-mist: #1b1f24;
+  --kd-mist-elevated: #23282e;
+  --kd-teal-tint: #13332f;
+  --kd-teal-sheen: #b5f5ea;
+  --kd-neutral-900: #ece7dd;
+  --kd-neutral-700: #c9c3b7;
+  --kd-neutral-500: #9ca3ab;
+
+  --kd-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  --kd-shadow-panel: 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+
+  /* Lifted so each plate separates from the graphite page and from the
+     plate below it: the glass turns to a teal-tinted translucent layer, the
+     graphite steps up a shade with lighter rims instead of black ones. */
+  --plate-glass-top: #6fb5aa;
+  --plate-glass-opacity: 0.3;
+  --plate-glass-left: #2c5a54;
+  --plate-glass-right: #244b46;
+  --plate-glass-edge: #5eead4;
+  --plate-glass-grid: #99f6e4;
+  --plate-graphite-top: #424a54;
+  --plate-graphite-left: #2f363e;
+  --plate-graphite-right: #283037;
+  --plate-deep-top: #333a43;
+  --plate-deep-left: #252b32;
+  --plate-deep-right: #1f252b;
+  --plate-edge: #59636e;
+  --plate-grid: #a7b2bd;
+  --plate-glass-node: #14b8a6;
+  --plate-trail-opacity: 0.45;
 }
 
 @theme inline {
@@ -95,6 +246,30 @@
   --color-background: var(--color-paper);
   --color-foreground: var(--color-paper-foreground);
 
+  /* Purpose utilities: `bg-page`, `bg-overlay`, `bg-field`, `text-fg-muted`,
+     `border-line`, `text-link`, `bg-button`, `text-on-accent`, `text-error`… */
+  --color-page: var(--kd-page);
+  --color-page-alt: var(--kd-page-alt);
+  --color-surface: var(--kd-surface);
+  --color-overlay: var(--kd-overlay);
+  --color-field: var(--kd-field);
+  --color-fg: var(--kd-fg);
+  --color-fg-secondary: var(--kd-fg-secondary);
+  --color-fg-muted: var(--kd-fg-muted);
+  --color-line: var(--kd-line);
+  --color-line-subtle: var(--kd-line-subtle);
+  --color-link: var(--kd-link);
+  --color-link-hover: var(--kd-link-hover);
+  --color-button: var(--kd-button);
+  --color-button-fg: var(--kd-button-fg);
+  --color-button-hover: var(--kd-button-hover);
+  --color-on-accent: var(--kd-on-accent);
+  --color-focus: var(--kd-focus);
+  --color-error: var(--kd-error);
+  --color-error-fg: var(--kd-error-fg);
+  --color-error-surface: var(--kd-error-surface);
+  --color-success: var(--kd-success);
+
   --font-sans: var(--font-inter);
   --font-display: var(--font-space-grotesk);
   --font-mono: var(--font-jetbrains-mono);
@@ -115,6 +290,41 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/*
+  Changing theme swaps every colour at once. `ThemeProvider` sets
+  `data-theme-switching` for one frame around the swap so components with
+  colour transitions (the header, buttons, links) don't fade through
+  in-between colours at different speeds.
+*/
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition: none !important;
+}
+
+/*
+  Browser autofill paints its own (light blue / yellow) background over
+  form fields. Repaint it with the field colour of the current theme and
+  keep the text in the theme's foreground.
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-fg);
+  caret-color: var(--color-fg);
+  box-shadow: 0 0 0 1000px var(--color-overlay) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+/* Native <option> lists follow `color-scheme`, but some engines keep the
+   select's own colours for them; match the field. */
+select option {
+  background-color: var(--color-overlay);
+  color: var(--color-fg);
+}
+
 ::selection {
   background: var(--color-teal);
   color: var(--color-teal-foreground);
@@ -122,7 +332,7 @@ body {
 
 /* Visible, high-contrast focus states for keyboard navigation. */
 :focus-visible {
-  outline: 2px solid var(--color-teal-strong);
+  outline: 2px solid var(--color-focus);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -742,6 +952,11 @@ body {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-neutral-300) 70%, transparent);
 }
 
+/* Dark: the mat steps up from the page like the other surfaces. */
+[data-theme="dark"] .work-mat {
+  background: color-mix(in srgb, var(--color-paper-elevated) 80%, var(--color-ivory));
+}
+
 .work-entry {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -870,6 +1085,22 @@ body {
     0 0 0 1px rgb(13 17 23 / 0.06),
     0 2px 3px rgb(13 17 23 / 0.08),
     0 16px 30px -14px rgb(13 17 23 / 0.42);
+}
+
+/* On the graphite page the dark hairline vanishes; a faint light edge keeps
+   the screenshots' own colours framed without touching the images. */
+[data-theme="dark"] .work-pair-main {
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.1),
+    0 22px 44px -30px rgb(0 0 0 / 0.8);
+}
+
+[data-theme="dark"] .work-pair-frame {
+  background: var(--color-surface);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.1),
+    0 2px 3px rgb(0 0 0 / 0.3),
+    0 16px 30px -14px rgb(0 0 0 / 0.75);
 }
 
 /* One slow rock on entering view: rest → −2° → +2° → rest, about the pin. */

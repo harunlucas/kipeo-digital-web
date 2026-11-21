@@ -15,6 +15,11 @@ import { Container } from "@/components/layout/container";
  * left edge). On desktop the image is narrowed and anchored right so the
  * text keeps clear of the notebook; the panel fills the gap in the same
  * colour and a short fade hides the join.
+ *
+ * The illustration is light paper in both appearances, so where the text
+ * sits on it (from `lg`) it keeps the Light charcoal (`#14171a`, ~11:1 on
+ * the paper) even when the rest of the page is dark. Below `lg` the text is
+ * on the page itself and follows the theme.
  */
 export function InsightsHero({ intro }: { intro: string }) {
   return (
@@ -22,10 +27,10 @@ export function InsightsHero({ intro }: { intro: string }) {
       <Container>
         <div className="relative lg:h-[420px] lg:overflow-hidden lg:rounded-[1.75rem] lg:bg-[#e6ccad]">
           <div className="relative lg:absolute lg:inset-y-0 lg:left-0 lg:z-10 lg:flex lg:flex-col lg:justify-center lg:pl-10 xl:pl-14">
-            <h1 id="insights-title" className="hero-headline font-display font-semibold text-paper-foreground">
+            <h1 id="insights-title" className="hero-headline font-display font-semibold text-paper-foreground lg:text-[#14171a]">
               Insights
             </h1>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-slate sm:text-lg lg:mt-5 lg:max-w-[19rem] lg:text-paper-foreground/80">
+            <p className="mt-4 max-w-md text-base leading-relaxed text-slate sm:text-lg lg:mt-5 lg:max-w-[19rem] lg:text-[#14171a]/80">
               {intro}
             </p>
           </div>

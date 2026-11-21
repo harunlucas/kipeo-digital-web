@@ -40,11 +40,11 @@ export default function PrivacyPolicyPage() {
           This policy explains what information Kipeo Digital (&ldquo;Kipeo&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;)
           collects through this website, why, and how it is handled. It covers the website at{" "}
           <span className="font-medium text-paper-foreground">{siteConfig.url}</span>, the enquiry form on the{" "}
-          <Link href="/contact" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/contact" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Contact
           </Link>{" "}
           page, and the application form on the{" "}
-          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Kipeo Impact Build
           </Link>{" "}
           page. It does not cover the separate terms of any individual client project or Impact Build agreement,
@@ -69,7 +69,7 @@ export default function PrivacyPolicyPage() {
         </p>
         <p>
           The application form on the{" "}
-          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/impact-build/apply" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Kipeo Impact Build
           </Link>{" "}
           page is separate from the Contact form. It asks for your contact details, information about your
@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
         <p>
           When you submit the enquiry form, our server briefly reads your IP address to apply spam and abuse
           protection (rate limiting, and Cloudflare Turnstile verification where enabled &mdash; see{" "}
-          <a href="#cookies-and-storage" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href="#cookies-and-storage" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Cookies and browser storage
           </a>
           ). Like any hosted website, our hosting provider also records standard technical request logs (such as
@@ -100,7 +100,7 @@ export default function PrivacyPolicyPage() {
           for one purpose only: remembering that you dismissed the announcement banner, so it doesn&rsquo;t reappear
           on your next visit. These values stay on your device, are never sent to us or any third party, and
           aren&rsquo;t cookies. See the{" "}
-          <Link href="/cookie-policy" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/cookie-policy" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Cookie Policy
           </Link>{" "}
           for full detail, including the one third-party exception (Cloudflare Turnstile, when active on the contact
@@ -164,7 +164,7 @@ export default function PrivacyPolicyPage() {
           business. Where an application is selected, the information is retained for as long as reasonably needed
           for the resulting written Impact Build agreement and project. You can ask us to delete an application
           earlier under{" "}
-          <a href="#your-rights" className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href="#your-rights" className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Your rights
           </a>
           , subject to any legitimate legal or administrative need to keep it.
@@ -183,7 +183,7 @@ export default function PrivacyPolicyPage() {
         <p>
           You can ask us what information we hold about you, request a correction, or ask us to delete it, by
           emailing{" "}
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>
           . We will respond to reasonable requests as promptly as we can.
@@ -203,11 +203,11 @@ export default function PrivacyPolicyPage() {
           <br />
           Nairobi, Kenya
           <br />
-          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={`mailto:${siteConfig.email}`} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.email}
           </a>
           <br />
-          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-ink">
+          <a href={siteConfig.phoneHref} className="text-teal-strong underline underline-offset-2 hover:text-link-hover">
             {siteConfig.phone}
           </a>
         </p>

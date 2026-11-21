@@ -17,9 +17,9 @@ import {
 import { siteConfig } from "@/content/site-config";
 
 const inputClasses =
-  "min-h-11 w-full rounded-lg border border-neutral-300 bg-paper px-3.5 py-2.5 text-sm text-paper-foreground placeholder:text-slate-muted/70 focus-visible:border-teal-strong disabled:opacity-60";
+  "min-h-11 w-full rounded-lg border border-neutral-300 bg-paper px-3.5 py-2.5 text-sm text-paper-foreground placeholder:text-fg-muted focus-visible:border-focus aria-invalid:border-error disabled:opacity-60 dark:bg-field";
 const labelClasses = "text-sm font-medium text-paper-foreground";
-const errorClasses = "mt-1.5 text-xs font-medium text-[#b3261e]";
+const errorClasses = "mt-1.5 text-xs font-medium text-error-fg";
 const GENERIC_ERROR_MESSAGE = `We couldn't send your application. Please try again or email ${siteConfig.email}.`;
 
 type SubmitState = { status: "idle" | "submitting" | "success" | "error"; message?: string };
@@ -271,7 +271,7 @@ export function ImpactBuildApplyForm() {
             aria-current={index === currentStep ? "step" : undefined}
             className={`flex min-h-8 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
               index === currentStep
-                ? "bg-teal-strong text-white"
+                ? "bg-teal-strong text-on-accent"
                 : index < currentStep
                   ? "bg-teal-tint text-teal-strong"
                   : "bg-mist text-slate-muted"
@@ -291,14 +291,14 @@ export function ImpactBuildApplyForm() {
           ref={errorSummaryRef}
           role="alert"
           tabIndex={-1}
-          className="mt-6 rounded-lg border border-[#b3261e]/30 bg-[#fbeceb] p-4 focus:outline-none"
+          className="mt-6 rounded-lg border border-error/40 bg-error-surface p-4 focus:outline-none"
         >
-          <p className="text-sm font-medium text-[#b3261e]">{submit.message}</p>
+          <p className="text-sm font-medium text-error-fg">{submit.message}</p>
           {hasErrors && (
             <ul className="mt-2 flex flex-col gap-1">
               {Object.entries(fieldErrors).map(([key, message]) => (
                 <li key={key}>
-                  <a href={`#${idPrefix}-${key}`} className="text-xs font-medium text-[#b3261e] underline underline-offset-2">
+                  <a href={`#${idPrefix}-${key}`} className="text-xs font-medium text-error-fg underline underline-offset-2">
                     {message}
                   </a>
                 </li>
@@ -473,7 +473,7 @@ export function ImpactBuildApplyForm() {
 
         {step.id === "consent" && (
           <div className="mt-5 flex flex-col gap-6">
-            <p className="flex items-start gap-2 rounded-lg border border-[#b3261e]/25 bg-[#fbeceb] p-3.5 text-xs leading-relaxed text-[#7a2b26]">
+            <p className="flex items-start gap-2 rounded-lg border border-error/30 bg-error-surface p-3.5 text-xs leading-relaxed text-error-fg">
               <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
               Do not submit passwords, access keys, identification documents, confidential records, health
               information or sensitive beneficiary data.
@@ -493,7 +493,7 @@ export function ImpactBuildApplyForm() {
                 <label htmlFor={`${idPrefix}-privacyAcknowledged`} className="text-sm leading-relaxed text-slate">
                   I understand that Kipeo Digital will use these details to assess and respond to this Impact Build
                   application.{" "}
-                  <Link href="/privacy-policy" className="font-medium text-teal-strong underline underline-offset-2 hover:text-ink">
+                  <Link href="/privacy-policy" className="font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover">
                     Privacy Policy
                   </Link>
                 </label>
@@ -512,7 +512,7 @@ export function ImpactBuildApplyForm() {
                 />
                 <label htmlFor={`${idPrefix}-termsAccepted`} className="text-sm leading-relaxed text-slate">
                   I have read and accept the{" "}
-                  <Link href="/impact-build/terms" className="font-medium text-teal-strong underline underline-offset-2 hover:text-ink">
+                  <Link href="/impact-build/terms" className="font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover">
                     Kipeo Impact Build Terms
                   </Link>
                   .

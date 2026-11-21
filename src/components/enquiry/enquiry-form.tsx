@@ -20,9 +20,9 @@ type Status =
   | { kind: "success"; confirmationSent: boolean };
 
 const inputClasses =
-  "mt-1.5 block min-h-11 w-full rounded-lg border bg-white/70 px-3.5 py-2.5 text-base text-paper-foreground transition-colors placeholder:text-slate-muted/70 focus-visible:border-teal-strong sm:text-sm";
+  "mt-1.5 block min-h-11 w-full rounded-lg border bg-field px-3.5 py-2.5 text-base text-fg transition-colors placeholder:text-fg-muted focus-visible:border-focus disabled:cursor-not-allowed disabled:border-line-subtle disabled:bg-surface disabled:text-fg-muted sm:text-sm";
 const labelClasses = "flex items-baseline gap-1.5 text-sm font-medium text-paper-foreground";
-const errorClasses = "mt-1.5 text-sm font-medium text-[#b3261e]";
+const errorClasses = "mt-1.5 text-sm font-medium text-error-fg";
 
 function RequiredMark() {
   return (
@@ -211,7 +211,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
             onChange={(e) => setField("fullName", e.target.value)}
             aria-invalid={Boolean(errors.fullName)}
             aria-describedby={errors.fullName ? id("fullName-error") : undefined}
-            className={cn(inputClasses, errors.fullName ? "border-[#b3261e]" : "border-neutral-300")}
+            className={cn(inputClasses, errors.fullName ? "border-error" : "border-neutral-300")}
           />
           {errors.fullName && (
             <p id={id("fullName-error")} className={errorClasses}>
@@ -238,7 +238,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
             onChange={(e) => setField("email", e.target.value)}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? id("email-error") : undefined}
-            className={cn(inputClasses, errors.email ? "border-[#b3261e]" : "border-neutral-300")}
+            className={cn(inputClasses, errors.email ? "border-error" : "border-neutral-300")}
           />
           {errors.email && (
             <p id={id("email-error")} className={errorClasses}>
@@ -259,7 +259,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
           onChange={(e) => setField("service", (e.target.value as EnquiryServiceId | "") ?? "")}
           aria-invalid={Boolean(errors.service)}
           aria-describedby={errors.service ? id("service-error") : undefined}
-          className={cn(inputClasses, "cursor-pointer", errors.service ? "border-[#b3261e]" : "border-neutral-300")}
+          className={cn(inputClasses, "cursor-pointer", errors.service ? "border-error" : "border-neutral-300")}
         >
           <option value="">Choose a service</option>
           {enquiryServiceOptions.map((option) => (
@@ -296,7 +296,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
           className={cn(
             inputClasses,
             "min-h-32 resize-y py-3 leading-relaxed",
-            errors.projectSummary ? "border-[#b3261e]" : "border-neutral-300",
+            errors.projectSummary ? "border-error" : "border-neutral-300",
           )}
         />
         {errors.projectSummary && (
@@ -329,10 +329,10 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
           ref={failureRef}
           role="alert"
           tabIndex={-1}
-          className="mt-6 rounded-lg border border-[#b3261e]/30 bg-[#fbeceb] p-4 focus:outline-none"
+          className="mt-6 rounded-lg border border-error/40 bg-error-surface p-4 focus:outline-none"
         >
-          <p className="text-sm font-medium text-[#8c1d17]">We couldn’t send your enquiry.</p>
-          <p className="mt-1 text-sm leading-relaxed text-[#8c1d17]">
+          <p className="text-sm font-medium text-error-fg">We couldn’t send your enquiry.</p>
+          <p className="mt-1 text-sm leading-relaxed text-error-fg">
             Your message is still here. Try again, or email it to{" "}
             <a href={`mailto:${siteConfig.email}`} className="font-medium underline underline-offset-2">
               {siteConfig.email}
@@ -341,7 +341,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
           </p>
           <button
             type="submit"
-            className="mt-3 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-[#b3261e]/40 px-4 text-sm font-medium text-[#8c1d17] transition-colors hover:bg-white/60"
+            className="mt-3 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-error/50 px-4 text-sm font-medium text-error-fg transition-colors hover:bg-page/60"
           >
             <RotateCw className="h-4 w-4" aria-hidden />
             Try again
@@ -362,7 +362,7 @@ export function EnquiryForm({ context, onClose }: EnquiryFormProps) {
         </Button>
         <p className="text-xs leading-relaxed text-slate-muted">
           We’ll use these details only to respond to your enquiry. See our{" "}
-          <Link href="/privacy-policy" className="font-medium text-teal-strong underline underline-offset-2 hover:text-ink">
+          <Link href="/privacy-policy" className="font-medium text-teal-strong underline underline-offset-2 hover:text-link-hover">
             Privacy Policy
           </Link>
           .

@@ -61,17 +61,9 @@ export function ReleaseEnvironment() {
 
   return (
     <div>
-      <div className="flex gap-4">
-        <span aria-hidden className="w-px shrink-0 self-stretch bg-teal-strong" />
-        <div>
-          <h2 className="text-sm font-semibold tracking-[0.01em] text-paper-foreground">
-            Release environment
-          </h2>
-          <p className="mt-1 font-serif-display text-sm italic text-slate-muted">
-            Interactive demo
-          </p>
-        </div>
-      </div>
+      {/* No visible title: the diagram leads. The heading stays for screen
+          readers so the Staging / Production controls below have a name. */}
+      <h2 className="sr-only">Release environment, interactive demo</h2>
 
       {/*
         If the supplied `public/images/kipeo-system-stack.png` is restored,
@@ -91,7 +83,7 @@ export function ReleaseEnvironment() {
       {/* No `items-start` here: the label column is positioned-empty, so it
           only has a height to resolve each label's `top: %` against while the
           grid stretches it to match the artwork. */}
-      <div className="mt-6 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-1">
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-1">
         <SystemStack className="h-auto w-full" />
 
         <div className="relative hidden lg:block lg:w-[124px]">
@@ -137,7 +129,7 @@ export function ReleaseEnvironment() {
                 className={cn(
                   "cursor-pointer rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200",
                   isSelected
-                    ? "bg-teal-strong text-white"
+                    ? "bg-teal-strong text-on-accent"
                     : "text-slate hover:text-paper-foreground",
                 )}
               >

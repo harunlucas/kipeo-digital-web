@@ -234,7 +234,7 @@ export function WhatWeBuild() {
                 className={cn(
                   "inline-flex min-h-11 cursor-pointer items-center gap-2.5 rounded-full border px-4 text-sm font-medium transition-colors",
                   autoplay
-                    ? "border-teal-strong/40 bg-teal-tint/70 text-teal-foreground hover:border-teal-strong"
+                    ? "border-teal-strong/40 bg-teal-tint/70 text-teal-foreground hover:border-teal-strong dark:text-fg"
                     : "border-neutral-300 text-slate hover:border-teal-strong/50 hover:text-paper-foreground",
                 )}
               >

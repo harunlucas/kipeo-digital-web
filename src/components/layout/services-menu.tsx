@@ -191,7 +191,7 @@ export function ServicesMenu() {
               onPointerLeave={onPanelLeave}
             >
               <div aria-hidden className="absolute inset-x-0 -top-5 h-5" />
-              <div className="services-panel max-h-[calc(100dvh-9rem)] overflow-y-auto rounded-2xl border border-neutral-300 bg-ivory shadow-[0_24px_48px_-28px_rgba(13,17,23,0.35)]">
+              <div className="services-panel max-h-[calc(100dvh-9rem)] overflow-y-auto rounded-2xl border border-neutral-300 bg-overlay shadow-[0_24px_48px_-28px_rgba(13,17,23,0.35)] dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.8)]">
                 <div className="flex items-center justify-between gap-6 px-8 pb-3 pt-6">
                   <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-strong">Services</p>
                   <Link
