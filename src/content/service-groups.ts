@@ -12,10 +12,11 @@ export type ServiceGroupId =
  * Canonical service identity — one typed source of truth for the five
  * service groups, consumed by the header dropdown, mobile menu, shared
  * footer, homepage service panels and the Studio capability selector.
- * `/services` itself uses the richer, page-specific `serviceGroups` array in
- * `services-page.ts` (full intro copy, outcomes, expandable detail) — that
- * array shares these same ids and titles rather than importing this one, so
- * the full-detail page isn't forced through a generic shape. `capabilities`
+ * `/services` itself uses the richer, page-specific `serviceFamilies` array in
+ * `services-page.ts` (buyer's question, deliverables, worked example, full
+ * scope). It types its ids against `ServiceGroupId` and titles each section
+ * with the Services menu label, so menu, footer and page anchors stay in
+ * step. `capabilities`
  * here is the short, representative list for compact contexts (homepage
  * panels, the Studio selector), not the exhaustive per-group list.
  */

@@ -886,6 +886,113 @@ body {
   }
 }
 
+/*
+  /services opening index (`service-index.tsx`). The whole row is the
+  target; hover and keyboard focus get the same response: the name
+  underlines (`.home-underline`), the number brightens from deep teal to
+  the sheen teal, and the arrow drops 2px towards the section it jumps to.
+  Under reduced motion the same states apply without transitions.
+*/
+.svc-index-number {
+  color: var(--color-teal-strong);
+  transition: color 0.25s ease;
+}
+
+.svc-index-arrow {
+  transition:
+    transform 0.2s ease-out,
+    color 0.2s ease;
+}
+
+.svc-index-row:hover .svc-index-name,
+.svc-index-row:focus-visible .svc-index-name {
+  background-size: 100% 1px;
+}
+
+.svc-index-row:hover .svc-index-number,
+.svc-index-row:focus-visible .svc-index-number {
+  color: var(--color-teal-sheen);
+}
+
+.svc-index-row:hover .svc-index-arrow,
+.svc-index-row:focus-visible .svc-index-arrow {
+  color: var(--color-teal-strong);
+  transform: translateY(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-index-number,
+  .svc-index-arrow,
+  .svc-index-name {
+    transition: none;
+  }
+
+  .svc-index-row:hover .svc-index-arrow,
+  .svc-index-row:focus-visible .svc-index-arrow {
+    transform: none;
+  }
+}
+
+/*
+  One /services family (`service-family-section.tsx`), the same named-areas
+  approach as `.work-entry`: mobile reads name and question, then the
+  deliverables and example, then the enquiry link; from `lg` the name,
+  question and link share the left column and the detail runs on the right.
+*/
+.svc-family {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "body" "cta";
+  row-gap: 2rem;
+}
+
+.svc-family-head {
+  grid-area: head;
+}
+
+.svc-family-body {
+  grid-area: body;
+  min-width: 0;
+}
+
+.svc-family-cta {
+  grid-area: cta;
+}
+
+.svc-family-wide {
+  grid-area: wide;
+  min-width: 0;
+  margin-top: 0.5rem;
+}
+
+.svc-family--wide {
+  grid-template-areas: "head" "body" "wide" "cta";
+}
+
+@media (min-width: 1024px) {
+  .svc-family {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "head body" "cta body";
+    column-gap: 4rem;
+    row-gap: 1.75rem;
+  }
+
+  .svc-family-cta {
+    align-self: start;
+  }
+
+  /* The example takes a full-width row under both columns. */
+  .svc-family--wide {
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "head body" "cta body" "wide wide";
+  }
+
+  .svc-family-wide {
+    margin-top: 1.5rem;
+  }
+}
+
 /* Subtle background grain used behind dimensional visuals. */
 .bg-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");

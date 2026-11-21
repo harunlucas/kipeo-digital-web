@@ -27,10 +27,14 @@ const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
  * Touch devices and reduced motion get the finished static composition: the
  * rock is never armed and the breathing never starts.
  *
- * Images are lossless WebP served as-is (`unoptimized`), so the image
- * optimiser does not re-encode them lossily. Explicit width/height keep their
- * space reserved.
+ * Source files are full-resolution lossless WebP. `next/image` serves a
+ * resized variant for each slot (`sizes`, matching `.work-entry` and
+ * `.work-pair` in globals.css) at quality 90, so the interface lettering
+ * stays sharp without shipping the 1.1–1.4 MB masters. Explicit width/height
+ * keep their space reserved.
  */
+const MAIN_SIZES = "(min-width: 1280px) 680px, (min-width: 1024px) 52vw, calc(100vw - 48px)";
+const PINNED_SIZES = "(min-width: 1280px) 260px, (min-width: 1024px) 20vw, 50vw";
 export function ProjectImagePair({ pair, priority = false }: { pair: ImagePair; priority?: boolean }) {
   const figureRef = useRef<HTMLElement>(null);
   const [rocking, setRocking] = useState(false);
@@ -99,7 +103,8 @@ export function ProjectImagePair({ pair, priority = false }: { pair: ImagePair; 
             alt={pair.main.alt}
             width={pair.main.width}
             height={pair.main.height}
-            unoptimized
+            sizes={MAIN_SIZES}
+            quality={90}
             preload={priority}
             loading={priority ? undefined : "lazy"}
             className="work-pair-main"
@@ -115,7 +120,8 @@ export function ProjectImagePair({ pair, priority = false }: { pair: ImagePair; 
                   alt={pair.pinned.alt}
                   width={pair.pinned.width}
                   height={pair.pinned.height}
-                  unoptimized
+                  sizes={PINNED_SIZES}
+                  quality={90}
                   loading="lazy"
                   className="block h-auto w-full rounded-[6px]"
                 />

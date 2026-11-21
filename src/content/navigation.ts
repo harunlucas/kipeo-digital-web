@@ -1,4 +1,4 @@
-import { serviceGroups } from "@/content/service-groups";
+import { serviceGroups, type ServiceGroupId } from "@/content/service-groups";
 
 export type NavItem = {
   label: string;
@@ -25,10 +25,11 @@ const servicesMenuDescriptions: Record<string, string> = {
 };
 
 /**
- * Compact navigation labels for the service families. Navigation only: the
- * destination pages keep the full catalogue titles from `service-groups.ts`.
+ * Compact labels for the service families, used by the header menus. The
+ * /services section headings reuse them (service 02 has a longer page-only
+ * heading, see `services-page.ts`); the footer keeps the full catalogue titles.
  */
-const serviceNavLabels: Record<string, string> = {
+export const serviceNavLabels: Record<ServiceGroupId, string> = {
   "software-and-business-systems": "Software & business systems",
   "operational-and-technical-software": "Operational & technical software",
   "websites-and-commerce": "Websites & e-commerce",

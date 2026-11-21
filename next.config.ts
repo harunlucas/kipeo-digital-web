@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
 const nextConfig: NextConfig = {
+  images: {
+    // 75 is the Next.js default. 90 is used by the detailed interface images
+    // on /services and /work (`service-figure.tsx`, `project-image-pair.tsx`),
+    // where fine lettering must stay sharp.
+    qualities: [75, 90],
+  },
   async headers() {
     return [
       {

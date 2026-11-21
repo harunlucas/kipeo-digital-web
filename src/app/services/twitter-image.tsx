@@ -6,6 +6,6 @@ export const contentType = ogImageContentType;
 export default function Image() {
   return renderOgImage({
     eyebrow: "Services",
-    heading: "Software and digital systems built around real operations.",
+    heading: "Digital services for your business.",
   });
 }
