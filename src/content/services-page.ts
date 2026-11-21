@@ -507,7 +507,7 @@ export const scopeTerms: ScopeTerm[] = [
   {
     title: "What the proposal covers",
     detail:
-      "Deliverables, milestones, timeline and investment, with delivery tracked against those milestones. Each project is priced on its own scope.",
+      "Deliverables, milestones, timeline and investment, with delivery tracked against those milestones.",
   },
   {
     title: "Third-party costs",

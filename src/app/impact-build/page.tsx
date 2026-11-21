@@ -193,7 +193,7 @@ export default function ImpactBuildPage() {
             </Reveal>
             <Reveal immediate delay={0.22}>
               <p className="mt-6 text-xs font-medium uppercase tracking-wide text-slate-muted">
-                Third-party costs remain separate. Selection is based on suitability — not chance.
+                Third-party costs remain separate. Selection is based on suitability, not chance.
               </p>
             </Reveal>
           </div>
@@ -257,11 +257,6 @@ export default function ImpactBuildPage() {
         <Reveal delay={0.1}>
           <BulletList items={possibleIncludedWork} />
         </Reveal>
-        <Reveal delay={0.14}>
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-muted">
-            Not every item applies to every project — the agreed scope determines what is actually delivered.
-          </p>
-        </Reveal>
       </Section>
 
       {/* What remains separate */}
@@ -281,8 +276,7 @@ export default function ImpactBuildPage() {
         </Reveal>
         <Reveal delay={0.14}>
           <p className="mt-6 max-w-2xl text-sm leading-relaxed text-slate-muted">
-            No third-party cost may be incurred without the recipient&rsquo;s prior written approval. The complete
-            project is not universally &ldquo;free&rdquo; without this qualification.
+            No third-party cost may be incurred without the recipient&rsquo;s prior written approval.
           </p>
         </Reveal>
       </Section>

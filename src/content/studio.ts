@@ -23,14 +23,14 @@ export const studioWorkspaceHotspots: StudioWorkspaceHotspot[] = [
     id: "strategy",
     number: "01",
     label: "Strategy and definition",
-    description: "Where the problem gets defined clearly — requirements, priorities and a scoped plan — before anything is built.",
+    description: "Requirements, priorities and a scoped plan, agreed before anything is built.",
     position: { x: 15, y: 63 },
   },
   {
     id: "interface",
     number: "02",
     label: "Interface and experience",
-    description: "The screens and flows people actually use: responsive, accessible interfaces across devices.",
+    description: "The screens and flows people use: responsive, accessible interfaces across devices.",
     position: { x: 27, y: 23 },
   },
   {
@@ -103,7 +103,7 @@ export const studioLayers: StudioLayer[] = [
   {
     id: "data",
     title: "Data",
-    description: "Databases and data modelling — the structures that let a system reliably store and retrieve information.",
+    description: "Databases and data models that let a system store and retrieve information reliably.",
   },
   {
     id: "integrations",

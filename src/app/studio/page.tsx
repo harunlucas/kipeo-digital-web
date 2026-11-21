@@ -62,8 +62,7 @@ export default function StudioPage() {
               <Reveal immediate delay={0.12}>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate">
                   Kipeo handles strategy, interfaces, application logic, data, HSE and operational workflows,
-                  integrations, deployment and support — not the frontend alone. This is a guided look at how
-                  those pieces connect into one build.
+                  integrations, deployment and support, not just the frontend.
                 </p>
               </Reveal>
             </div>
@@ -92,8 +91,7 @@ export default function StudioPage() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mt-3 text-base text-ink-muted sm:text-lg">
-              Select a numbered point on the studio below for a concise explanation of what that part of the
-              build covers.
+              Select a numbered point to see what each area covers.
             </p>
           </Reveal>
         </div>
@@ -102,8 +100,7 @@ export default function StudioPage() {
           An isometric illustration of the Kipeo Studio workspace, divided into six areas: strategy and
           definition, interface and experience, applications and data, operational systems, integrations and
           automation, and deployment and support. Six numbered buttons over the illustration reveal a concise
-          description of each area, so the illustration does not need to be seen to understand what it
-          represents.
+          description of each area.
         </p>
 
         <div className="relative mt-8">
@@ -202,7 +199,7 @@ export default function StudioPage() {
             <Eyebrow tone="ink">Collaboration model</Eyebrow>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="text-display-3 mt-3 text-ink-foreground">One team, one connected process.</h2>
+            <h2 className="text-display-3 mt-3 text-ink-foreground">Working with us.</h2>
           </Reveal>
         </div>
         <div className="mt-8">

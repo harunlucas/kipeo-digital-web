@@ -35,5 +35,5 @@ export const enquiryCopy = {
   intro: "What would you like to build or improve, and who will use it?",
   submit: "Send project enquiry",
   submitting: "Sending…",
-  success: "Thanks — we’ve received your enquiry.",
+  success: "Thanks, we’ve received your enquiry.",
 } as const;

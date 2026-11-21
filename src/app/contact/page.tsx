@@ -73,8 +73,7 @@ export default function ContactPage() {
               </Reveal>
               <Reveal immediate delay={0.12}>
                 <p className="mt-5 max-w-md text-lg leading-relaxed text-slate">
-                  Have a project in mind, a question about our work or something you&rsquo;d like to discuss? Get in
-                  touch with the studio.
+                  Have a project in mind or a question about our work?
                 </p>
               </Reveal>
               <Reveal immediate delay={0.18}>

@@ -10,7 +10,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 const title = "Software and Digital Strategy Insights | Kipeo Digital";
 const description =
-  "Clear guidance on planning, building and maintaining software, websites and operational platforms — from the team behind Kipeo Digital.";
+  "Practical notes on planning, building and maintaining software, websites and operational platforms, from the team behind Kipeo Digital.";
 
 export const metadata: Metadata = buildMetadata({
   title: { absolute: title },
@@ -68,7 +68,7 @@ export default async function InsightsPage() {
         </section>
       ) : null}
 
-      <section aria-labelledby="insights-next" className="border-t border-neutral-300 py-12 sm:py-14">
+      <section aria-labelledby="insights-next" className="py-12 sm:py-14">
         <Container>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12">
             <div>
